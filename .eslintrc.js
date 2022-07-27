@@ -1,30 +1,23 @@
 module.exports = {
   env: {
     browser: true,
-    es2021: true,
+    es2021: true
   },
-  extends: [
-    'plugin:react/recommended',
-    'next/core-web-vitals',
-    'airbnb',
-    'airbnb-typescript',
-  ],
+  extends: ['plugin:react/recommended', 'next/core-web-vitals', 'airbnb', 'airbnb-typescript', 'plugin:storybook/recommended'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
+    project: ["tsconfig.json"],
     ecmaFeatures: {
-      jsx: true,
+      jsx: true
     },
     ecmaVersion: 'latest',
-    sourceType: 'module',
+    sourceType: 'module'
   },
-  plugins: [
-    'react',
-    '@typescript-eslint',
-  ],
+  plugins: ['react', '@typescript-eslint'],
   rules: {
     'react/function-component-definition': [1, {
       namedComponents: 'arrow-function',
-      unnamedComponents: 'arrow-function',
-    }],
-  },
+      unnamedComponents: 'arrow-function'
+    }]
+  }
 };
