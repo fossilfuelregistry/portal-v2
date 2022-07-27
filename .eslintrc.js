@@ -7,6 +7,7 @@ module.exports = {
     'plugin:react/recommended',
     'next/core-web-vitals',
     'airbnb',
+    'airbnb-typescript',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -21,7 +22,6 @@ module.exports = {
     '@typescript-eslint',
   ],
   rules: {
-    'react/jsx-filename-extension': [1, { extensions: ['.tsx', '.jsx'] }],
     'react/function-component-definition': [1, {
       namedComponents: 'arrow-function',
       unnamedComponents: 'arrow-function',

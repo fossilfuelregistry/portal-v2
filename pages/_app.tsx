@@ -1,8 +1,14 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import '../styles/globals.css';
+import { ChakraProvider } from '@chakra-ui/react';
 import type { AppProps } from 'next/app';
+import theme from 'assets/theme';
 
-// eslint-disable-next-line react/jsx-props-no-spreading
-const MyApp = ({ Component, pageProps }: AppProps) => <Component {...pageProps} />;
+const MyApp = ({ Component, pageProps }: AppProps) => (
+  <ChakraProvider theme={theme}>
+    <Component {...pageProps} />
+  </ChakraProvider>
+);
 
 export default MyApp;
