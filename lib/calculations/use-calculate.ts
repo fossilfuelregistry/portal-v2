@@ -1,12 +1,12 @@
 import * as O from 'fp-ts/Option'
 import { pipe } from 'fp-ts/lib/function'
 import { useCallback } from 'react'
+import { FossilFuelType } from 'lib/types'
 import { GetConstants } from './calculation-constants/use-calculation-constants'
 import calculateOil from './oil'
 import { usePrefixConversion } from './prefix-conversion'
 import calculateCoal from './coal'
 import calculateGas from './gas'
-import { FossilFuelType } from './types'
 
 type Datapoint = {
     volume: number

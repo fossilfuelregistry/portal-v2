@@ -21,6 +21,7 @@
     "storybook:clean": "rm -rf node_modules/.cache/storybook"
   },
   "dependencies": {
+    "@apollo/client": "^3.6.9",
     "@chakra-ui/react": "^2.2.4",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",

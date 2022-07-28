@@ -1,5 +1,3 @@
-export type FossilFuelType = 'oil' | 'gas' | 'coal'
-
 export type Scenarios = {
     p5: number
     wa: number
