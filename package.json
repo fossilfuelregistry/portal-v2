@@ -30,6 +30,7 @@
     "framer-motion": "^6",
     "graph-data-structure": "^2.0.0",
     "io-ts": "^2.2.16",
+    "maplibre-gl": "^2.1.9",
     "monocle-ts": "^2.3.13",
     "newtype-ts": "^0.3.5",
     "next": "12.2.3",
