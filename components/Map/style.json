@@ -22,7 +22,19 @@
       "id": "countries-fill",
       "type": "fill",
       "paint": {
-        "fill-color": "rgba(255, 255, 255, 0.2)"
+        "fill-color": [
+          "match",
+          [
+            "get",
+            "ADM0_A3"
+          ],
+          [
+            "ATA",
+            "GRL"
+          ],
+          "rgba(255,255,255, .1)",
+          "rgba(255,255,255, .3)"
+        ]
       },
       "filter": [
         "all"
@@ -38,7 +50,7 @@
       "id": "countries-boundary",
       "type": "line",
       "paint": {
-        "line-color": "#0A2244",
+        "line-color": "#8793a2",
         "line-width": {
           "stops": [
             [
