@@ -8,9 +8,9 @@ import data from './data.json'
 const Map = () => {
   const mapContainer = useRef<HTMLDivElement | null>(null)
   const map = useRef<any>(null)
-  const [lng] = useState(47.19497528338846)
-  const [lat] = useState(9.669634635566009)
-  const [zoom] = useState(0)
+  const [lng] = useState(-0.39417687115326316)
+  const [lat] = useState(41.118875451562104)
+  const [zoom] = useState(1.25)
 
   useEffect(() => {
     if (map.current || !mapContainer.current) return
@@ -21,7 +21,7 @@ const Map = () => {
       style: mapStyle,
       center: [lng, lat],
       renderWorldCopies: false,
-      minZoom: 1.5,
+      minZoom: 1.25,
       zoom,
     })
 
@@ -98,8 +98,6 @@ const Map = () => {
       })
     })
   })
-
-  console.log('map.current')
 
   return (
     <Box w="100%" h="640px" p="relative" bg="#0A2244">

@@ -45,53 +45,6 @@
       "source": "maplibre",
       "maxzoom": 24,
       "source-layer": "countries"
-    },
-    {
-      "id": "countries-boundary",
-      "type": "line",
-      "paint": {
-        "line-color": "#8793a2",
-        "line-width": {
-          "stops": [
-            [
-              1,
-              1
-            ],
-            [
-              6,
-              2
-            ],
-            [
-              14,
-              6
-            ],
-            [
-              22,
-              12
-            ]
-          ]
-        },
-        "line-opacity": {
-          "stops": [
-            [
-              3,
-              0.5
-            ],
-            [
-              6,
-              1
-            ]
-          ]
-        }
-      },
-      "layout": {
-        "line-cap": "round",
-        "line-join": "round",
-        "visibility": "visible"
-      },
-      "source": "maplibre",
-      "maxzoom": 24,
-      "source-layer": "countries"
     }
   ],
   "bearing": 0,
