@@ -30,7 +30,19 @@
           ],
           [
             "ATA",
-            "GRL"
+            "GRL",
+            "SDN",
+            "TCD",
+            "NER",
+            "SSD",
+            "CAF",
+            "ETH",
+            "COD",
+            "ZMB",
+            "ZWE",
+            "KEN",
+            "UGA",
+            "TZA"
           ],
           "rgba(255,255,255, .1)",
           "rgba(255,255,255, .3)"
