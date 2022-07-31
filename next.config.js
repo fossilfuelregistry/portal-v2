@@ -5,6 +5,10 @@ const { withSentryConfig } = require('@sentry/nextjs');
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  i18n: {
+    locales: ["en", "fr", "es"],
+    defaultLocale: "en",
+  }
 };
 
 const sentryWebpackPluginOptions = {
@@ -20,3 +24,4 @@ const sentryWebpackPluginOptions = {
 };
 
 module.exports = withSentryConfig(nextConfig, sentryWebpackPluginOptions);
+// module.exports = nextConfig;

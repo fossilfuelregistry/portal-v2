@@ -26,16 +26,21 @@
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@sentry/nextjs": "^7.7.0",
+    "deepmerge": "^4.2.2",
     "fp-ts": "^2.12.2",
     "framer-motion": "^6",
     "graph-data-structure": "^2.0.0",
+    "graphql": "^16.5.0",
     "io-ts": "^2.2.16",
+    "lodash": "^4.17.21",
     "maplibre-gl": "^2.1.9",
     "monocle-ts": "^2.3.13",
     "newtype-ts": "^0.3.5",
     "next": "12.2.3",
+    "node-cache": "^5.1.2",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-markdown": "^8.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.18.9",
