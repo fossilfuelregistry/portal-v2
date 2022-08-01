@@ -57,6 +57,43 @@
       "source": "maplibre",
       "maxzoom": 24,
       "source-layer": "countries"
+    },
+    {
+      "id": "countries-label",
+      "type": "symbol",
+      "paint": {
+        "text-color": "#fff"
+      },
+      "filter": [
+        "all"
+      ],
+      "layout": {
+        "text-font": [
+          "Open Sans Semibold"
+        ],
+        "text-size": {
+          "stops": [
+            [
+              1,
+              16
+            ]
+          ]
+        },
+        "text-field": {
+          "stops": [
+            [
+              1.25,
+              "{NAME}"
+            ]
+          ]
+        },
+        "visibility": "visible",
+        "text-max-width": 10
+      },
+      "source": "maplibre",
+      "maxzoom": 24,
+      "minzoom": 1,
+      "source-layer": "centroids"
     }
   ],
   "bearing": 0,
