@@ -26,6 +26,8 @@
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@sentry/nextjs": "^7.7.0",
+    "@turf/bbox": "^6.5.0",
+    "chakra-react-select": "^4.1.4",
     "fp-ts": "^2.12.2",
     "framer-motion": "^6",
     "graph-data-structure": "^2.0.0",

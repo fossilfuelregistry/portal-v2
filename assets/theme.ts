@@ -7,7 +7,7 @@ const breakpoints = {
   xl: '1920px',
 }
 
-const colors = {
+export const colors = {
   common: {
     white: '#FFFFFF',
     black: '#000000',

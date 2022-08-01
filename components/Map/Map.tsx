@@ -1,11 +1,12 @@
 import React, { useRef, useEffect, useState } from 'react'
 import maplibregl from 'maplibre-gl'
+import bbox from '@turf/bbox'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import { Box } from '@chakra-ui/react'
 import mapStyle from './style.json'
 import data from './data.json'
 
-const Map = () => {
+const Map = ({ outlineGeometry }) => {
   const mapContainer = useRef<HTMLDivElement | null>(null)
   const map = useRef<any>(null)
   const [lng] = useState(-0.39417687115326316)
@@ -98,6 +99,19 @@ const Map = () => {
       })
     })
   })
+
+  useEffect(() => {
+    if (!outlineGeometry) return
+    if (outlineGeometry === 'global') {
+      map.current.setCenter([-0.39417687115326316, 41.118875451562104])
+      map.current.zoomTo(1.25, {
+        duration: 2000,
+      })
+    } else {
+      const bounds = bbox(outlineGeometry)
+      map.current.fitBounds(bounds, { padding: 50 })
+    }
+  }, [outlineGeometry])
 
   return (
     <Box w="100%" h="640px" p="relative" bg="#0A2244">
