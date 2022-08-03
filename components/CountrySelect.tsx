@@ -5,8 +5,12 @@ import { colors } from '../assets/theme'
 
 type CountrySelectProps = {
   value: string
-  options: any
   onChange: (e: any) => void
+}
+
+export const GLOBAL_OPTION = {
+  value: 'global',
+  label: 'Global',
 }
 
 const CountrySelect: FC<CountrySelectProps> = ({
@@ -19,10 +23,8 @@ const CountrySelect: FC<CountrySelectProps> = ({
       .map((c) => ({ ...c, value: c.iso3166, label: c['en'] ?? c.en }))
       .filter((c) => c.label !== null && c.iso31662 === '') // Exclude regions
       .sort((a, b) => a.label.localeCompare(b.label))
-    return cs
+    return [GLOBAL_OPTION, ...cs]
   }, [countriesData])
-
-  console.log('----countries', countries)
 
   return (
     <Box w="256px" bg={colors.common.white}>
