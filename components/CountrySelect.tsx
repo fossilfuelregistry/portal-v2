@@ -1,6 +1,6 @@
 import React, { FC, useMemo } from 'react'
-import { Select } from 'chakra-react-select'
 import { Box } from '@chakra-ui/react'
+import Select from 'components/Select'
 import { colors } from '../assets/theme'
 
 type CountrySelectProps = {
@@ -27,8 +27,13 @@ const CountrySelect: FC<CountrySelectProps> = ({
   }, [countriesData])
 
   return (
-    <Box w="256px" bg={colors.common.white}>
-      <Select size="md" value={value} onChange={onChange} options={countries} />
+    <Box w="256px">
+      <Select
+        value={value}
+        onChange={onChange}
+        options={countries}
+        height="44px"
+      />
     </Box>
   )
 }

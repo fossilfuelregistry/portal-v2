@@ -1,5 +1,10 @@
 import { extendTheme } from '@chakra-ui/react'
 
+const fonts = {
+  heading: `'Roboto', sans-serif`,
+  body: `'Roboto', sans-serif`,
+}
+
 const breakpoints = {
   sm: '576px',
   md: '1024px',
@@ -14,6 +19,7 @@ export const colors = {
   },
   primary: {
     brandingBlue: '#1172BA',
+    blue10: 'rgba(17, 114, 186, 0.1)',
     richBlue: '#0C2953',
     darkBlue: '#0A2244',
     richBlack: '#040404',
@@ -26,4 +32,4 @@ export const colors = {
   },
 }
 
-export default extendTheme({ breakpoints, colors })
+export default extendTheme({ fonts, breakpoints, colors })
