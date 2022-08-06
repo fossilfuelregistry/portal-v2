@@ -28,6 +28,7 @@ const Map = ({ outlineGeometry, emissionsData }) => {
       renderWorldCopies: false,
       minZoom: MIN_ZOOM,
       zoom: MIN_ZOOM,
+      localIdeographFontFamily: "'Roboto', sans-serif",
     })
 
     map.current.on('load', () => {
