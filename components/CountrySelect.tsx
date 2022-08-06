@@ -1,7 +1,6 @@
 import React, { FC, useMemo } from 'react'
 import { Box } from '@chakra-ui/react'
 import Select from 'components/Select'
-import { colors } from '../assets/theme'
 
 type CountrySelectProps = {
   value: string
