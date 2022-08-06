@@ -2,6 +2,40 @@ import React from 'react'
 import { Box, SimpleGrid } from '@chakra-ui/react'
 import Select from 'components/Select'
 
+const combustionOptions = [
+  {
+    label: 'Combustion & Pre-combustion',
+    value: 'all',
+  },
+  {
+    label: 'Combustion',
+    value: 'combustion',
+  },
+  {
+    label: 'Pre-combustion',
+    value: 'pre-combustion',
+  },
+]
+
+const fuelOptions = [
+  {
+    label: 'Aggregate',
+    value: 'all',
+  },
+  {
+    label: 'Oil',
+    value: 'oil',
+  },
+  {
+    label: 'Gas',
+    value: 'gas',
+  },
+  {
+    label: 'Coal',
+    value: 'coal',
+  },
+]
+
 const MapFilter = () => {
   return (
     <SimpleGrid
@@ -15,18 +49,24 @@ const MapFilter = () => {
     >
       <Box w="280px">
         <Select
-          value={null}
+          value={{
+            label: 'Combustion & Pre-combustion',
+            value: 'all',
+          }}
           onChange={() => {}}
-          options={[]}
+          options={combustionOptions}
           height="40px"
           placeholder="Combustion & Pre-combustion"
         />
       </Box>
       <Box w="280px">
         <Select
-          value={null}
+          value={{
+            label: 'Aggregate',
+            value: 'all',
+          }}
           onChange={() => {}}
-          options={[]}
+          options={fuelOptions}
           height="40px"
           placeholder="Aggregate"
         />

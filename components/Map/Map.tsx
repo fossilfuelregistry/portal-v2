@@ -4,14 +4,15 @@ import bbox from '@turf/bbox'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import { Box } from '@chakra-ui/react'
 import mapStyle from './style.json'
-import data from './data.json'
+import { colors } from '../../assets/theme'
 
-const Map = ({ outlineGeometry }) => {
+const Map = ({ outlineGeometry, emissionsData }) => {
   const mapContainer = useRef<HTMLDivElement | null>(null)
   const map = useRef<any>(null)
   const [lng] = useState(-0.39417687115326316)
   const [lat] = useState(41.118875451562104)
   const [zoom] = useState(1.25)
+  const [isLoaded, setIsLoaded] = useState<boolean>(false)
 
   useEffect(() => {
     if (map.current || !mapContainer.current) return
@@ -27,78 +28,39 @@ const Map = ({ outlineGeometry }) => {
     })
 
     map.current.on('load', () => {
+      setIsLoaded(true)
+    })
+  })
+
+  useEffect(() => {
+    if (isLoaded && map.current) {
       map.current.addSource('emissions', {
         type: 'geojson',
-        data,
+        data: emissionsData,
       })
+
       map.current.addLayer({
         id: 'emissions-circles',
         type: 'circle',
         source: 'emissions',
         paint: {
-          'circle-color': '#fff',
+          'circle-color': colors.common.white,
           'circle-stroke-width': 1,
-          'circle-stroke-color': '#fff',
+          'circle-stroke-color': colors.common.white,
           'circle-opacity': 0.4,
           'circle-radius': [
             'match',
             ['get', 'country'],
-            'Ukraine',
+            'ua',
             10,
-            'Canada',
+            'us',
             40,
-            'Brazil',
-            40,
-            'Australia',
-            40,
-            'Saudi Arabia',
-            40,
-            'India',
-            40,
-            'Korea',
-            15,
-            'Japan',
-            15,
-            'Guinea',
-            17,
-            'USA',
-            110,
-            'russ',
-            120,
-            'China',
-            130,
-            'Kazakhstan',
-            22,
-            'South Africa',
-            16,
-            'Angola',
-            16,
-            'Ghana',
-            11,
-            'Cameroon',
-            22,
-            'Niger',
-            22,
-            'Algeria',
-            25,
-            'Egypt',
-            18,
-            'Libya',
-            17,
-            'Turkey',
-            13,
-            'Italy',
-            10,
-            'Hungary',
-            10,
-            'Poland',
-            13,
-            /* other */ 10,
+            /* other */ 0,
           ],
         },
       })
-    })
-  })
+    }
+  }, [isLoaded, emissionsData])
 
   useEffect(() => {
     if (!outlineGeometry) return
