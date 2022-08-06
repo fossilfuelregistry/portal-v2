@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from 'react'
 import maplibregl from 'maplibre-gl'
 import bbox from '@turf/bbox'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import { Box, Flex } from '@chakra-ui/react'
+import { Box, Flex, Heading } from '@chakra-ui/react'
 import mapStyle from './style.json'
 import { colors } from '../../assets/theme'
 import { MinusIcon, PlusIcon } from 'components/Icons'
@@ -68,7 +68,25 @@ const Map = ({ outlineGeometry, emissionsData }) => {
         const coordinates = e.features[0].geometry.coordinates.slice()
         new maplibregl.Popup()
           .setLngLat(coordinates)
-          .setText('Annual emissions')
+          .setHTML(
+            ` <h2 class="maplibregl-popup-title">USA</h2>
+              <div class="maplibregl-popup-info">
+                Annual emissions
+                <strong>83.0 Million tonnes CO²</strong>
+              </div>
+              <div class="maplibregl-popup-info">
+                Oil
+                <strong>4.0 Million barrels</strong>
+              </div>
+              <div class="maplibregl-popup-info">
+                Gas
+                <strong>4.0 Billion cubic meters</strong>
+              </div>
+              <div class="maplibregl-popup-info">
+                Coal
+                <strong>4.0 Thousand tonnes</strong>
+              </div>`
+          )
           .addTo(map.current)
       })
     }
