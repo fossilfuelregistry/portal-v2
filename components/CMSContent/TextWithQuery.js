@@ -6,8 +6,6 @@ export default function TextWithQuery( { template } ) {
 	const injectQueryResult = useTextInjectQueryResult()
 	const [ result, set_result ] = useState( template )
 
-	console.log( { result, template } )
-
 	useEffect( () => {
 			const asyncEffect = async() => {
 				set_result( await injectQueryResult( template ) )

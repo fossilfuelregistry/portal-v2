@@ -1,6 +1,6 @@
 import React from 'react'
 import DynamicZone from "../../components/CMSContent/DynamicZone"
-import { getCommonStaticProps } from "../../lib/getCommonStaticProps"
+import { getCommonStaticProps } from "../../lib/staticProps"
 
 const headers = {
 	Authorization: `Bearer ${ process.env.NEXT_PUBLIC_CMS_TOKEN }`
@@ -26,34 +26,7 @@ export default function Page( props ) {
 	)
 }
 
-export async function getStaticProps( context ) {
-	const { slug } = context.params
-
-	let api = await fetch( `${ process.env.NEXT_PUBLIC_CMS_URL }/api/articles`, { headers } )
-	if( !api.ok ) throw new Error( `Pages fetch failed: ${ api.status } ${ api.statusText }` )
-	const pages = await api.json()
-
-	const p = pages.data?.find( pg => pg.attributes?.slug === slug.join( '/' ) )
-	if( !p ) return { notFound: true }
-
-	api = await fetch( `${ process.env.NEXT_PUBLIC_CMS_URL }/api/articles/${ p.id }?populate=*`, { headers } )
-
-	if( !api.ok ) {
-		if( api.status === 404 ) return { notFound: true }
-		throw new Error( `Articles fetch failed: ${ api.status } ${ api.statusText }` )
-	}
-
-	const response = await api.json()
-	const page = response.data
-	if( !page ) return { notFound: true }
-
-	const common = await getCommonStaticProps( context )
-	common.props.page = page
-	return {
-		...common,
-		revalidate: 60
-	}
-}
+export { getArticleStaticProps as getStaticProps } from '../lib/staticProps'
 
 export async function getStaticPaths() {
 	try {

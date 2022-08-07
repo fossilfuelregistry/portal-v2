@@ -73,4 +73,4 @@ const MapPage: NextPage = ({ countries }) => {
 }
 
 export default MapPage
-export { getCommonStaticProps as getStaticProps } from '../lib/getCommonStaticProps'
+export { getCommonStaticProps as getStaticProps } from '../lib/staticProps'

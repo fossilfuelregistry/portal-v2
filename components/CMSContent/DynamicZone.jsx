@@ -6,6 +6,7 @@ import {
 	AlertDescription,
 } from '@chakra-ui/react'
 import TextWithQuery from "./TextWithQuery"
+import StyledTextImage from "./StyledTextImage"
 
 export default function DynamicZone( { content } ) {
 	const rendered = []
@@ -13,6 +14,9 @@ export default function DynamicZone( { content } ) {
 	content?.forEach( block => {
 
 		switch( block.__component ) {
+			case "shared.styled-text-image":
+				rendered.push( <StyledTextImage key={ `STI${  block.id}` } block={ block }/> )
+				break
 			case "shared.text-block":
 				rendered.push( <TextWithQuery key={ `T${  block.id}` } template={ block.Text }/> )
 				break
