@@ -11,7 +11,6 @@ import {
 	MenuButton,
 	MenuList,
 	MenuItem,
-	MenuDivider,
 	useDisclosure,
 	useColorModeValue,
 	Stack,
@@ -31,6 +30,24 @@ const NavLink = ({children}: { children: ReactNode }) => (
 		{children}
 	</Link>
 );
+
+const RenderLinkOrSubmenu = ({item}) => {
+	if (!(item.Submenu?.length > 0))
+		return <NavLink key={item.id}>{item.Text}</NavLink>
+	else
+		return (
+			<Menu key={item.id}>
+				<MenuButton as={Button} rightIcon={<ChevronDownIcon/>}>
+					{item.Text}
+				</MenuButton>
+				<MenuList>
+					{item.Submenu.map(i => {
+						return <MenuItem key={i.id}>{i.Text}</MenuItem>
+					})}
+				</MenuList>
+			</Menu>
+		)
+}
 
 export default function Navbar({menu, texts}) {
 	const {isOpen, onOpen, onClose} = useDisclosure();
@@ -52,23 +69,7 @@ export default function Navbar({menu, texts}) {
 							as={'nav'}
 							spacing={4}
 							display={{base: 'none', md: 'flex'}}>
-							{menu.map((link) => {
-								if (!(link.Submenu?.length > 0))
-									return <NavLink key={link.id}>{link.Text}</NavLink>
-								else
-									return (
-										<Menu key={link.id}>
-											<MenuButton as={Button} rightIcon={<ChevronDownIcon/>}>
-												{link.Text}
-											</MenuButton>
-											<MenuList>
-												{link.Submenu.map(item => {
-													return <MenuItem key={item.id}>{item.Text}</MenuItem>
-												})}
-											</MenuList>
-										</Menu>
-									)
-							})}
+							{menu.map(item => <RenderLinkOrSubmenu item={item}/>)}
 						</HStack>
 					</HStack>
 				</Flex>
@@ -76,9 +77,7 @@ export default function Navbar({menu, texts}) {
 				{isOpen ? (
 					<Box pb={4} display={{md: 'none'}}>
 						<Stack as={'nav'} spacing={4}>
-							{menu.map((link) => (
-								<NavLink key={link.id}>{link.Text}</NavLink>
-							))}
+							{menu.map(item => <RenderLinkOrSubmenu item={item}/>)}
 						</Stack>
 					</Box>
 				) : null}
