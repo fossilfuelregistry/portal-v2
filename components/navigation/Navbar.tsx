@@ -17,24 +17,26 @@ import {
 } from '@chakra-ui/react';
 import {HamburgerIcon, CloseIcon, ChevronDownIcon} from '@chakra-ui/icons';
 
-const NavLink = ({children}: { children: ReactNode }) => (
-	<Link
-		px={2}
-		py={1}
-		rounded={'md'}
-		_hover={{
-			textDecoration: 'none',
-			bg: useColorModeValue('gray.200', 'gray.700'),
-		}}
-		href={'#'}>
-		{children}
-	</Link>
-);
-
 const RenderLinkOrSubmenu = ({item}) => {
-	if (!(item.Submenu?.length > 0))
-		return <NavLink key={item.id}>{item.Text}</NavLink>
-	else
+	let href = item.URL ?? '#'
+	if(item.Page?.data)
+		href = '/' + item.Page.data.attributes?.slug
+	if(item.Article?.data)
+		href = '/article/ '+ item.Article.data.attributes?.slug
+	if (!(item.Submenu?.length > 0)) {
+		return <Link
+			key={item.id}
+			px={2}
+			py={1}
+			rounded={'md'}
+			_hover={{
+				textDecoration: 'none',
+				bg: useColorModeValue('gray.200', 'gray.700'),
+			}}
+			href={href}>
+			{item.Text}
+		</Link>
+	} else
 		return (
 			<Menu key={item.id}>
 				<MenuButton as={Button} rightIcon={<ChevronDownIcon/>}>
@@ -42,7 +44,12 @@ const RenderLinkOrSubmenu = ({item}) => {
 				</MenuButton>
 				<MenuList>
 					{item.Submenu.map(i => {
-						return <MenuItem key={i.id}>{i.Text}</MenuItem>
+						let href = item.URL ?? '#'
+						if(i.Page?.data)
+							href = '/' + i.Page.data.attributes?.slug
+						if(i.Article?.data)
+							href = '/article/'+ i.Article.data.attributes?.slug
+						return <Link key={i.id} href={href}><MenuItem>{i.Text}</MenuItem></Link>
 					})}
 				</MenuList>
 			</Menu>

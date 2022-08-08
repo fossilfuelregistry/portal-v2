@@ -1,6 +1,5 @@
 import React from 'react'
 import DynamicZone from "../../components/CMSContent/DynamicZone"
-import { getCommonStaticProps } from "../../lib/staticProps"
 
 const headers = {
 	Authorization: `Bearer ${ process.env.NEXT_PUBLIC_CMS_TOKEN }`
@@ -26,7 +25,7 @@ export default function Page( props ) {
 	)
 }
 
-export { getArticleStaticProps as getStaticProps } from '../lib/staticProps'
+export { getArticleStaticProps as getStaticProps } from '../../lib/staticProps'
 
 export async function getStaticPaths() {
 	try {
