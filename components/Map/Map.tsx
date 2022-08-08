@@ -1,21 +1,62 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect, useState, useMemo, FC } from 'react'
 import maplibregl from 'maplibre-gl'
 import bbox from '@turf/bbox'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import { Box, Flex, Heading } from '@chakra-ui/react'
+import { Box, Flex } from '@chakra-ui/react'
+import CountrySelect, { GLOBAL_OPTION } from 'components/Map/CountrySelect'
+import MapFilter from 'components/Map/MapFilter'
+import ZoomControls from 'components/Map/ZoomControls'
 import mapStyle from './style.json'
 import { colors } from '../../assets/theme'
-import { MinusIcon, PlusIcon } from 'components/Icons'
 
 const MIN_ZOOM = 1.25
 const MAX_ZOOM = 24
+// Center of the map
+const [lng, lat] = [-0.39417687115326316, 41.118875451562104]
 
-const Map = ({ outlineGeometry, emissionsData }) => {
+type MapProps = {
+  countries: any[]
+}
+
+const Map: FC<MapProps> = ({ countries }) => {
+  const [selectedCountry, setSelectedCountry] = useState([GLOBAL_OPTION])
+  const [isLoaded, setIsLoaded] = useState<boolean>(false)
   const mapContainer = useRef<HTMLDivElement | null>(null)
   const map = useRef<any>(null)
-  const [lng] = useState(-0.39417687115326316)
-  const [lat] = useState(41.118875451562104)
-  const [isLoaded, setIsLoaded] = useState<boolean>(false)
+
+  const countriesCollection = useMemo(() => {
+    const features = countries.map((c) => ({
+      properties: {
+        country: c.iso3166,
+      },
+      geometry: {
+        type: 'Point',
+        coordinates: c.centroid.geojson.coordinates,
+      },
+    }))
+    return {
+      type: 'FeatureCollection',
+      features,
+    }
+  }, [countries])
+
+  const calculateEmission = (productionCo2E: any) => {
+    const total = Object.keys(productionCo2E).reduce((prev, curr) => {
+      return prev + productionCo2E[curr].scope1 + productionCo2E[curr].scope3
+    }, 0)
+    const value = total / 10e9
+    return value > 100 ? 100 : value
+  }
+
+  const emissionsData = useMemo(() => {
+    const data = countries
+      .map((c) => [c.iso3166, calculateEmission(c.productionCo2E)])
+      .flat()
+    return data
+  }, [countries])
+
+  // console.log('emissionsData', emissionsData)
+  // console.log('countries', countries)
 
   useEffect(() => {
     if (map.current || !mapContainer.current) return
@@ -40,7 +81,7 @@ const Map = ({ outlineGeometry, emissionsData }) => {
     if (isLoaded && map.current) {
       map.current.addSource('emissions', {
         type: 'geojson',
-        data: emissionsData,
+        data: countriesCollection,
       })
 
       map.current.addLayer({
@@ -55,10 +96,7 @@ const Map = ({ outlineGeometry, emissionsData }) => {
           'circle-radius': [
             'match',
             ['get', 'country'],
-            'ua',
-            10,
-            'us',
-            40,
+            ...emissionsData,
             /* other */ 0,
           ],
         },
@@ -92,18 +130,22 @@ const Map = ({ outlineGeometry, emissionsData }) => {
     }
   }, [isLoaded, emissionsData])
 
+  // console.log('selectedCountry', selectedCountry)
+  // console.log('emissionsData', emissionsData)
+
   useEffect(() => {
-    if (!outlineGeometry) return
-    if (outlineGeometry === 'global') {
-      map.current.setCenter([-0.39417687115326316, 41.118875451562104])
+    const outlineGeometry = selectedCountry.borders?.geojson
+
+    if (outlineGeometry) {
+      const bounds = bbox(outlineGeometry)
+      map.current.fitBounds(bounds, { padding: 50 })
+    } else {
+      map.current.setCenter([lng, lat])
       map.current.zoomTo(1.25, {
         duration: 2000,
       })
-    } else {
-      const bounds = bbox(outlineGeometry)
-      map.current.fitBounds(bounds, { padding: 50 })
     }
-  }, [outlineGeometry])
+  }, [selectedCountry])
 
   const handleChangeZoom = (action: 'min' | 'max') => {
     const zoomStep = 0.5
@@ -124,27 +166,20 @@ const Map = ({ outlineGeometry, emissionsData }) => {
   }
 
   return (
-    <Box w="100%" h="640px" p="relative" bg="#0A2244">
-      <Box ref={mapContainer} w="100%" h="100%" p="absolute" />
-      <Flex
-        position="absolute"
-        right="60px"
-        top="50%"
-        transform="translateY(-50%)"
-        direction="column"
-      >
-        <PlusIcon
-          cursor="pointer"
-          my="20px"
-          onClick={() => handleChangeZoom('max')}
-        />
-        <MinusIcon
-          cursor="pointer"
-          my="20px"
-          onClick={() => handleChangeZoom('min')}
+    <>
+      <Box w="100%" h="640px" p="relative" bg="#0A2244">
+        <Box ref={mapContainer} w="100%" h="100%" p="absolute" />
+        <MapFilter />
+        <ZoomControls onChangeZoom={handleChangeZoom} />
+      </Box>
+      <Flex p="18px" justify="center" bg={colors.primary.grey10}>
+        <CountrySelect
+          value={selectedCountry}
+          countriesData={countries}
+          onChange={setSelectedCountry}
         />
       </Flex>
-    </Box>
+    </>
   )
 }
 
