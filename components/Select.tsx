@@ -1,16 +1,33 @@
-import React from 'react'
-import { Select as ChakraSelect } from 'chakra-react-select'
+import React, { FC } from 'react'
+import {
+  Select as ChakraSelect,
+  OptionBase,
+  SingleValue,
+} from 'chakra-react-select'
+import type { CSSObject } from '@chakra-ui/system'
 import { colors } from '../assets/theme'
 
-const Select = ({
+export interface SelectOption extends OptionBase {
+  value: string
+  label: string
+}
+
+type SelectProps = {
+  height: string
+  value: SelectOption | undefined
+  options: SelectOption[]
+  // eslint-disable-next-line no-unused-vars
+  onChange: (newValue: SingleValue<SelectOption>) => void
+}
+
+const Select: FC<SelectProps> = ({
   value,
   height = '40px',
   options,
-  placeholder = '',
   onChange,
 }) => {
   const chakraStyles = {
-    container: (provided, state) => ({
+    container: (provided: CSSObject, state: any) => ({
       ...provided,
       border: state.isFocused
         ? `1px solid ${colors.primary.brandingBlue}`
@@ -20,34 +37,34 @@ const Select = ({
       borderRadius: '3px',
       height,
     }),
-    control: (provided, state) => ({
+    control: (provided: CSSObject) => ({
       ...provided,
       border: 'none',
       borderRadius: '3px',
       padding: '0 8px 0 12px',
       boxShadow: 'none !important',
     }),
-    placeholder: (provided, state) => ({
+    placeholder: (provided: CSSObject) => ({
       ...provided,
-      color: '#959494',
+      color: colors.primary.grey70,
     }),
-    singleValue: (provided, state) => ({
+    singleValue: (provided: CSSObject) => ({
       ...provided,
       fontWeight: '400',
       fontSize: '16px',
       color: colors.primary.richBlack,
     }),
-    valueContainer: (provided, state) => ({
+    valueContainer: (provided: CSSObject) => ({
       ...provided,
       padding: '0',
       fontSize: '14px',
     }),
-    indicatorSeparator: (provided, state) => ({
+    indicatorSeparator: (provided: CSSObject) => ({
       ...provided,
       display: 'none',
       padding: '0',
     }),
-    menu: (provided, state) => ({
+    menu: (provided: CSSObject) => ({
       ...provided,
       background: colors.common.white,
       overflow: 'hidden',
@@ -56,15 +73,16 @@ const Select = ({
       p: '0',
       borderRadius: '3px',
     }),
-    menuList: (provided, state) => ({
+    menuList: (provided: CSSObject) => ({
       ...provided,
       boxShadow: 'none',
     }),
-    option: (provided, state) => ({
+    option: (provided: CSSObject, state: any) => ({
       ...provided,
       color: colors.primary.richBlack,
       cursor: 'pointer',
       fontSize: '16px',
+      // eslint-disable-next-line no-nested-ternary
       background: state.isSelected
         ? colors.primary.blue10
         : state.isFocused
@@ -72,7 +90,7 @@ const Select = ({
         : '',
       borderBottom: `1px solid ${colors.primary.grey10}`,
     }),
-    dropdownIndicator: (provided, state) => ({
+    dropdownIndicator: (provided: CSSObject) => ({
       ...provided,
       padding: '0',
       background: 'transparent',
@@ -86,7 +104,6 @@ const Select = ({
       isSearchable
       value={value}
       options={options}
-      placeholder={placeholder}
       onChange={onChange}
     />
   )

@@ -1,42 +1,20 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { Box, SimpleGrid } from '@chakra-ui/react'
 import Select from 'components/Select'
+import { COMBUSTION_OPTIONS, FUEL_OPTIONS } from 'components/Map/constants'
 
-const combustionOptions = [
-  {
-    label: 'Combustion & Pre-combustion',
-    value: '',
-  },
-  {
-    label: 'Combustion',
-    value: 'scope1',
-  },
-  {
-    label: 'Pre-combustion',
-    value: 'scope3',
-  },
-]
+export type Filter = {
+  combustion: string
+  fuel: string
+}
 
-const fuelOptions = [
-  {
-    label: 'Aggregate',
-    value: '',
-  },
-  {
-    label: 'Oil',
-    value: 'oil',
-  },
-  {
-    label: 'Gas',
-    value: 'gas',
-  },
-  {
-    label: 'Coal',
-    value: 'coal',
-  },
-]
+type MapFilterProps = {
+  filters: Filter
+  // eslint-disable-next-line no-unused-vars
+  onChange: (filters: Filter) => void
+}
 
-const MapFilter = ({ filters, onChange }) => {
+const MapFilter: FC<MapFilterProps> = ({ filters, onChange }) => {
   return (
     <SimpleGrid
       columns={2}
@@ -49,30 +27,28 @@ const MapFilter = ({ filters, onChange }) => {
     >
       <Box w="280px">
         <Select
-          value={combustionOptions.find((o) => o.value === filters.combustion)}
+          value={COMBUSTION_OPTIONS.find((o) => o.value === filters.combustion)}
           onChange={(option) => {
             onChange({
               ...filters,
-              combustion: option.value,
+              combustion: option?.value as string,
             })
           }}
-          options={combustionOptions}
+          options={COMBUSTION_OPTIONS}
           height="40px"
-          placeholder="Combustion & Pre-combustion"
         />
       </Box>
       <Box w="280px">
         <Select
-          value={fuelOptions.find((o) => o.value === filters.fuel)}
+          value={FUEL_OPTIONS.find((o) => o.value === filters.fuel)}
           onChange={(option) => {
             onChange({
               ...filters,
-              fuel: option.value,
+              fuel: option?.value as string,
             })
           }}
-          options={fuelOptions}
+          options={FUEL_OPTIONS}
           height="40px"
-          placeholder="Aggregate"
         />
       </Box>
     </SimpleGrid>

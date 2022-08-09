@@ -3,9 +3,11 @@ import maplibregl from 'maplibre-gl'
 import bbox from '@turf/bbox'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import { Box, Flex } from '@chakra-ui/react'
-import CountrySelect, { GLOBAL_OPTION } from 'components/Map/CountrySelect'
-import MapFilter from 'components/Map/MapFilter'
+import CountrySelect from 'components/Map/CountrySelect'
+import MapFilter, { Filter } from 'components/Map/MapFilter'
 import ZoomControls from 'components/Map/ZoomControls'
+import { Country } from 'components/Map/types'
+import { GLOBAL_OPTION } from 'components/Map/constants'
 import mapStyle from './style.json'
 import { colors } from '../../assets/theme'
 
@@ -15,13 +17,13 @@ const MAX_ZOOM = 24
 const [lng, lat] = [-0.39417687115326316, 41.118875451562104]
 
 type MapProps = {
-  countries: any[]
+  countries: Country[]
 }
 
 const Map: FC<MapProps> = ({ countries }) => {
-  const [selectedCountry, setSelectedCountry] = useState([GLOBAL_OPTION])
+  const [selectedCountry, setSelectedCountry] = useState<any>(GLOBAL_OPTION)
   const [isLoaded, setIsLoaded] = useState<boolean>(false)
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<Filter>({
     combustion: '',
     fuel: '',
   })
@@ -77,14 +79,13 @@ const Map: FC<MapProps> = ({ countries }) => {
     return value > 100 ? 100 : value
   }
 
-  const emissionsData = useMemo(() => {
-    return countries
-      .map((c) => [c.iso3166, calculateEmission(c.productionCo2E)])
-      .flat()
-  }, [countries, filters])
-
-  // console.log('emissionsData', emissionsData)
-  // console.log('countries', countries)
+  const emissionsData = useMemo(
+    () =>
+      countries
+        .map((c) => [c.iso3166, calculateEmission(c.productionCo2E)])
+        .flat(),
+    [countries, filters]
+  )
 
   useEffect(() => {
     if (map.current || !mapContainer.current) return
@@ -112,7 +113,7 @@ const Map: FC<MapProps> = ({ countries }) => {
         data: countriesCollection,
       })
 
-      map.current.on('click', 'emissions-circles', (e) => {
+      map.current.on('click', 'emissions-circles', (e: any) => {
         const coordinates = e.features[0].geometry.coordinates.slice()
         new maplibregl.Popup()
           .setLngLat(coordinates)
@@ -202,33 +203,6 @@ const Map: FC<MapProps> = ({ countries }) => {
       })
     }
   }
-
-  const handleChangeFilter = (f) => {
-    console.log(
-      'map.current.removeLayer',
-      map.current.getLayer('emissions-circles')
-    )
-
-    // map.current.addLayer({
-    //   id: 'emissions-circles',
-    //   type: 'circle',
-    //   source: 'emissions',
-    //   paint: {
-    //     'circle-color': colors.common.white,
-    //     'circle-stroke-width': 1,
-    //     'circle-stroke-color': colors.common.white,
-    //     'circle-opacity': 0.4,
-    //     'circle-radius': [
-    //       'match',
-    //       ['get', 'country'],
-    //       ...emissionsData,
-    //       /* other */ 0,
-    //     ],
-    //   },
-    // })
-  }
-
-  console.log('filters', filters)
 
   return (
     <>
