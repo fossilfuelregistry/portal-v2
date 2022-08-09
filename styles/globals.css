@@ -35,6 +35,7 @@ a {
   padding: 24px 16px 20px !important;
   width: 320px;
   max-width: 320px !important;
+  z-index: 999999999999999;
 }
 
 .maplibregl-popup-tip, .mapboxgl-popup-tip {

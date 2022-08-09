@@ -21,6 +21,10 @@ type MapProps = {
 const Map: FC<MapProps> = ({ countries }) => {
   const [selectedCountry, setSelectedCountry] = useState([GLOBAL_OPTION])
   const [isLoaded, setIsLoaded] = useState<boolean>(false)
+  const [filters, setFilters] = useState({
+    combustion: '',
+    fuel: '',
+  })
   const mapContainer = useRef<HTMLDivElement | null>(null)
   const map = useRef<any>(null)
 
@@ -41,19 +45,43 @@ const Map: FC<MapProps> = ({ countries }) => {
   }, [countries])
 
   const calculateEmission = (productionCo2E: any) => {
-    const total = Object.keys(productionCo2E).reduce((prev, curr) => {
-      return prev + productionCo2E[curr].scope1 + productionCo2E[curr].scope3
-    }, 0)
+    let total = 0
+
+    if (!filters.fuel && !filters.combustion) {
+      total = Object.keys(productionCo2E).reduce(
+        (prev, curr) =>
+          prev + productionCo2E[curr].scope1 + productionCo2E[curr].scope3,
+        0
+      )
+    }
+
+    if (filters.fuel && !filters.combustion) {
+      total =
+        (productionCo2E[filters.fuel]?.scope1 || 0) +
+        (productionCo2E[filters.fuel]?.scope3 || 0)
+    }
+
+    if (!filters.fuel && filters.combustion) {
+      total = Object.keys(productionCo2E).reduce(
+        (prev, curr) =>
+          prev + (productionCo2E?.[curr]?.[filters.combustion] || 0),
+        0
+      )
+    }
+
+    if (filters.fuel && filters.combustion) {
+      total = productionCo2E?.[filters.fuel]?.[filters.combustion] || 0
+    }
+
     const value = total / 10e9
     return value > 100 ? 100 : value
   }
 
   const emissionsData = useMemo(() => {
-    const data = countries
+    return countries
       .map((c) => [c.iso3166, calculateEmission(c.productionCo2E)])
       .flat()
-    return data
-  }, [countries])
+  }, [countries, filters])
 
   // console.log('emissionsData', emissionsData)
   // console.log('countries', countries)
@@ -84,24 +112,6 @@ const Map: FC<MapProps> = ({ countries }) => {
         data: countriesCollection,
       })
 
-      map.current.addLayer({
-        id: 'emissions-circles',
-        type: 'circle',
-        source: 'emissions',
-        paint: {
-          'circle-color': colors.common.white,
-          'circle-stroke-width': 1,
-          'circle-stroke-color': colors.common.white,
-          'circle-opacity': 0.4,
-          'circle-radius': [
-            'match',
-            ['get', 'country'],
-            ...emissionsData,
-            /* other */ 0,
-          ],
-        },
-      })
-
       map.current.on('click', 'emissions-circles', (e) => {
         const coordinates = e.features[0].geometry.coordinates.slice()
         new maplibregl.Popup()
@@ -126,6 +136,34 @@ const Map: FC<MapProps> = ({ countries }) => {
               </div>`
           )
           .addTo(map.current)
+      })
+    }
+  }, [isLoaded, countriesCollection])
+
+  useEffect(() => {
+    if (isLoaded && map.current) {
+      const isLayerExist = map.current.getLayer('emissions-circles')
+
+      if (isLayerExist) {
+        map.current.removeLayer('emissions-circles')
+      }
+
+      map.current.addLayer({
+        id: 'emissions-circles',
+        type: 'circle',
+        source: 'emissions',
+        paint: {
+          'circle-color': colors.common.white,
+          'circle-stroke-width': 1,
+          'circle-stroke-color': colors.common.white,
+          'circle-opacity': 0.4,
+          'circle-radius': [
+            'match',
+            ['get', 'country'],
+            ...emissionsData,
+            /* other */ 0,
+          ],
+        },
       })
     }
   }, [isLoaded, emissionsData])
@@ -165,11 +203,38 @@ const Map: FC<MapProps> = ({ countries }) => {
     }
   }
 
+  const handleChangeFilter = (f) => {
+    console.log(
+      'map.current.removeLayer',
+      map.current.getLayer('emissions-circles')
+    )
+
+    // map.current.addLayer({
+    //   id: 'emissions-circles',
+    //   type: 'circle',
+    //   source: 'emissions',
+    //   paint: {
+    //     'circle-color': colors.common.white,
+    //     'circle-stroke-width': 1,
+    //     'circle-stroke-color': colors.common.white,
+    //     'circle-opacity': 0.4,
+    //     'circle-radius': [
+    //       'match',
+    //       ['get', 'country'],
+    //       ...emissionsData,
+    //       /* other */ 0,
+    //     ],
+    //   },
+    // })
+  }
+
+  console.log('filters', filters)
+
   return (
     <>
       <Box w="100%" h="640px" p="relative" bg="#0A2244">
         <Box ref={mapContainer} w="100%" h="100%" p="absolute" />
-        <MapFilter />
+        <MapFilter filters={filters} onChange={setFilters} />
         <ZoomControls onChangeZoom={handleChangeZoom} />
       </Box>
       <Flex p="18px" justify="center" bg={colors.primary.grey10}>

@@ -5,22 +5,22 @@ import Select from 'components/Select'
 const combustionOptions = [
   {
     label: 'Combustion & Pre-combustion',
-    value: 'all',
+    value: '',
   },
   {
     label: 'Combustion',
-    value: 'combustion',
+    value: 'scope1',
   },
   {
     label: 'Pre-combustion',
-    value: 'pre-combustion',
+    value: 'scope3',
   },
 ]
 
 const fuelOptions = [
   {
     label: 'Aggregate',
-    value: 'all',
+    value: '',
   },
   {
     label: 'Oil',
@@ -36,7 +36,7 @@ const fuelOptions = [
   },
 ]
 
-const MapFilter = () => {
+const MapFilter = ({ filters, onChange }) => {
   return (
     <SimpleGrid
       columns={2}
@@ -49,11 +49,13 @@ const MapFilter = () => {
     >
       <Box w="280px">
         <Select
-          value={{
-            label: 'Combustion & Pre-combustion',
-            value: 'all',
+          value={combustionOptions.find((o) => o.value === filters.combustion)}
+          onChange={(option) => {
+            onChange({
+              ...filters,
+              combustion: option.value,
+            })
           }}
-          onChange={() => {}}
           options={combustionOptions}
           height="40px"
           placeholder="Combustion & Pre-combustion"
@@ -61,11 +63,13 @@ const MapFilter = () => {
       </Box>
       <Box w="280px">
         <Select
-          value={{
-            label: 'Aggregate',
-            value: 'all',
+          value={fuelOptions.find((o) => o.value === filters.fuel)}
+          onChange={(option) => {
+            onChange({
+              ...filters,
+              fuel: option.value,
+            })
           }}
-          onChange={() => {}}
           options={fuelOptions}
           height="40px"
           placeholder="Aggregate"
