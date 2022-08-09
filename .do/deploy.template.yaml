@@ -1,5 +1,5 @@
 spec:
-  name: fossilfuelregistry.org-v2
+  name: fossilfuelregistry-v2
   services:
     - name: web
       git:
