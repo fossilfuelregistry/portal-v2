@@ -1,0 +1,20 @@
+spec:
+  name: fossilfuelregistry.org-v2
+  services:
+    - name: web
+      git:
+        branch: master
+        repo_clone_url: https://github.com/fossilfuelregistry/portal-v2.git
+      envs:
+        - key: POEDITOR_API_TOKEN
+          value: "token"
+          type: SECRET
+        - key: POEDITOR_PROJECT_ID
+          value: "426659"
+        - key: NEXT_PUBLIC_BACKEND_URL
+          value: "https://dev-api.fossilfuelregistry.org"
+        - key: NEXT_PUBLIC_CMS_URL
+          value: "https://cms.fossilfuelregistry.org"
+        - key: NEXT_PUBLIC_CMS_TOKEN
+          value: "token"
+          type: SECRET
