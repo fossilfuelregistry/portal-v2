@@ -1,8 +1,18 @@
 import React from 'react'
-import { Box, chakra } from "@chakra-ui/react"
+import {Box, LayoutProps} from "@chakra-ui/react"
 
-export const getResponsiveStyle = ( sizing, url ) => {
+interface Props {
+	src: string,
+	height: LayoutProps["h"],
+	width: string,
+	sizing?: string,
+	borderRadius?: string,
+	id?: string,
+	className?: string,
+	gradient?: string
+}
 
+export const getResponsiveStyle = ( url: string, gradient?: string, sizing?: string ) => {
 	return {
 		backgroundImage: 'url(' + url + ')',
 		backgroundSize: sizing || 'cover',
@@ -11,13 +21,13 @@ export const getResponsiveStyle = ( sizing, url ) => {
 	}
 }
 
-const ResponsiveImage = ( { src, height, width, sizing, borderRadius, id, className, style, gradient } ) => {
+const ResponsiveImage = ( { src, height, width, sizing, borderRadius, id, className, gradient }: Props ) => {
 
 	let _style = Object.assign( {
 		width: '100%',
 		height: '100%',
 		borderRadius: borderRadius || 'unset',
-	}, getResponsiveStyle( sizing, src, gradient ) )
+	}, getResponsiveStyle( src, gradient, sizing ) )
 
 	return (
 		<Box

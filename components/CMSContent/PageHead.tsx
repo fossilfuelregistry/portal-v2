@@ -1,10 +1,15 @@
 import React from 'react'
 import Head from 'next/head'
+import {Page} from "lib/types";
 
-const PageHead = ( { page } ) => {
+interface Props {
+	page: Page
+}
+
+const PageHead = ({page}: Props) => {
 	return (
 		<Head>
-			<title>{ page?.Title ?? 'Global Fossil Fuel Registry' }</title>
+			<title>{page?.Title ?? 'Global Fossil Fuel Registry'}</title>
 			<meta name="description" content="TBSL"/>
 			<link rel="icon" href="/favicon.ico"/>
 		</Head>

@@ -1,6 +1,12 @@
 import { Box } from "@chakra-ui/react"
+import {ReactNode} from "react";
 
-const CMSBlock = ( {children, extended} ) => {
+interface Props {
+	children: Array<ReactNode> | ReactNode,
+	extended?: boolean
+}
+
+const CMSBlock = ( {children, extended}: Props ) => {
 	return (
 		<Box
 			px={ extended ? 0 : {base:'24px', md:'100px'}}

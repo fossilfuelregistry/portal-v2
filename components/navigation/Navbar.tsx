@@ -16,13 +16,28 @@ import {
 	Stack,
 } from '@chakra-ui/react';
 import {HamburgerIcon, CloseIcon, ChevronDownIcon} from '@chakra-ui/icons';
+import {CMS_Article, CMS_Page} from "lib/types";
+import {GetStaticPropsContext} from "next";
 
-const RenderLinkOrSubmenu = ({item}) => {
+type Item = {
+	id: string,
+	URL: string,
+	Text: string
+	Page: { data: CMS_Page },
+	Article: { data: CMS_Article },
+	Submenu: Array<any>
+}
+
+interface RenderLinkOrSubmenuProps {
+	item: Item,
+}
+
+const RenderLinkOrSubmenu = ({item}: RenderLinkOrSubmenuProps) => {
 	let href = item.URL ?? '#'
-	if(item.Page?.data)
+	if (item.Page?.data)
 		href = '/' + item.Page.data.attributes?.slug
-	if(item.Article?.data)
-		href = '/article/ '+ item.Article.data.attributes?.slug
+	if (item.Article?.data)
+		href = '/article/ ' + item.Article.data.attributes?.slug
 	if (!(item.Submenu?.length > 0)) {
 		return <Link
 			key={item.id}
@@ -45,10 +60,10 @@ const RenderLinkOrSubmenu = ({item}) => {
 				<MenuList>
 					{item.Submenu.map(i => {
 						let href = item.URL ?? '#'
-						if(i.Page?.data)
+						if (i.Page?.data)
 							href = '/' + i.Page.data.attributes?.slug
-						if(i.Article?.data)
-							href = '/article/'+ i.Article.data.attributes?.slug
+						if (i.Article?.data)
+							href = '/article/' + i.Article.data.attributes?.slug
 						return <Link key={i.id} href={href}><MenuItem>{i.Text}</MenuItem></Link>
 					})}
 				</MenuList>
@@ -56,12 +71,17 @@ const RenderLinkOrSubmenu = ({item}) => {
 		)
 }
 
-export default function Navbar({menu, texts}) {
+interface NavbarProps {
+	menu: Item[],
+	texts: any
+}
+
+export default function Navbar({menu, texts}: NavbarProps) {
 	const {isOpen, onOpen, onClose} = useDisclosure();
 
 	return (
 		<Flex justifyContent="space-around">
-			<Box px={{base:'24px', md:'100px'}} w="100%">
+			<Box px={{base: '24px', md: '100px'}} w="100%">
 				<Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
 					<IconButton
 						size={'md'}

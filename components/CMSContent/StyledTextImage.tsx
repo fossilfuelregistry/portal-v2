@@ -1,10 +1,20 @@
 import React from 'react'
-import ReactMarkdown from "react-markdown"
 import CMSImage from "./CMSImage"
 import { Box, Heading, Flex } from "@chakra-ui/react"
-import CMSBlock from "./CMSBlock"
+import {CMS_Image} from "lib/types";
 
-export default function StyledTextImage( { block } ) {
+interface Block {
+	Text: string,
+	Headline: string,
+	Template: string,
+	Image: CMS_Image
+}
+
+interface Props {
+	block: Block
+}
+
+export default function StyledTextImage( { block }: Props ) {
 	switch( block.Template ) {
 
 		case 'Hero':
@@ -25,6 +35,6 @@ export default function StyledTextImage( { block } ) {
 			)
 
 		default:
-			return "StyledTextImage Unsupported Template: " + block.Template
+			return <div>"StyledTextImage Unsupported Template: " + block.Template</div>
 	}
 }

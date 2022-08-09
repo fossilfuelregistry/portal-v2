@@ -1,10 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React, {ReactNode, useEffect, useState} from 'react'
 import ReactMarkdown from "react-markdown"
 import useTextInjectQueryResult from "./useTextInjectQueryResult"
 import CMSBlock from "./CMSBlock"
 import { Box, Heading } from "@chakra-ui/react"
 
-export default function TextWithQuery( { block } ) {
+interface Block {
+	Text: string,
+	Headline: string
+}
+
+interface Props {
+	block: Block
+}
+
+export default function TextWithQuery( { block }: Props ) {
 	const { Text, Headline } = block
 	const injectQueryResult = useTextInjectQueryResult()
 	const [ result, set_result ] = useState( Text )

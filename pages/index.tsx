@@ -1,11 +1,18 @@
 import React from 'react'
-import type {NextPage} from 'next'
+import type {NextPage, GetStaticProps} from 'next'
 import PageHead from '../components/CMSContent/PageHead'
-import {getPageStaticProps} from '../lib/staticProps'
-import DynamicZone from "../components/CMSContent/DynamicZone"
-import Navbar from "../components/navigation/Navbar"
+import {getPageStaticProps} from 'lib/staticProps'
+import DynamicZone from '../components/CMSContent/DynamicZone'
+import Navbar from '../components/navigation/Navbar'
+import {Page} from "lib/types";
 
-const Home: NextPage = (props) => {
+interface Props {
+	page: Page,
+	menu: Array<any>,
+	texts: Array<any>
+}
+
+const Home: NextPage<Props> = (props) => {
 	const {page, menu, texts} = props
 	return (
 		<div id="page_main">
@@ -18,4 +25,4 @@ const Home: NextPage = (props) => {
 
 export default Home
 
-export const getStaticProps = context => getPageStaticProps(context, '/')
+export const getStaticProps: GetStaticProps = context => getPageStaticProps(context, '/')

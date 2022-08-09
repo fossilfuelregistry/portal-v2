@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ReactNode} from 'react'
 import {
 	Alert,
 	AlertIcon,
@@ -9,8 +9,12 @@ import TextWithQuery from "./TextWithQuery"
 import StyledTextImage from "./StyledTextImage"
 import CMSBlock from "./CMSBlock"
 
-export default function DynamicZone( { content } ) {
-	const rendered = []
+interface Props {
+	content: Array<any>
+}
+
+export default function DynamicZone( { content }: Props ) {
+	const rendered: Array<ReactNode> = []
 
 	content?.forEach( block => {
 

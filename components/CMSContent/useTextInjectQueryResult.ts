@@ -1,12 +1,13 @@
-import React from "react"
 import { gql, useApolloClient } from "@apollo/client"
 
 const DEBUG = false
 
+type InjectQueryResult = (text: string) => Promise<any>
+
 export default function useTextInjectQueryResult() {
 	const client = useApolloClient()
 
-	const injectQueryResult = async text => {
+	const injectQueryResult: InjectQueryResult = async text => {
 		const queries = text?.match( /QUERY:(\S*)/gm )
 			?.map( q => ( { query: q.substring( 6 ), string: q } ) )
 
