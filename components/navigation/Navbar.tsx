@@ -2,7 +2,7 @@ import {ReactNode} from 'react';
 import {
 	Box,
 	Flex,
-	Avatar,
+	Text,
 	HStack,
 	Link,
 	IconButton,
@@ -34,7 +34,7 @@ const RenderLinkOrSubmenu = ({item}) => {
 				bg: useColorModeValue('gray.200', 'gray.700'),
 			}}
 			href={href}>
-			{item.Text}
+			<Text textStyle="menu">{item.Text}</Text>
 		</Link>
 	} else
 		return (
@@ -60,8 +60,8 @@ export default function Navbar({menu, texts}) {
 	const {isOpen, onOpen, onClose} = useDisclosure();
 
 	return (
-		<>
-			<Box px={4}>
+		<Flex justifyContent="space-around">
+			<Box px={{base:'24px', md:'100px'}} w="100%">
 				<Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
 					<IconButton
 						size={'md'}
@@ -76,7 +76,7 @@ export default function Navbar({menu, texts}) {
 							as={'nav'}
 							spacing={4}
 							display={{base: 'none', md: 'flex'}}>
-							{menu.map(item => <RenderLinkOrSubmenu item={item}/>)}
+							{menu.map(item => <RenderLinkOrSubmenu item={item} key={item.id}/>)}
 						</HStack>
 					</HStack>
 				</Flex>
@@ -84,11 +84,11 @@ export default function Navbar({menu, texts}) {
 				{isOpen ? (
 					<Box pb={4} display={{md: 'none'}}>
 						<Stack as={'nav'} spacing={4}>
-							{menu.map(item => <RenderLinkOrSubmenu item={item}/>)}
+							{menu.map(item => <RenderLinkOrSubmenu item={item} key={item.id}/>)}
 						</Stack>
 					</Box>
 				) : null}
 			</Box>
-		</>
+		</Flex>
 	);
 }
