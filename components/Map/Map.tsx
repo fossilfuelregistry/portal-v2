@@ -10,6 +10,11 @@ import { Country } from 'components/Map/types'
 import { GLOBAL_OPTION } from 'components/Map/constants'
 import mapStyle from './style.json'
 import { colors } from '../../assets/theme'
+import {
+  calculateEmission,
+  calculateFuelEmission,
+  calculateTotalEmission,
+} from 'components/Map/utils'
 
 const MIN_ZOOM = 1.25
 const MAX_ZOOM = 24
@@ -34,6 +39,7 @@ const Map: FC<MapProps> = ({ countries }) => {
     const features = countries.map((c) => ({
       properties: {
         country: c.iso3166,
+        ...c,
       },
       geometry: {
         type: 'Point',
@@ -46,43 +52,10 @@ const Map: FC<MapProps> = ({ countries }) => {
     }
   }, [countries])
 
-  const calculateEmission = (productionCo2E: any) => {
-    let total = 0
-
-    if (!filters.fuel && !filters.combustion) {
-      total = Object.keys(productionCo2E).reduce(
-        (prev, curr) =>
-          prev + productionCo2E[curr].scope1 + productionCo2E[curr].scope3,
-        0
-      )
-    }
-
-    if (filters.fuel && !filters.combustion) {
-      total =
-        (productionCo2E[filters.fuel]?.scope1 || 0) +
-        (productionCo2E[filters.fuel]?.scope3 || 0)
-    }
-
-    if (!filters.fuel && filters.combustion) {
-      total = Object.keys(productionCo2E).reduce(
-        (prev, curr) =>
-          prev + (productionCo2E?.[curr]?.[filters.combustion] || 0),
-        0
-      )
-    }
-
-    if (filters.fuel && filters.combustion) {
-      total = productionCo2E?.[filters.fuel]?.[filters.combustion] || 0
-    }
-
-    const value = total / 10e9
-    return value > 100 ? 100 : value
-  }
-
   const emissionsData = useMemo(
     () =>
       countries
-        .map((c) => [c.iso3166, calculateEmission(c.productionCo2E)])
+        .map((c) => [c.iso3166, calculateEmission(filters, c.productionCo2E)])
         .flat(),
     [countries, filters]
   )
@@ -108,32 +81,44 @@ const Map: FC<MapProps> = ({ countries }) => {
 
   useEffect(() => {
     if (isLoaded && map.current) {
+      const isSourceExist = map.current.getSource('emissions')
+
+      if (isSourceExist) return
+
       map.current.addSource('emissions', {
         type: 'geojson',
         data: countriesCollection,
       })
 
       map.current.on('click', 'emissions-circles', (e: any) => {
+        console.log('e.features', e.features)
         const coordinates = e.features[0].geometry.coordinates.slice()
+        const { en: name, productionCo2E } = e.features[0].properties
+        const co2E = JSON.parse(productionCo2E)
+        const total = (calculateTotalEmission(co2E) / 10e9).toFixed(1)
+        const oil = calculateFuelEmission(co2E, 'oil')
+        const gas = calculateFuelEmission(co2E, 'gas')
+        const coal = calculateFuelEmission(co2E, 'coal')
+
         new maplibregl.Popup()
           .setLngLat(coordinates)
           .setHTML(
-            ` <h2 class="maplibregl-popup-title">USA</h2>
+            ` <h2 class="maplibregl-popup-title">${name}</h2>
               <div class="maplibregl-popup-info">
                 Annual emissions
-                <strong>83.0 Million tonnes CO²</strong>
+                <strong>${total} Million tonnes CO²</strong>
               </div>
               <div class="maplibregl-popup-info">
                 Oil
-                <strong>4.0 Million barrels</strong>
+                <strong>${oil} Million barrels</strong>
               </div>
               <div class="maplibregl-popup-info">
                 Gas
-                <strong>4.0 Billion cubic meters</strong>
+                <strong>${gas} Billion cubic meters</strong>
               </div>
               <div class="maplibregl-popup-info">
                 Coal
-                <strong>4.0 Thousand tonnes</strong>
+                <strong>${coal} Thousand tonnes</strong>
               </div>`
           )
           .addTo(map.current)
@@ -204,7 +189,13 @@ const Map: FC<MapProps> = ({ countries }) => {
   return (
     <>
       <Box w="100%" h="640px" position="relative" bg="#0A2244">
-        <Box ref={mapContainer} w="100%" h="100%" p="absolute" />
+        <Box
+          ref={mapContainer}
+          w="100%"
+          h="100%"
+          position="absolute"
+          zIndex="1"
+        />
         <MapFilter filters={filters} onChange={setFilters} />
         <ZoomControls onChangeZoom={handleChangeZoom} />
       </Box>

@@ -17,13 +17,14 @@ type MapFilterProps = {
 const MapFilter: FC<MapFilterProps> = ({ filters, onChange }) => {
   return (
     <SimpleGrid
-      columns={2}
+      columns={{ base: 1, lg: 2 }}
+      w={{ base: '280px', lg: 'auto' }}
       gridGap="8px"
       position="absolute"
       top="45px"
       left="50%"
       transform="translateX(-50%)"
-      zIndex="9"
+      zIndex="1"
     >
       <Box w="280px">
         <Select

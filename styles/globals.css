@@ -15,6 +15,20 @@
   border-top-color: rgba(30, 33, 39, 0.9) !important;
 }
 
+.maplibregl-popup-anchor-top .maplibregl-popup-tip {
+  border-bottom-color: rgba(30, 33, 39, 0.9) !important;
+}
+
+.maplibregl-popup-anchor-left .maplibregl-popup-tip {
+  border-top-color: transparent !important;
+  border-right-color: rgba(30, 33, 39, 0.9) !important;
+}
+
+.maplibregl-popup-anchor-top-right .maplibregl-popup-tip {
+  border-top-color: transparent !important;
+  border-bottom-color: rgba(30, 33, 39, 0.9) !important;
+}
+
 .maplibregl-popup-title {
   color: #fff;
   font-size: 16px;
