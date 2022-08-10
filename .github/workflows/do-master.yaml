@@ -5,8 +5,9 @@ on:
 
 jobs:
   deploy-dev:
-    name: DigitalOcean App Platform deployment
-    uses: digitalocean/app_action@main
-    with:
-      app_name: fossilfuelregistry-v2
-      token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+    steps:
+    - name: DigitalOcean App Platform deployment
+    - uses: digitalocean/app_action@main
+      with:
+        app_name: fossilfuelregistry-v2
+        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
