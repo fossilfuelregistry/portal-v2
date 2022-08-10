@@ -1,13 +1,13 @@
 import React from 'react'
-import CMSImage from "./CMSImage"
 import { Box, Heading, Flex } from "@chakra-ui/react"
-import {CMS_Image} from "lib/types";
+import {ICMSImage} from "lib/types";
+import CMSImage from "./CMSImage"
 
 interface Block {
 	Text: string,
 	Headline: string,
 	Template: string,
-	Image: CMS_Image
+	Image: ICMSImage
 }
 
 interface Props {

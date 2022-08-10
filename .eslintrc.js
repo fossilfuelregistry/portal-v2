@@ -38,5 +38,6 @@ module.exports = {
             },
         ],
         'react/jsx-filename-extension': [1, { extensions: ['.tsx', '.jsx'] }],
+        'react/prop-types': 0
     },
 }

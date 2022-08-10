@@ -9,7 +9,7 @@ import {
 import NodeCache from 'node-cache'
 import settings from 'settings'
 import {captureException} from '@sentry/nextjs'
-import {CMS_Page, Datapoint, FossilFuelType, FuelSubType} from "lib/types";
+import {ICMSPage, Datapoint, FossilFuelType, FuelSubType} from "lib/types";
 import {GetStaticPropsContext, NextPageContext} from "next";
 
 const backendCache = new NodeCache()
@@ -193,7 +193,7 @@ export const getArticleStaticProps: GetArticleStaticProps = async (context) => {
 	if (!api.ok) throw new Error(`Article fetch failed: ${api.status} ${api.statusText}`)
 	const pages = await api.json()
 
-	const p = pages.data?.find((pg: CMS_Page) => pg.attributes?.slug === slug)
+	const p = pages.data?.find((pg: ICMSPage) => pg.attributes?.slug === slug)
 	if (!p) return {notFound: true}
 
 	api = await fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/articles/${p.id}?populate=*`, {headers})
@@ -221,11 +221,11 @@ export const getPageStaticProps: GetPageStaticProps = async (context, staticSlug
 	const slug = staticSlug ?? context.params?.slug
 
 	let api
-	let pages: CMS_Page[] | undefined = backendCache.get('pages')
+	let pages: ICMSPage[] | undefined = backendCache.get('pages')
 	if (!pages) {
 		api = await fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/pages`, {headers})
 		if (!api.ok) throw new Error(`Page fetch failed: ${api.status} ${api.statusText}`)
-		pages = (await api.json())["data"]
+		pages = (await api.json()).data
 		backendCache.set('pages', pages, 300)
 	}
 

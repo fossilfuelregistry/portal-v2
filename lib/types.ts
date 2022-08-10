@@ -1,7 +1,7 @@
 export type FossilFuelType = 'oil' | 'gas' | 'coal'
 export type FuelSubType = 'Subbituminous' | 'Anthracite' | 'Bituminous' | 'Lignite' | 'Coking Coal'
 
-export interface CMS_Image {
+export interface ICMSImage {
 	data: {
 		attributes: {
 			url: string
@@ -15,7 +15,7 @@ export interface Page {
 	Title: string
 }
 
-export interface CMS_Page {
+export interface ICMSPage {
 	id: string,
 	attributes: Page
 }
@@ -26,7 +26,7 @@ export interface Article {
 	Title: string
 }
 
-export interface CMS_Article {
+export interface ICMSArticle {
 	id: string,
 	attributes: Article
 }
@@ -34,4 +34,13 @@ export interface CMS_Article {
 export interface Datapoint {
 	fossilFuelType: string,
 	subtype: string
+}
+
+export type MenuItem = {
+	id: string,
+	URL: string,
+	Text: string
+	Page: { data: ICMSPage },
+	Article: { data: ICMSArticle },
+	Submenu: Array<any>
 }

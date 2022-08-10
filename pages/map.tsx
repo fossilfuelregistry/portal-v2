@@ -1,16 +1,29 @@
 import React from 'react'
-import type { NextPage } from 'next'
+import type {GetStaticProps, NextPage} from 'next'
 import Map from 'components/Map/Map'
-import { Country } from 'components/Map/types'
+import {Country} from 'components/Map/types'
+import Navbar from "components/navigation/Navbar";
+import PageHead from "components/CMSContent/PageHead";
+import Footer from "components/navigation/Footer";
+import {Page} from "lib/types";
+import {getPageStaticProps} from "lib/staticProps";
 
 type MapPageType = {
-  countries: Country[]
+  countries: Country[],
+  page: Page,
+  menu: Array<any>,
+  footer: Array<any>,
+  texts: Array<any>
 }
 
-// eslint-disable-next-line react/prop-types
-const MapPage: NextPage<MapPageType> = ({ countries }) => {
-  return <Map countries={countries} />
-}
+const MapPage: NextPage<MapPageType> = ({ countries, page, menu, texts, footer }) => (
+      <div id="page_main">
+        <Navbar menu={menu} texts={texts}/>
+        <PageHead page={page}/>
+        <Map countries={countries} />
+        <Footer footer={footer} texts={texts}/>
+      </div>
+  )
 
 export default MapPage
-export { getCommonStaticProps as getStaticProps } from '../lib/staticProps'
+export const getStaticProps: GetStaticProps = context => getPageStaticProps(context, '/')
