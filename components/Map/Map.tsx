@@ -169,9 +169,6 @@ const Map: FC<MapProps> = ({ countries }) => {
     }
   }, [isLoaded, emissionsData])
 
-  // console.log('selectedCountry', selectedCountry)
-  // console.log('emissionsData', emissionsData)
-
   useEffect(() => {
     const outlineGeometry = selectedCountry.borders?.geojson
 
@@ -206,7 +203,7 @@ const Map: FC<MapProps> = ({ countries }) => {
 
   return (
     <>
-      <Box w="100%" h="640px" p="relative" bg="#0A2244">
+      <Box w="100%" h="640px" position="relative" bg="#0A2244">
         <Box ref={mapContainer} w="100%" h="100%" p="absolute" />
         <MapFilter filters={filters} onChange={setFilters} />
         <ZoomControls onChangeZoom={handleChangeZoom} />
