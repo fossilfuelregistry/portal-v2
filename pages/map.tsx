@@ -5,14 +5,14 @@ import {Country} from 'components/Map/types'
 import Navbar from "components/navigation/Navbar";
 import PageHead from "components/CMSContent/PageHead";
 import Footer from "components/navigation/Footer";
-import {Page} from "lib/types";
+import {FooterProps, Page} from "lib/types";
 import {getPageStaticProps} from "lib/staticProps";
 
 type MapPageType = {
   countries: Country[],
   page: Page,
   menu: Array<any>,
-  footer: Array<any>,
+  footer: FooterProps,
   texts: Array<any>
 }
 
