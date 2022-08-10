@@ -5,6 +5,7 @@ on:
 
 jobs:
   deploy-dev:
+    runs-on: ubuntu-latest
     steps:
     - name: DigitalOcean App Platform deployment
       uses: digitalocean/app_action@main
