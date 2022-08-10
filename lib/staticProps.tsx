@@ -14,7 +14,7 @@ import {GetStaticPropsContext} from "next";
 
 const backendCache = new NodeCache()
 
-const headers = {
+export const headers = {
 	Authorization: `Bearer ${process.env.NEXT_PUBLIC_CMS_TOKEN}`
 }
 
@@ -222,7 +222,7 @@ export const getArticleStaticProps: GetArticleStaticProps = async (context) => {
 }
 
 // eslint-disable-next-line no-unused-vars
-type GetPageStaticProps = (context: GetStaticPropsContext, staticSlug: string) => Promise<any>
+type GetPageStaticProps = (context: GetStaticPropsContext, staticSlug?: string) => Promise<any>
 
 export const getPageStaticProps: GetPageStaticProps = async (context, staticSlug) => {
 	const slug = staticSlug ?? context.params?.slug

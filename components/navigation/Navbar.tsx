@@ -36,9 +36,10 @@ const RenderLinkOrSubmenu = ({item, marginInlineStart, marginInlineEnd, mb}: Ren
 
 	if (!(item.Submenu?.length > 0)) {
 		return (
-			<Box marginInlineStart={marginInlineStart} marginInlineEnd={marginInlineEnd} mb={mb}>
-				<Link key={item.id} href={href}>
-					<Text textStyle="menu">{item.Text}</Text>
+			<Box key={item.id} marginInlineStart={marginInlineStart} marginInlineEnd={marginInlineEnd} mb={mb}>
+				<Link href={href} passHref>
+					{/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+					<a><Text textStyle="menu">{item.Text}</Text></a>
 				</Link>
 			</Box>
 		)
