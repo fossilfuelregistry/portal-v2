@@ -1,7 +1,7 @@
 import React from 'react'
 import type {GetStaticProps, NextPage} from 'next'
 import {getPageStaticProps} from 'lib/staticProps'
-import {Page} from "lib/types";
+import {FooterProps, Page} from "lib/types";
 import Footer from "components/navigation/Footer";
 import PageHead from '../components/CMSContent/PageHead'
 import DynamicZone from '../components/CMSContent/DynamicZone'
@@ -10,7 +10,7 @@ import Navbar from '../components/navigation/Navbar'
 interface Props {
 	page: Page,
 	menu: Array<any>,
-	footer: Array<any>,
+	footer: FooterProps,
 	texts: Array<any>
 }
 

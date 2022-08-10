@@ -9,8 +9,8 @@ import {
 import NodeCache from 'node-cache'
 import settings from 'settings'
 import {captureException} from '@sentry/nextjs'
-import {ICMSPage, Datapoint, FossilFuelType, FuelSubType} from "lib/types";
-import {GetStaticPropsContext, NextPageContext} from "next";
+import {ICMSPage, Datapoint} from "lib/types";
+import {GetStaticPropsContext} from "next";
 
 const backendCache = new NodeCache()
 
@@ -62,7 +62,7 @@ async function getI18nTexts(locale: string) {
 	const data = await res.json()
 	const fullTerms = data?.result?.terms ?? []
 	const terms: Record<string, string> = {}
-	fullTerms.forEach((term: { term: string, translation: { content: string } }) => (terms[term.term] = term.translation.content))
+	fullTerms.forEach((term: { term: string, translation: { content: string } }) => { terms[term.term] = term.translation.content })
 
 	backendCache.set(locale, terms, 300)
 	return terms
@@ -75,10 +75,11 @@ async function getConversions() {
 	const q = await client.query({query: GQL_conversions})
 	const constants = q?.data?.conversionConstants?.nodes ?? []
 	const conversions = constants.map((c: any) => {
-		const _c = {...c}
-		_c.fullFuelType = getFullFuelType(c)
-		delete _c.__typename
-		return _c
+		const cc = {...c}
+		cc.fullFuelType = getFullFuelType(c)
+		// eslint-disable-next-line no-underscore-dangle
+		delete cc.__typename
+		return cc
 	})
 	backendCache.set('conversions', conversions, 300)
 	return conversions
@@ -110,11 +111,12 @@ export async function getProducingCountries() {
 
 	const client = await getStandaloneApolloClient()
 	const q = await client.query({query: GQL_productionCountries})
-	const _countries = q?.data?.getProducingIso3166?.nodes ?? []
-	const countries = _countries.map((c: any) => {
-		const _c = {...c}
-		delete _c.__typename
-		return _c
+	const countr = q?.data?.getProducingIso3166?.nodes ?? []
+	const countries = countr.map((c: any) => {
+		const cc = {...c}
+		// eslint-disable-next-line no-underscore-dangle
+		delete cc.__typename
+		return cc
 	})
 	backendCache.set('countries', countries, 300)
 	return countries
@@ -125,11 +127,12 @@ async function getSources() {
 
 	const client = await getStandaloneApolloClient()
 	const q = await client.query({query: GQL_sources})
-	const _sources = q?.data?.sources?.nodes ?? []
-	const sources = _sources.map((c: any) => {
-		const _c = {...c}
-		delete _c.__typename
-		return _c
+	const srcs = q?.data?.sources?.nodes ?? []
+	const sources = srcs.map((c: any) => {
+		const cc = {...c}
+		// eslint-disable-next-line no-underscore-dangle
+		delete cc.__typename
+		return cc
 	})
 	backendCache.set('sources', sources, 300)
 	return sources
@@ -140,16 +143,18 @@ async function getCO2Costs() {
 
 	const client = await getStandaloneApolloClient()
 	const q = await client.query({query: SQL_co2costs})
-	const _co2Costs = q?.data?.co2Costs?.nodes ?? []
-	const co2Costs = _co2Costs.map((c: any) => {
-		const _c = {...c}
-		delete _c.__typename
-		return _c
+	const co2Cost = q?.data?.co2Costs?.nodes ?? []
+	const co2Costs = co2Cost.map((c: any) => {
+		const cc = {...c}
+		// eslint-disable-next-line no-underscore-dangle
+		delete cc.__typename
+		return cc
 	})
 	backendCache.set('co2Costs', co2Costs, 300)
 	return co2Costs
 }
 
+// eslint-disable-next-line no-unused-vars
 type GetCommonStaticProps = (context: GetStaticPropsContext) => Promise<any>
 
 export const getCommonStaticProps: GetCommonStaticProps = async (context: GetStaticPropsContext) => {
@@ -182,12 +187,13 @@ export const getCommonStaticProps: GetCommonStaticProps = async (context: GetSta
 	}
 }
 
+// eslint-disable-next-line no-unused-vars
 type GetArticleStaticProps = (context: GetStaticPropsContext) => Promise<any>
 
 export const getArticleStaticProps: GetArticleStaticProps = async (context) => {
-	const _slug = context.params?.slug
-	let slug = _slug
-	if (Array.isArray(_slug)) slug = _slug.join('/')
+	const slg = context.params?.slug
+	let slug = slg
+	if (Array.isArray(slg)) slug = slg.join('/')
 
 	let api = await fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/articles`, {headers})
 	if (!api.ok) throw new Error(`Article fetch failed: ${api.status} ${api.statusText}`)
@@ -215,6 +221,7 @@ export const getArticleStaticProps: GetArticleStaticProps = async (context) => {
 	}
 }
 
+// eslint-disable-next-line no-unused-vars
 type GetPageStaticProps = (context: GetStaticPropsContext, staticSlug: string) => Promise<any>
 
 export const getPageStaticProps: GetPageStaticProps = async (context, staticSlug) => {
@@ -263,7 +270,7 @@ export const getPageStaticProps: GetPageStaticProps = async (context, staticSlug
 			throw new Error(`Footer fetch failed: ${api.status} ${api.statusText}`)
 		}
 		const items = await api.json()
-		footer = items?.data?.attributes?.Items
+		footer = items?.data?.attributes
 		backendCache.set('footer', footer, 300)
 	}
 

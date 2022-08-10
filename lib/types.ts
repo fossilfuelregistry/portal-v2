@@ -42,5 +42,11 @@ export type MenuItem = {
 	Text: string
 	Page: { data: ICMSPage },
 	Article: { data: ICMSArticle },
-	Submenu: Array<any>
+	Submenu: Array<any>,
+	Column: number
+}
+
+export interface FooterProps {
+	Items: MenuItem[],
+	Copyright: string
 }
