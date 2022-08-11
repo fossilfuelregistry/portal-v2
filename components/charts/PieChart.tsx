@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
 import { Pie } from '@visx/shape'
+import { Group } from '@visx/group'
 
 const data = [
   {
@@ -62,34 +63,35 @@ type PieChartProps = {
 }
 
 const PieChart: FC<PieChartProps> = ({ parentWidth, parentHeight }) => {
-  const margin = 34
   const minimumSize = Math.min(parentWidth, parentHeight)
-  const radius = minimumSize / 2 - margin
+  const radius = minimumSize / 2
   console.log('data')
   return (
     <svg width={parentWidth} height={parentHeight}>
-      <Pie
-        data={data}
-        pieValue={(d) => d.percentage}
-        outerRadius={radius}
-        innerRadius={0.6 * radius}
-        cornerRadius={3}
-        padAngle={0.005}
-        pieSort={null}
-        pieSortValues={null}
-      >
-        {(pie) => {
-          return pie.arcs.map((arc) => {
-            const arcPath = pie.path(arc) as string
-            const arcFill = arc.data.fillColor
-            return (
-              <g key={`arc-${arc.data.label}`}>
-                <path d={arcPath} fill={arcFill} />
-              </g>
-            )
-          })
-        }}
-      </Pie>
+      <Group top={parentHeight / 2} left={parentWidth / 2}>
+        <Pie
+          data={data}
+          pieValue={(d) => d.percentage}
+          outerRadius={radius}
+          innerRadius={0.6 * radius}
+          cornerRadius={3}
+          padAngle={0.005}
+          pieSort={null}
+          pieSortValues={null}
+        >
+          {(pie) => {
+            return pie.arcs.map((arc) => {
+              const arcPath = pie.path(arc) as string
+              const arcFill = arc.data.fillColor
+              return (
+                <g key={`arc-${arc.data.label}`}>
+                  <path d={arcPath} fill={arcFill} />
+                </g>
+              )
+            })
+          }}
+        </Pie>
+      </Group>
     </svg>
   )
 }

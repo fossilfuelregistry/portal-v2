@@ -29,6 +29,7 @@
     "@fontsource/roboto": "^4.5.7",
     "@sentry/nextjs": "^7.7.0",
     "@turf/bbox": "^6.5.0",
+    "@visx/group": "^2.10.0",
     "@visx/shape": "^2.12.2",
     "@visx/visx": "^2.12.2",
     "chakra-react-select": "^4.1.4",
