@@ -15,7 +15,7 @@ export default function Footer({footer, texts}: FooterCompProps) {
 	const router = useRouter()
 	const locales = router.locales ?? []
 	return (
-		<Box w="100%" bg="primary.darkBlue" py={{base: '80px'}}>
+		<Box w="100%" bg="primary.darkBlue" py={{base: '80px'}} mt="24px">
 			<CMSBlock>
 				<Flex textStyle="inverse" direction="row" wrap="wrap">
 					<Box w={{base: '100%', lg: '40%'}}>{texts.grff}</Box>
@@ -36,9 +36,9 @@ export default function Footer({footer, texts}: FooterCompProps) {
 					<Flex justifyContent="space-between">
 						<Flex>
 							<Box mr="20px">
-								<img src="/cc.svg" width="160px" alt="Creative Commons CC-BY-SA"/>
+								<img src="/cc.svg" width="107px" alt="Creative Commons CC-BY-SA"/>
 							</Box>
-							<Box maxWidth="420px">
+							<Box maxWidth="420px" color="rgba(255,255,255,0.4)">
 								<ReactMarkdown>{footer.Copyright}</ReactMarkdown>
 							</Box>
 						</Flex>

@@ -1,8 +1,8 @@
-import React, {ReactNode, useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import ReactMarkdown from "react-markdown"
+import {Box, Heading} from "@chakra-ui/react"
 import useTextInjectQueryResult from "./useTextInjectQueryResult"
 import CMSBlock from "./CMSBlock"
-import { Box, Heading } from "@chakra-ui/react"
 
 interface Block {
 	Text: string,

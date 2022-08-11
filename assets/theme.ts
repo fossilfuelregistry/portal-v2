@@ -29,6 +29,19 @@ export default extendTheme({
 
 	colors,
 
+	styles: {
+		global: {
+			p: {
+				_notLast: {
+					marginBottom: '20px'
+				}
+			},
+			h2: {
+				marginBottom: '20px'
+			},
+		}
+	},
+
 	textStyles: {
 		menu: {
 			fontSize: ['16px'],
