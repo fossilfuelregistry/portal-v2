@@ -21,9 +21,12 @@ export interface ICMSPage {
 }
 
 export interface Article {
-	slug: string | string[],
+	id: number,
+	Headline: string,
+	Category: string,
+	slug: string,
 	Content: Array<any>,
-	Title: string
+	Image: ICMSImage
 }
 
 export interface ICMSArticle {
