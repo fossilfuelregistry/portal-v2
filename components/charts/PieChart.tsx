@@ -79,8 +79,7 @@ const PieChart: FC<PieChartProps> = ({ parentWidth, parentHeight }) => {
           pieSort={null}
           pieSortValues={null}
         >
-          {(pie) => {
-            return pie.arcs.map((arc) => {
+          {(pie) => pie.arcs.map((arc) => {
               const arcPath = pie.path(arc) as string
               const arcFill = arc.data.fillColor
               return (
@@ -88,8 +87,7 @@ const PieChart: FC<PieChartProps> = ({ parentWidth, parentHeight }) => {
                   <path d={arcPath} fill={arcFill} />
                 </g>
               )
-            })
-          }}
+            })}
         </Pie>
       </Group>
     </svg>
