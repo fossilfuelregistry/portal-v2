@@ -18,6 +18,14 @@ export const colors = {
 		red: '#C4362D',
 		green: '#4AA233',
 	},
+	category: {
+		'Global report': '#E05267',
+		'Country report': '#FFB35E',
+		'Fossil fuels': '#BA62B6',
+		'Renewables': '#62D968',
+		'Other': '#4C6EE6',
+		'About': '#4AA233',
+	}
 }
 
 export default extendTheme({
@@ -38,6 +46,11 @@ export default extendTheme({
 			},
 			h2: {
 				marginBottom: '20px'
+			},
+			h5: {
+				fontSize: ['20px'],
+				lineHeight: ['24px'],
+				fontWeight: '700',
 			},
 		}
 	},

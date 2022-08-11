@@ -194,11 +194,11 @@ export const getArticleStaticProps: GetArticleStaticProps = async (context) => {
 	let slug = slg
 	if (Array.isArray(slg)) slug = slg.join('/')
 
-	let api = await fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/articles`, {headers})
+	let api = await fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/articles?locale=${context.locale}`, {headers})
 	if (!api.ok) throw new Error(`Article fetch failed: ${api.status} ${api.statusText}`)
-	const pages = await api.json()
+	const articles = await api.json()
 
-	const p = pages.data?.find((pg: ICMSPage) => pg.attributes?.slug === slug)
+	const p = articles.data?.find((pg: ICMSPage) => pg.attributes?.slug === slug)
 	if (!p) return {notFound: true}
 
 	api = await fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/articles/${p.id}?locale=${context.locale}&populate=*`, {headers})
