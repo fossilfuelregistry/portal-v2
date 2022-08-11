@@ -40,6 +40,7 @@ module.exports = {
         'react/jsx-filename-extension': [1, { extensions: ['.tsx', '.jsx'] }],
         'react/prop-types': 0,
         'react/require-default-props': 0,
+        'react/jsx-no-useless-fragment': 0,
         'no-console': 0,
         'camelcase': 0
     },

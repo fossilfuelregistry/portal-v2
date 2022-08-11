@@ -51,5 +51,5 @@ export default function DynamicZone( { content }: Props ) {
 		}
 	} )
 
-	return rendered
+	return ( <>{ rendered }</> )
 }
