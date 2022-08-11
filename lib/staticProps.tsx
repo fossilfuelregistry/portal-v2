@@ -34,14 +34,13 @@ export async function getStandaloneApolloClient() {
 	const {ApolloClient, InMemoryCache, createHttpLink} = await import(
 		'@apollo/client'
 		)
-	const client = new ApolloClient({
+	return new ApolloClient({
 		ssrMode: true,
 		link: createHttpLink({
 			uri: `${process.env.NEXT_PUBLIC_BACKEND_URL}/graphql`,
 		}),
 		cache: new InMemoryCache(),
 	})
-	return client
 }
 
 async function getI18nTexts(locale: string) {
@@ -62,7 +61,9 @@ async function getI18nTexts(locale: string) {
 	const data = await res.json()
 	const fullTerms = data?.result?.terms ?? []
 	const terms: Record<string, string> = {}
-	fullTerms.forEach((term: { term: string, translation: { content: string } }) => { terms[term.term] = term.translation.content })
+	fullTerms.forEach((term: { term: string, translation: { content: string } }) => {
+		terms[term.term] = term.translation.content
+	})
 
 	backendCache.set(locale, terms, 300)
 	return terms
@@ -90,8 +91,7 @@ async function getCalculationConstants() {
 		return backendCache.get('calculationConstants')
 	const client = await getStandaloneApolloClient()
 	const q = await client.query({query: GQL_calculationConstants})
-	const constants = q?.data?.calculationConstants?.nodes ?? []
-	const conversions = constants
+	const conversions = q?.data?.calculationConstants?.nodes ?? []
 	backendCache.set('calculationConstants', conversions, 300)
 	return conversions
 }
@@ -100,8 +100,7 @@ async function getPrefixConversions() {
 	if (backendCache.get('prefixConversions')) return backendCache.get('prefixConversions')
 	const client = await getStandaloneApolloClient()
 	const q = await client.query({query: GQL_prefixConversions})
-	const constants = q?.data?.prefixConversions?.nodes ?? []
-	const conversions = constants
+	const conversions = q?.data?.prefixConversions?.nodes ?? []
 	backendCache.set('prefixConversions', conversions, 300)
 	return conversions
 }
@@ -202,7 +201,7 @@ export const getArticleStaticProps: GetArticleStaticProps = async (context) => {
 	const p = pages.data?.find((pg: ICMSPage) => pg.attributes?.slug === slug)
 	if (!p) return {notFound: true}
 
-	api = await fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/articles/${p.id}?populate=*`, {headers})
+	api = await fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/articles/${p.id}?locale=${context.locale}&populate=*`, {headers})
 
 	if (!api.ok) {
 		if (api.status === 404) return {notFound: true}
@@ -226,20 +225,21 @@ type GetPageStaticProps = (context: GetStaticPropsContext, staticSlug?: string) 
 
 export const getPageStaticProps: GetPageStaticProps = async (context, staticSlug) => {
 	const slug = staticSlug ?? context.params?.slug
+	const {locale} = context
 
 	let api
-	let pages: ICMSPage[] | undefined = backendCache.get('pages')
+	let pages: ICMSPage[] | undefined = backendCache.get(`pages-${locale}`)
 	if (!pages) {
-		api = await fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/pages`, {headers})
+		api = await fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/pages?locale=${context.locale}`, {headers})
 		if (!api.ok) throw new Error(`Page fetch failed: ${api.status} ${api.statusText}`)
 		pages = (await api.json()).data
-		backendCache.set('pages', pages, 300)
+		backendCache.set(`pages-${locale}`, pages, 300)
 	}
 
 	const p = pages?.find(pg => pg.attributes?.slug === slug)
 	if (!p) return {notFound: true}
 
-	api = await fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/pages/${p.id}?populate=deep`, {headers})
+	api = await fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/pages/${p.id}?locale=${context.locale}&populate=deep`, {headers})
 
 	if (!api.ok) {
 		if (api.status === 404) return {notFound: true}
