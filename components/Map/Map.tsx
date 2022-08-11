@@ -8,13 +8,13 @@ import MapFilter, { Filter } from 'components/Map/MapFilter'
 import ZoomControls from 'components/Map/ZoomControls'
 import { Country } from 'components/Map/types'
 import { GLOBAL_OPTION } from 'components/Map/constants'
-import mapStyle from './style.json'
-import { colors } from '../../assets/theme'
 import {
   calculateEmission,
   calculateFuelEmission,
   calculateTotalEmission,
 } from 'components/Map/utils'
+import mapStyle from './style.json'
+import { colors } from '../../assets/theme'
 
 const MIN_ZOOM = 1.25
 const MAX_ZOOM = 24
