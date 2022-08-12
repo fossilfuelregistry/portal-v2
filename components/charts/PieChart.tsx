@@ -1,22 +1,22 @@
 import React, { FC } from 'react'
 import { Pie } from '@visx/shape'
 import { Group } from '@visx/group'
+import { colors } from '../../assets/theme'
 
 const data = [
   {
     fillColor: '#87BFFF',
     fuel: 'oil',
     label: 'Oil, combustion',
-    percentage: 39,
+    percentage: 10,
     quantity: 80.89075427268527,
-    subtype: undefined,
     year: 2020,
   },
   {
     fillColor: 'rgba(135, 191, 255, .5)',
     fuel: 'oil',
     label: 'Oil, pre-combustion',
-    percentage: 9,
+    percentage: 10,
     quantity: 18.970718369092925,
     subtype: undefined,
     year: 2020,
@@ -25,7 +25,7 @@ const data = [
     fillColor: '#4C6EE6',
     fuel: 'gas',
     label: 'Gas, combustion',
-    percentage: 39,
+    percentage: 30,
     quantity: 80.69994536364122,
     subtype: undefined,
     year: 2020,
@@ -34,7 +34,7 @@ const data = [
     fillColor: 'rgba(76, 110, 230, .5)',
     fuel: 'gas',
     label: 'Gas, pre-combustion',
-    percentage: 12,
+    percentage: 10,
     quantity: 25.76536098012795,
     subtype: undefined,
     year: 2020,
@@ -43,7 +43,7 @@ const data = [
     fillColor: '#52B9BF',
     fuel: 'coal',
     label: 'Coal, combustion',
-    percentage: 0,
+    percentage: 30,
     quantity: 0.03761302232599879,
     year: 2020,
   },
@@ -51,7 +51,7 @@ const data = [
     fillColor: 'rgba(82, 185, 191, .5)',
     fuel: 'coal',
     label: 'Coal, pre-combustion',
-    percentage: 0,
+    percentage: 10,
     quantity: 0.0034353627768523866,
     year: 2020,
   },
@@ -60,12 +60,19 @@ const data = [
 type PieChartProps = {
   parentWidth: number
   parentHeight: number
+  header: string
+  value: string
 }
 
-const PieChart: FC<PieChartProps> = ({ parentWidth, parentHeight }) => {
+const PieChart: FC<PieChartProps> = ({
+  parentWidth,
+  parentHeight,
+  header,
+  value,
+}) => {
   const minimumSize = Math.min(parentWidth, parentHeight)
   const radius = minimumSize / 2
-  console.log('data')
+
   return (
     <svg width={parentWidth} height={parentHeight}>
       <Group top={parentHeight / 2} left={parentWidth / 2}>
@@ -79,7 +86,8 @@ const PieChart: FC<PieChartProps> = ({ parentWidth, parentHeight }) => {
           pieSort={null}
           pieSortValues={null}
         >
-          {(pie) => pie.arcs.map((arc) => {
+          {(pie) =>
+            pie.arcs.map((arc) => {
               const arcPath = pie.path(arc) as string
               const arcFill = arc.data.fillColor
               return (
@@ -87,8 +95,32 @@ const PieChart: FC<PieChartProps> = ({ parentWidth, parentHeight }) => {
                   <path d={arcPath} fill={arcFill} />
                 </g>
               )
-            })}
+            })
+          }
         </Pie>
+      </Group>
+      <Group top={parentHeight / 2} left={parentWidth / 2}>
+        <text
+          x={0}
+          y={-10}
+          fill={colors.primary.richBlack}
+          fontSize={18}
+          fontFamily="Roboto"
+          textAnchor="middle"
+        >
+          {header}
+        </text>
+        <text
+          x={0}
+          y={25}
+          fill={colors.primary.richBlack}
+          fontSize={32}
+          fontFamily="sommet-rounded"
+          fontWeight="bold"
+          textAnchor="middle"
+        >
+          {value}
+        </text>
       </Group>
     </svg>
   )

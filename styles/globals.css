@@ -1,3 +1,13 @@
+@font-face {
+  font-family: "sommet-rounded";
+  src: url("./fonts/sommet-rounded-700.woff2") format("woff2"),
+  url("./fonts/sommet-rounded-700.woff") format("woff"),
+  url("./fonts/sommet-rounded-700.ot") format("opentype");
+  font-display: auto;
+  font-style: normal;
+  font-weight: 700;
+}
+
 .maplibregl-popup {
   max-width: 320px !important;
 }

@@ -28,7 +28,12 @@ const MapPage: NextPage<MapPageType> = ({
     <Navbar menu={menu} texts={texts} />
     <PageHead page={page} />
     <Map countries={countries} />
-    <PieChart parentWidth={320} parentHeight={320} />
+    <PieChart
+      parentWidth={320}
+      parentHeight={320}
+      value="55.6"
+      header="Total Mt CO₂e"
+    />
     <Footer footer={footer} texts={texts} />
   </div>
 )
