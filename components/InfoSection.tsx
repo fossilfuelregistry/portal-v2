@@ -19,16 +19,17 @@ const InfoSection: FC<InfoSectionProps> = ({ title, children }) => (
   >
     <Heading
       as="h3"
-      size="20px"
       color={colors.primary.richBlack}
+      fontFamily="Roboto"
       fontWeight="700"
+      fontSize="20px"
       margin="0"
       paddingBottom="32px"
     >
       {title}
     </Heading>
     {children}
-    <Flex alignItems="center" justifyContent="space-between">
+    <Flex alignItems="center" justifyContent="space-between" mt="40px">
       <Box color={colors.primary.richBlack} fontSize="16px" fontWeight="400">
         Source:{' '}
         <Link

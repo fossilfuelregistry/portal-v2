@@ -199,7 +199,13 @@ const Map: FC<MapProps> = ({ countries }) => {
         <MapFilter filters={filters} onChange={setFilters} />
         <ZoomControls onChangeZoom={handleChangeZoom} />
       </Box>
-      <Flex p="18px" justify="center" bg={colors.primary.grey10}>
+      <Flex
+        p="18px"
+        justify="center"
+        bg={colors.primary.grey5}
+        mb="80px"
+        borderBottom={`1px solid ${colors.primary.grey10}`}
+      >
         <CountrySelect
           value={selectedCountry}
           countriesData={countries}

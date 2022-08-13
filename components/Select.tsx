@@ -4,6 +4,7 @@ import {
   OptionBase,
   SingleValue,
 } from 'chakra-react-select'
+import { Box } from '@chakra-ui/react'
 import type { CSSObject } from '@chakra-ui/system'
 import { colors } from '../assets/theme'
 
@@ -13,7 +14,8 @@ export interface SelectOption extends OptionBase {
 }
 
 type SelectProps = {
-  height: string
+  label?: string
+  height?: string
   value: SelectOption | undefined
   options: SelectOption[]
   // eslint-disable-next-line no-unused-vars
@@ -21,6 +23,7 @@ type SelectProps = {
 }
 
 const Select: FC<SelectProps> = ({
+  label,
   value,
   height = '40px',
   options,
@@ -35,14 +38,17 @@ const Select: FC<SelectProps> = ({
       background: colors.common.white,
       width: '100%',
       borderRadius: '3px',
+      outline: 'none !important',
       height,
     }),
     control: (provided: CSSObject) => ({
       ...provided,
-      border: 'none',
       borderRadius: '3px',
       padding: '0 8px 0 12px',
       boxShadow: 'none !important',
+      border: 'none',
+      height: '100%',
+      minHeight: 'auto',
     }),
     placeholder: (provided: CSSObject) => ({
       ...provided,
@@ -76,9 +82,12 @@ const Select: FC<SelectProps> = ({
     menuList: (provided: CSSObject) => ({
       ...provided,
       boxShadow: 'none',
+      p: '0',
+      borderRadius: '3px',
     }),
     option: (provided: CSSObject, state: any) => ({
       ...provided,
+      marginTop: '0',
       color: colors.primary.richBlack,
       cursor: 'pointer',
       fontSize: '16px',
@@ -98,14 +107,21 @@ const Select: FC<SelectProps> = ({
   }
 
   return (
-    <ChakraSelect
-      size="md"
-      chakraStyles={chakraStyles}
-      isSearchable
-      value={value}
-      options={options}
-      onChange={onChange}
-    />
+    <Box w="100%">
+      {label && (
+        <Box fontSize="16px" mb="4px" color={colors.primary.richBlack}>
+          {label}
+        </Box>
+      )}
+      <ChakraSelect
+        size="md"
+        chakraStyles={chakraStyles}
+        isSearchable
+        value={value}
+        options={options}
+        onChange={onChange}
+      />
+    </Box>
   )
 }
 
