@@ -8,6 +8,7 @@ import Footer from 'components/navigation/Footer'
 import { FooterProps, Page } from 'lib/types'
 import { getPageStaticProps } from 'lib/staticProps'
 import AnnualEmissions from 'components/AnnualEmissions'
+import HistoricProduction from 'components/HistoricProduction'
 
 type MapPageType = {
   countries: Country[]
@@ -29,6 +30,7 @@ const MapPage: NextPage<MapPageType> = ({
     <PageHead page={page} />
     <Map countries={countries} />
     <AnnualEmissions />
+    <HistoricProduction />
     <Footer footer={footer} texts={texts} />
   </div>
 )
