@@ -2,16 +2,12 @@
 import { pipe } from 'fp-ts/lib/function'
 import * as O from 'fp-ts/Option'
 import { useCallback } from 'react'
-// @ts-ignore
-import { useSelector } from 'react-redux'
-
 import getCalculationConstants, { Filters } from '.'
+import { DatabaseRecord } from './types'
 
-export const useCalculationConstants = () => {
-  const calculationConstants = useSelector(
-    (redux: any) => redux.calculationConstants
-  )
-
+export const useCalculationConstants = (
+  calculationConstants: DatabaseRecord[]
+) => {
   const getConstants = useCallback(
     ({ country, projectId, modifier }: Filters) =>
       pipe(

@@ -2,7 +2,6 @@
 import { pipe } from 'fp-ts/function'
 import Graph from 'graph-data-structure'
 import { useCallback, useMemo } from 'react'
-import { useSelector } from 'react-redux'
 import * as E from 'fp-ts/Either'
 import * as B from 'fp-ts/boolean'
 import * as O from 'fp-ts/Option'
@@ -31,8 +30,7 @@ const getFactor =
   (graph: ReturnType<typeof Graph>) =>
   (from: string, to: string): number =>
     pipe(
-      // @ts-ignore
-      () => graph.hasEdge(from, to),
+      Boolean(graph.shortestPath(from, to)),
       B.match(
         () =>
           E.left(
@@ -40,21 +38,22 @@ const getFactor =
           ),
         () => E.right(graph.getEdgeWeight(from, to))
       ),
-      // eslint-disable-next-line no-undef
-      E.getOrElse(notificationError(1))
+      E.getOrElse((e) => {
+        console.error(e)
+        return 1
+      })
     )
 
-export const usePrefixConversion = () => {
-  const store = useSelector((redux: any) => redux.prefixConversions)
+export const usePrefixConversion = (prefixes: PrefixRecord[]) => {
   const graph = useMemo(
     () =>
       pipe(
-        store,
+        prefixes,
         O.fromNullable,
         O.map(prefixGraph),
         O.getOrElseW(() => null)
       ),
-    [store]
+    [prefixes]
   )
   const conversion = useCallback(
     (from: string, to: string): number | null => {
