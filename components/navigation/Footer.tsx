@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, Flex} from "@chakra-ui/react";
+import {Box, chakra, Flex} from "@chakra-ui/react"
 import {FooterProps, MenuItem} from "lib/types";
 import CMSBlock from "components/CMSContent/CMSBlock";
 import {useRouter} from "next/router";
@@ -24,15 +24,15 @@ export default function Footer({footer, texts}: FooterCompProps) {
 					<Box w={{base: '100%', lg: '40%'}}>{texts.grff}</Box>
 					<Box w={{base: '100%', md: '30%', lg: '25%'}}>
 						{footer.Items.filter((i: MenuItem) => i.Column < 2).map((i: MenuItem) => (
-							<RenderLinkOrSubmenu key={i.id} item={i} mb="20px"/>))}
+							<RenderLinkOrSubmenu key={i.id} item={i} mb="20px" color="common.white"/>))}
 					</Box>
 					<Box w={{base: '100%', md: '30%', lg: '25%'}}>
 						{footer.Items.filter((i: MenuItem) => i.Column === 2).map((i: MenuItem) => (
-							<RenderLinkOrSubmenu key={i.id} item={i} mb="20px"/>))}
+							<RenderLinkOrSubmenu key={i.id} item={i} mb="20px" color="common.white"/>))}
 					</Box>
 					<Box w={{base: '100%', md: '30%', lg: '10%'}}>
 						{footer.Items.filter((i: MenuItem) => i.Column === 3).map((i: MenuItem) => (
-							<RenderLinkOrSubmenu key={i.id} item={i} mb="20px"/>))}
+							<RenderLinkOrSubmenu key={i.id} item={i} mb="20px" color="common.white"/>))}
 					</Box>
 				</Flex>
 				<Box textStyle="inverse" w="100%" borderTop="1px solid rgba(255,255,255,0.4)" mt="40px" pt="20px">
@@ -49,7 +49,7 @@ export default function Footer({footer, texts}: FooterCompProps) {
 							{locales.map(l => (
 								<Box key={l} ml="20px">
 									<Link href={{ pathname, query }} locale={l}>
-										{l.toUpperCase()}
+										<chakra.span color="common.white">{l.toUpperCase()}</chakra.span>
 									</Link>
 								</Box>
 							))}
