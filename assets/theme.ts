@@ -52,6 +52,9 @@ export default extendTheme({
         lineHeight: ['24px'],
         fontWeight: '700',
       },
+      a: {
+        color: "primary.brandingBlue"
+      }
     },
   },
 
@@ -59,6 +62,7 @@ export default extendTheme({
     menu: {
       fontSize: ['16px'],
       fontWeight: '700',
+      color: "common.black"
     },
     inverse: {
       color: '#ffffff',

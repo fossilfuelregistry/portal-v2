@@ -9,6 +9,7 @@ import {
 	MenuItem,
 	MenuList,
 	SpaceProps,
+	ColorProps,
 	Stack,
 	Text,
 	useDisclosure,
@@ -25,9 +26,11 @@ interface RenderLinkOrSubmenuProps {
 	marginInlineEnd?: SpaceProps["marginInlineEnd"],
 	// eslint-disable-next-line react/require-default-props
 	mb?: SpaceProps["mb"],
+	// eslint-disable-next-line react/require-default-props
+	color?: ColorProps["color"],
 }
 
-const RenderLinkOrSubmenu = ({item, marginInlineStart, marginInlineEnd, mb}: RenderLinkOrSubmenuProps) => {
+const RenderLinkOrSubmenu = ({item, marginInlineStart, marginInlineEnd, mb, color}: RenderLinkOrSubmenuProps) => {
 	let href = item.URL ?? '#'
 	if (item.Page?.data)
 		href = `/${item.Page.data.attributes?.slug}`
@@ -39,7 +42,7 @@ const RenderLinkOrSubmenu = ({item, marginInlineStart, marginInlineEnd, mb}: Ren
 			<Box key={item.id} marginInlineStart={marginInlineStart} marginInlineEnd={marginInlineEnd} mb={mb}>
 				<Link href={href} passHref>
 					{/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-					<a><Text textStyle="menu">{item.Text}</Text></a>
+					<a><Text textStyle="menu" color={color}>{item.Text}</Text></a>
 				</Link>
 			</Box>
 		)
