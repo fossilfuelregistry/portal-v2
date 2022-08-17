@@ -5,6 +5,7 @@ import InfoSection from 'components/InfoSection'
 import WarmingPotentialSelect from 'components/filters/WarmingPotentialSelect'
 import Select from 'components/Select'
 import { colors } from '../assets/theme'
+import RangeChart from 'components/charts/RangeChart'
 
 const pieData = [
   {
@@ -115,6 +116,7 @@ const AnnualEmissions = () => {
           value="55.6"
           header="Total Mt CO₂e"
         />
+        <RangeChart height={400} width={500} />
       </SimpleGrid>
     </InfoSection>
   )
