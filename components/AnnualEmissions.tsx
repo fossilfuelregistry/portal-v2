@@ -4,8 +4,8 @@ import PieChart from 'components/charts/PieChart'
 import InfoSection from 'components/InfoSection'
 import WarmingPotentialSelect from 'components/filters/WarmingPotentialSelect'
 import Select from 'components/Select'
-import { colors } from '../assets/theme'
 import RangeChart from 'components/charts/RangeChart'
+import { colors } from '../assets/theme'
 
 const pieData = [
   {
