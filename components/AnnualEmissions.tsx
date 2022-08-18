@@ -1,5 +1,5 @@
 import React from 'react'
-import { SimpleGrid } from '@chakra-ui/react'
+import { SimpleGrid, Box } from '@chakra-ui/react'
 import PieChart from 'components/charts/PieChart'
 import InfoSection from 'components/InfoSection'
 import WarmingPotentialSelect from 'components/filters/WarmingPotentialSelect'
@@ -116,7 +116,9 @@ const AnnualEmissions = () => {
           value="55.6"
           header="Total Mt CO₂e"
         />
-        <RangeChart height={400} width={500} />
+        <Box ml="40px">
+          <RangeChart height={400} width={500} title="Range of certainty" />
+        </Box>
       </SimpleGrid>
     </InfoSection>
   )
