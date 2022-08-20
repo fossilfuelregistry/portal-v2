@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState, useMemo, FC } from 'react'
+import { useRouter } from 'next/router'
 import maplibregl from 'maplibre-gl'
 import bbox from '@turf/bbox'
 import 'maplibre-gl/dist/maplibre-gl.css'
@@ -15,6 +16,7 @@ import {
 } from 'components/Map/utils'
 import mapStyle from './style.json'
 import { colors } from '../../assets/theme'
+import updatePathname from '../../utils/updatePathname'
 
 const MIN_ZOOM = 1.25
 const MAX_ZOOM = 24
@@ -22,11 +24,28 @@ const MAX_ZOOM = 24
 const [lng, lat] = [-0.39417687115326316, 41.118875451562104]
 
 type MapProps = {
+  country: string
   countries: Country[]
+  type: 'country' | 'project'
+  // eslint-disable-next-line no-unused-vars
+  onChangeCountry: (countryCode: string) => void
 }
 
-const Map: FC<MapProps> = ({ countries }) => {
-  const [selectedCountry, setSelectedCountry] = useState<any>(GLOBAL_OPTION)
+const Map: FC<MapProps> = ({ country, countries, type, onChangeCountry }) => {
+  const [selectedCountry, setSelectedCountry] = useState<any>(() => {
+    console.log('-------country-------country', country)
+    const currentCountry = countries.find((c) => c.iso3166 === country)
+    console.log('currentCountry', currentCountry)
+    if (currentCountry) {
+      return {
+        ...currentCountry,
+        value: currentCountry.iso3166,
+        label: currentCountry.en,
+      }
+    }
+
+    return GLOBAL_OPTION
+  })
   const [isLoaded, setIsLoaded] = useState<boolean>(false)
   const [filters, setFilters] = useState<Filter>({
     combustion: '',
@@ -34,6 +53,7 @@ const Map: FC<MapProps> = ({ countries }) => {
   })
   const mapContainer = useRef<HTMLDivElement | null>(null)
   const map = useRef<any>(null)
+  const router = useRouter()
 
   const countriesCollection = useMemo(() => {
     const features = countries.map((c) => ({
@@ -91,7 +111,6 @@ const Map: FC<MapProps> = ({ countries }) => {
       })
 
       map.current.on('click', 'emissions-circles', (e: any) => {
-        console.log('e.features', e.features)
         const coordinates = e.features[0].geometry.coordinates.slice()
         const { en: name, productionCo2E } = e.features[0].properties
         const co2E = JSON.parse(productionCo2E)
@@ -186,6 +205,13 @@ const Map: FC<MapProps> = ({ countries }) => {
     }
   }
 
+  const handleChangeSelectedCountry = (countryOption: any) => {
+    const countryCode = countryOption.iso3166 || 'global'
+    setSelectedCountry(countryOption)
+    onChangeCountry(countryCode)
+    updatePathname(`/${type}/${countryCode}`)
+  }
+
   return (
     <>
       <Box w="100%" h="640px" position="relative" bg="#0A2244">
@@ -209,7 +235,7 @@ const Map: FC<MapProps> = ({ countries }) => {
         <CountrySelect
           value={selectedCountry}
           countriesData={countries}
-          onChange={setSelectedCountry}
+          onChange={handleChangeSelectedCountry}
         />
       </Flex>
     </>
