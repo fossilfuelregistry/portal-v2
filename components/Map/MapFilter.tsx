@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useMemo } from 'react'
 import { Box, SimpleGrid } from '@chakra-ui/react'
 import Select from 'components/Select'
 import { COMBUSTION_OPTIONS, FUEL_OPTIONS } from 'components/Map/constants'
@@ -15,6 +15,16 @@ type MapFilterProps = {
 }
 
 const MapFilter: FC<MapFilterProps> = ({ filters, onChange }) => {
+  const combustionValue = useMemo(
+    () => COMBUSTION_OPTIONS.find((o) => o.value === filters.combustion)?.value,
+    [filters]
+  )
+
+  const fuelValue = useMemo(
+    () => FUEL_OPTIONS.find((o) => o.value === filters.fuel)?.value,
+    [filters]
+  )
+
   return (
     <SimpleGrid
       columns={{ base: 1, lg: 2 }}
@@ -28,7 +38,7 @@ const MapFilter: FC<MapFilterProps> = ({ filters, onChange }) => {
     >
       <Box w="280px">
         <Select
-          value={COMBUSTION_OPTIONS.find((o) => o.value === filters.combustion)}
+          value={combustionValue as string}
           onChange={(option) => {
             onChange({
               ...filters,
@@ -41,7 +51,7 @@ const MapFilter: FC<MapFilterProps> = ({ filters, onChange }) => {
       </Box>
       <Box w="280px">
         <Select
-          value={FUEL_OPTIONS.find((o) => o.value === filters.fuel)}
+          value={fuelValue as string}
           onChange={(option) => {
             onChange({
               ...filters,

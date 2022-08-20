@@ -56,7 +56,7 @@ const HistoricProduction = () => {
       <SimpleGrid mb="40px" columns={3} gridGap="20px">
         <Select
           label="Historic production source"
-          value={productionOptions[0]}
+          value={productionOptions[0].value}
           options={productionOptions}
           onChange={() => {}}
         />

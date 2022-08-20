@@ -1,5 +1,4 @@
 import React, { useRef, useEffect, useState, useMemo, FC } from 'react'
-import { useRouter } from 'next/router'
 import maplibregl from 'maplibre-gl'
 import bbox from '@turf/bbox'
 import 'maplibre-gl/dist/maplibre-gl.css'
@@ -27,15 +26,12 @@ type MapProps = {
   country: string
   countries: Country[]
   type: 'country' | 'project'
-  // eslint-disable-next-line no-unused-vars
   onChangeCountry: (countryCode: string) => void
 }
 
 const Map: FC<MapProps> = ({ country, countries, type, onChangeCountry }) => {
   const [selectedCountry, setSelectedCountry] = useState<any>(() => {
-    console.log('-------country-------country', country)
     const currentCountry = countries.find((c) => c.iso3166 === country)
-    console.log('currentCountry', currentCountry)
     if (currentCountry) {
       return {
         ...currentCountry,
@@ -53,7 +49,6 @@ const Map: FC<MapProps> = ({ country, countries, type, onChangeCountry }) => {
   })
   const mapContainer = useRef<HTMLDivElement | null>(null)
   const map = useRef<any>(null)
-  const router = useRouter()
 
   const countriesCollection = useMemo(() => {
     const features = countries.map((c) => ({
@@ -233,7 +228,7 @@ const Map: FC<MapProps> = ({ country, countries, type, onChangeCountry }) => {
         borderBottom={`1px solid ${colors.primary.grey10}`}
       >
         <CountrySelect
-          value={selectedCountry}
+          selectedCountry={selectedCountry}
           countriesData={countries}
           onChange={handleChangeSelectedCountry}
         />

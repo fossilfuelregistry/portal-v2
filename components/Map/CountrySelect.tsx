@@ -6,14 +6,13 @@ import { Country } from 'components/Map/types'
 import { SingleValue } from 'chakra-react-select'
 
 type CountrySelectProps = {
-  value: SelectOption | undefined
+  selectedCountry: SelectOption | undefined
   countriesData: Country[]
-  // eslint-disable-next-line no-unused-vars
   onChange: (newValue: SingleValue<SelectOption>) => void
 }
 
 const CountrySelect: FC<CountrySelectProps> = ({
-  value,
+  selectedCountry,
   countriesData,
   onChange,
 }) => {
@@ -28,10 +27,10 @@ const CountrySelect: FC<CountrySelectProps> = ({
   return (
     <Box w="256px">
       <Select
-        value={value}
-        onChange={onChange}
-        options={countries}
         height="44px"
+        value={selectedCountry?.value as string}
+        options={countries}
+        onChange={onChange}
       />
     </Box>
   )

@@ -6,12 +6,32 @@ import { Tooltip, useTooltip } from '@visx/tooltip'
 import { InfoIcon } from 'components/Icons'
 import { colors } from '../../assets/theme'
 
+export const PIE_CHART_COLORS = {
+  oil: {
+    scope1: '#87BFFF',
+    scope3: 'rgba(135, 191, 255, .5)',
+  },
+  gas: {
+    scope1: '#4C6EE6',
+    scope3: 'rgba(76, 110, 230, .5)',
+  },
+  coal: {
+    scope1: '#52B9BF',
+    scope3: 'rgba(82, 185, 191, .5)',
+  },
+}
+
+export const COMBUSTION_MAP = {
+  scope1: 'combustion',
+  scope3: 'pre-combustion',
+}
+
 type PieChartProps = {
   title: string
   parentWidth: number
   parentHeight: number
   header: string
-  value: string
+  total: string
   data: any[]
 }
 
@@ -20,7 +40,7 @@ const PieChart: FC<PieChartProps> = ({
   parentHeight,
   title,
   header,
-  value,
+  total,
   data,
 }) => {
   const {
@@ -123,7 +143,7 @@ const PieChart: FC<PieChartProps> = ({
               fontWeight="bold"
               textAnchor="middle"
             >
-              {value}
+              {total}
             </text>
           </Group>
         </svg>

@@ -41,6 +41,8 @@ module.exports = {
         'react/prop-types': 0,
         'react/require-default-props': 0,
         'react/jsx-no-useless-fragment': 0,
+        'no-unused-vars': 0,
+        'no-shadow': 0,
         'no-console': 0,
         'camelcase': 0
     },

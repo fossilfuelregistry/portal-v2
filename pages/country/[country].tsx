@@ -17,8 +17,8 @@ import useCountryData from 'lib/useCountryData'
 import useCountrySources from 'lib/useCountrySources'
 import PageHead from 'components/CMSContent/PageHead'
 import Map from 'components/Map/Map'
-import AnnualEmissions from 'components/AnnualEmissions'
-import HistoricProduction from 'components/HistoricProduction'
+import AnnualEmissions from 'components/country/AnnualEmissions'
+import HistoricProduction from 'components/country/HistoricProduction'
 import Footer from 'components/navigation/Footer'
 import { Country } from 'components/Map/types'
 import { FooterProps, Page } from 'lib/types'
@@ -85,7 +85,7 @@ const CountryPage: React.FC<Props> = (props) => {
       projectionSourceId: 2,
       productionSourceId: 2,
       region: '',
-      country,
+      country: '',
       conversionConstants: conversions,
       // @ts-ignore
       allSources: productionSources,
@@ -98,12 +98,6 @@ const CountryPage: React.FC<Props> = (props) => {
    */
   getCurrentCO2E()
 
-  console.log('getCurrentCO2E()', getCurrentCO2E())
-
-  console.log({ production })
-
-  console.log('--------country---------', country)
-
   return (
     <div id="page_main">
       <Navbar menu={menu} texts={texts} />
@@ -114,7 +108,13 @@ const CountryPage: React.FC<Props> = (props) => {
         type="country"
         onChangeCountry={setCountry}
       />
-      <AnnualEmissions />
+      <AnnualEmissions
+        country={country}
+        constants={constants}
+        texts={texts}
+        conversions={conversions}
+        prefixConversions={prefixConversions}
+      />
       <HistoricProduction />
       <Footer footer={footer} texts={texts} />
     </div>

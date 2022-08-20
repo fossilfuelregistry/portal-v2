@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useMemo } from 'react'
 import {
   Select as ChakraSelect,
   OptionBase,
@@ -16,9 +16,8 @@ export interface SelectOption extends OptionBase {
 type SelectProps = {
   label?: string
   height?: string
-  value: SelectOption | undefined
+  value: string | number | null
   options: SelectOption[]
-  // eslint-disable-next-line no-unused-vars
   onChange: (newValue: SingleValue<SelectOption>) => void
 }
 
@@ -106,6 +105,11 @@ const Select: FC<SelectProps> = ({
     }),
   }
 
+  const selectedValue = useMemo(
+    () => options.find((o) => o.value === value),
+    [options, value]
+  )
+
   return (
     <Box w="100%">
       {label && (
@@ -117,7 +121,7 @@ const Select: FC<SelectProps> = ({
         size="md"
         chakraStyles={chakraStyles}
         isSearchable
-        value={value}
+        value={selectedValue}
         options={options}
         onChange={onChange}
       />

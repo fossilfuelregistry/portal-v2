@@ -7,8 +7,8 @@ import PageHead from 'components/CMSContent/PageHead'
 import Footer from 'components/navigation/Footer'
 import { FooterProps, Page } from 'lib/types'
 import { getPageStaticProps } from 'lib/staticProps'
-import AnnualEmissions from 'components/AnnualEmissions'
-import HistoricProduction from 'components/HistoricProduction'
+import AnnualEmissions from 'components/country/AnnualEmissions'
+import HistoricProduction from 'components/country/HistoricProduction'
 
 type MapPageType = {
   countries: Country[]
