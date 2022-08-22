@@ -76,3 +76,18 @@ export const CoalIcon = (props: any) => (
     />
   </Icon>
 )
+
+export const LineIcon = (props: any) => (
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  <Icon width="24px" height="2px" viewBox="0 0 24 2" fill="none" {...props}>
+    <line
+      x1="8.74228e-08"
+      y1="1"
+      x2="24"
+      y2="1"
+      stroke="#040404"
+      strokeWidth="2"
+      strokeDasharray="8 8"
+    />
+  </Icon>
+)

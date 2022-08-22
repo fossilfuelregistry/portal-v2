@@ -21,11 +21,6 @@ export const PIE_CHART_COLORS = {
   },
 }
 
-export const COMBUSTION_MAP = {
-  scope1: 'combustion',
-  scope3: 'pre-combustion',
-}
-
 type PieChartProps = {
   title: string
   parentWidth: number
@@ -35,7 +30,7 @@ type PieChartProps = {
   data: any[]
 }
 
-const PieChart: FC<PieChartProps> = ({
+const Piechart: FC<PieChartProps> = ({
   parentWidth,
   parentHeight,
   title,
@@ -183,7 +178,7 @@ const PieChart: FC<PieChartProps> = ({
           </Tooltip>
         )}
       </Box>
-      <Flex flexWrap="wrap" mt="74px">
+      <Flex alignItems="flex-start" flexWrap="wrap" mt="74px" minHeight="74px">
         {data.map((d) => (
           <Flex
             key={d.label}
@@ -209,4 +204,4 @@ const PieChart: FC<PieChartProps> = ({
   )
 }
 
-export default PieChart
+export default Piechart

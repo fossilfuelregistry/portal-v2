@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect } from 'react'
 import { SimpleGrid, Box } from '@chakra-ui/react'
-import PieChart, { PIE_CHART_COLORS } from 'components/charts/PieChart'
+import PieChart from 'components/charts/PieChart'
 import InfoSection from 'components/InfoSection'
 import WarmingPotentialSelect, {
   WarmingPotential,
@@ -11,6 +11,8 @@ import ProductionSourceSelect from 'components/filters/ProductionSourceSelect'
 import useCountrySources from 'lib/useCountrySources'
 import useCountryData from 'lib/useCountryData'
 import { colors } from '../../assets/theme'
+import useVolumes from '../../hooks/useVolumes'
+import useRangeOfCertainty from '../../hooks/useRangeOfCertainty'
 
 const timeOptions = [
   {
@@ -32,7 +34,8 @@ const AnnualEmissions = ({
   const [gwp, setGwp] = useState<string>(WarmingPotential.GWP100)
   const [productionSourceId, setProductionSourceId] = useState<number>(0)
   const [emissionsData, setEmissionsData] = useState<any[]>([])
-
+  const { volumesData } = useVolumes(emissionsData, productionSourceId)
+  const { rangeData } = useRangeOfCertainty(emissionsData, productionSourceId)
   const { getCurrentCO2E } = useCountryData({
     texts,
     gwp,
@@ -62,57 +65,6 @@ const AnnualEmissions = ({
     calculateData()
   }, [gwp, productionSourceId, country])
 
-  const volumes = useMemo(() => {
-    const source = emissionsData.find((d) => d.sourceId === productionSourceId)
-
-    if (source) {
-      const total = source.production.reduce(
-        (prev: any, curr: any) =>
-          prev + (curr.co2e.scope1.co2.wa + curr.co2e.scope3.co2.wa),
-        0
-      )
-
-      const calculatePercentage = (value: number) => (value * 100) / total
-
-      const productionData = source.production
-        .map((p: any) => {
-          return [
-            {
-              label: `${p.fossilFuelType}, combustion`,
-              fossilFuelType: p.fossilFuelType,
-              // @ts-ignore
-              fillColor: PIE_CHART_COLORS[p.fossilFuelType].scope1,
-              quantity: p.co2e.scope1.co2.wa.toFixed(2),
-              percentage: calculatePercentage(p.co2e.scope1.co2.wa as number),
-              year: p.year,
-            },
-            {
-              label: `${p.fossilFuelType}, pre-combustion`,
-              fossilFuelType: p.fossilFuelType,
-              // @ts-ignore
-              fillColor: PIE_CHART_COLORS[p.fossilFuelType].scope3,
-              quantity: p.co2e.scope3.co2.wa.toFixed(2),
-              percentage: calculatePercentage(p.co2e.scope3.co2.wa as number),
-              year: p.year,
-            },
-          ]
-        })
-        .flat(1)
-
-      return {
-        data: productionData,
-        total: total.toFixed(2),
-      }
-    }
-
-    return {
-      data: [],
-      total: 0,
-    }
-  }, [emissionsData])
-
-  console.log('emissionsData', emissionsData)
-  console.log('volumesData', volumes)
   return (
     <InfoSection title="Annual Emissions from Fossil Fuel Production">
       <SimpleGrid mb="40px" columns={3} gridGap="20px">
@@ -148,15 +100,20 @@ const AnnualEmissions = ({
         }}
       >
         <PieChart
-          data={volumes.data}
+          data={volumesData.data}
           parentWidth={320}
           parentHeight={320}
           title="Total volumes"
           header="Total Mt CO₂e"
-          total={volumes.total}
+          total={volumesData.total}
         />
         <Box ml="40px">
-          <RangeChart height={400} width={500} title="Range of certainty" />
+          <RangeChart
+            height={364}
+            width={538}
+            data={rangeData}
+            title="Range of certainty"
+          />
         </Box>
       </SimpleGrid>
     </InfoSection>
