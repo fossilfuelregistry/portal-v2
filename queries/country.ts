@@ -1,6 +1,9 @@
 /* eslint-disable camelcase */
 import { gql } from '@apollo/client/core'
+import { GQL_countrySourcesRecord } from './country-types'
+import { GQLNodes } from './types'
 
+export type GQL_CountrySources = GQLNodes<GQL_countrySourcesRecord, "getCountrySources">
 export const GQL_countrySources = gql`
     query countrySource($iso3166: String = "", $iso31662: String = "") {
         getCountrySources(iso3166_: $iso3166, iso31662_: $iso31662) {
@@ -22,6 +25,17 @@ export const GQL_countrySources = gql`
     }
 `
 
+export type GQL_CountryProduction = GQLNodes<{
+    id: number
+    fossilFuelType: "gas" | "coal" | "oil"
+    volume: number | null
+    year: number | null
+    unit: string | null
+    subtype: string | null
+    sourceId: number | null
+    quality: number | null
+    dataType: "PRODUCTION"
+}, "countryDataPoints">
 export const GQL_countryProduction = gql`
     query production($iso3166: String!, $iso31662: String!) {
         countryDataPoints(
@@ -41,11 +55,23 @@ export const GQL_countryProduction = gql`
                 subtype
                 sourceId
                 quality
+                dataType
             }
         }
     }
 `
 
+export type GQL_CountryReserves = GQLNodes<{
+    fossilFuelType: "gas" | "coal" | "oil" | null
+    volume: number | null
+    year: number | null
+    unit: string | null
+    subtype: string | null
+    sourceId: number | null
+    quality: number | null
+    grade: string | null
+    dataType: "RESERVE"
+}, "countryDataPoints">
 export const GQL_countryReserves = gql`
     query reserves($iso3166: String!, $iso31662: String!) {
         countryDataPoints(
@@ -65,11 +91,23 @@ export const GQL_countryReserves = gql`
                 sourceId
                 quality
                 grade
+                dataType
             }
         }
     }
 `
 
+export type GQL_CountryProjection = GQLNodes<{
+    fossilFuelType: "gas" | "coal" | "oil" | null
+    volume: number | null
+    year: number | null
+    unit: string | null
+    subtype: string | null
+    sourceId: number | null
+    quality: number | null
+    grade: string | null
+    dataType: "PROJECTION"
+}, "countryDataPoints">
 export const GQL_countryProjection = gql`
     query projection($iso3166: String!, $iso31662: String!) {
         countryDataPoints(
@@ -88,6 +126,8 @@ export const GQL_countryProjection = gql`
                 subtype
                 sourceId
                 quality
+                dataType
+
             }
         }
     }

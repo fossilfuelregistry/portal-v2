@@ -1,5 +1,4 @@
 /* eslint-disable no-shadow */
-/* eslint-disable no-unused-expressions */
 /* eslint-disable camelcase */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unused-prop-types */

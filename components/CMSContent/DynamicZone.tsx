@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, { ReactNode } from 'react'
 import {
   Alert,
@@ -15,11 +16,10 @@ interface Props {
   content: Array<any>
 }
 
-export default function DynamicZone({ content }: Props) {
+const DynamicZone = ({ content }: Props) => {
   const rendered: Array<ReactNode> = []
 
   content?.forEach((block) => {
-    // eslint-disable-next-line no-underscore-dangle
     switch (block.__component) {
       case 'shared.styled-text-image':
         rendered.push(<StyledTextImage key={`STI${block.id}`} block={block} />)
@@ -44,7 +44,6 @@ export default function DynamicZone({ content }: Props) {
               <AlertIcon />
               <AlertTitle>Unknown CMS content type!</AlertTitle>
               <AlertDescription>
-                {/* eslint-disable-next-line no-underscore-dangle */}
                 We do not know how to render a block of type &nbsp;
                 <b>{block.__component}</b>.
               </AlertDescription>
@@ -57,3 +56,5 @@ export default function DynamicZone({ content }: Props) {
 
   return <>{rendered}</>
 }
+
+export default DynamicZone

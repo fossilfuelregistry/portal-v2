@@ -28,7 +28,8 @@ const MapPage: NextPage<MapPageType> = ({
   <div id="page_main">
     <Navbar menu={menu} texts={texts} />
     <PageHead page={page} />
-    <Map countries={countries} />
+    {/* Added attributes to be able to compile */}
+    <Map countries={countries} onChangeCountry={() => { } } type="country" country="au" />
     <AnnualEmissions />
     <HistoricProduction />
     <Footer footer={footer} texts={texts} />

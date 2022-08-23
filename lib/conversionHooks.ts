@@ -1,16 +1,10 @@
-/* eslint-disable no-use-before-define */
 /* eslint-disable no-continue */
 /* eslint-disable no-plusplus */
-/* eslint-disable no-shadow */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable camelcase */
-/* eslint-disable no-unused-expressions */
-// import { useDispatch, useSelector, useStore } from 'react-redux'
+
 import { getFullFuelType, getPreferredGrades, sumOfCO2 } from 'lib/calculate'
 import { useApolloClient } from '@apollo/client'
 import { GQL_countryCurrentProduction } from 'queries/country'
 import settings from 'settings'
-// import { FossilFuelType } from 'lib/types'
 
 import { GQL_countryCurrentProductionRecord } from 'queries/country-types'
 
@@ -24,7 +18,6 @@ import {
   toVintageCO2ERepresentation,
 } from 'lib/calculations/utils'
 import { pipe } from 'fp-ts/lib/function'
-// import { captureException } from '@sentry/nextjs'
 import {
   ConversionFactorInStore,
   LastReservesType,
@@ -39,13 +32,14 @@ import {
 import { DatabaseRecord } from './calculations/calculation-constants/types'
 import { PrefixRecord } from './calculations/prefix-conversion'
 import { CO2EEmissions } from './calculations/types'
+import { FossilFuelType } from './types'
 
 const DEBUG = true
 
 type Props = {
   conversionConstants: ConversionFactorInStore[]
   allSources: Source[]
-  gwp: 'GWP100' | string
+  gwp: 'GWP100' | 'GWP20' | string
   country: string
   stableProduction: StableProduction
   texts: Record<string, string>
@@ -53,7 +47,6 @@ type Props = {
   prefixes: PrefixRecord[]
 }
 
-// eslint-disable-next-line import/prefer-default-export
 export const useConversionHooks = (props: Props) => {
   const {
     allSources,
@@ -83,12 +76,15 @@ export const useConversionHooks = (props: Props) => {
     modifier: gwp ?? 'GWP100',
   })
 
-  const co2eFromVolume = (
-    props: (ProductionData | GQL_countryCurrentProductionRecord) & {
-      country?: string
-      projectId?: number
-    }
-  ): CO2EEmissions => {
+  type CO2FromVolume = {
+    volume: number | null
+    fossilFuelType: FossilFuelType | null
+    subtype: string | null
+    country?: string
+    projectId?: number
+    unit: string | null
+  }
+  const co2eFromVolume = (props: CO2FromVolume): CO2EEmissions => {
     if (!props) return generateZeroCO2EEmissions()
     const {
       volume,
@@ -96,6 +92,7 @@ export const useConversionHooks = (props: Props) => {
       subtype,
       country: countryOverride,
       projectId,
+      unit,
     } = props
 
     const fullFuelType = getFullFuelType({ fossilFuelType, subtype })
@@ -118,9 +115,10 @@ export const useConversionHooks = (props: Props) => {
         })
       : calculationConstants
 
-    if (!volume || !gwp) return generateZeroCO2EEmissions()
+    if (!volume || !gwp || !fossilFuelType || !unit)
+      return generateZeroCO2EEmissions()
 
-    const result = calculate({ ...props, volume }, constantsToUse)
+    const result = calculate({ unit, fossilFuelType, volume }, constantsToUse)
 
     return pipe(
       result,
@@ -130,55 +128,7 @@ export const useConversionHooks = (props: Props) => {
     )
   }
 
-  const co2FromVolume = (
-    props: (ProductionData | GQL_countryCurrentProductionRecord) & {
-      country: string
-      projectId?: number
-    }
-  ) =>
-    /*
-    if (!props) return { scope1: [0, 0, 0], scope3: [0, 0, 0] }
-    // @ts-ignore
-    const {
-      volume,
-      fossilFuelType,
-      subtype,
-      country: countryOverride,
-      projectId,
-    } = props
-
-    const fullFuelType = getFullFuelType({ fossilFuelType, subtype })
-    if (!fullFuelType) {
-      console.error('No fuel type found', { fossilFuelType, subtype })
-      throw new Error('No fuel type found')
-    }
-
-    // eslint-disable-next-line no-nested-ternary
-    const constantsToUse = projectId
-      ? getCalculationConstants({
-          projectId,
-          modifier: gwp ?? 'GWP100',
-          country: countryOverride ?? country,
-        })
-      : countryOverride
-      ? getCalculationConstants({
-          country: countryOverride,
-          modifier: gwp ?? 'GWP100',
-        })
-      : calculationConstants
-
-    if (!volume || !gwp) return { scope1: [0, 0, 0], scope3: [0, 0, 0] }
-
-    const result = calculate({ ...props, volume }, constantsToUse)
-
-    return pipe(
-      result,
-      O.fromNullable,
-      O.map(toVintageCO2ERepresentation),
-      O.getOrElseW(() => ({ scope1: [0, 0, 0], scope3: [0, 0, 0] }))
-    )
-    */
-
+  const co2FromVolume = (props: CO2FromVolume) =>
     pipe(co2eFromVolume(props), toVintageCO2ERepresentation)
 
   const reservesProduction = (
@@ -189,7 +139,7 @@ export const useConversionHooks = (props: Props) => {
     limits: Limits | undefined,
     grades: { xp: boolean }
   ) => {
-    // const DEBUG = true
+    const DEBUG = false
     DEBUG &&
       console.info('reservesProduction', {
         projection,
@@ -405,6 +355,7 @@ export const useConversionHooks = (props: Props) => {
 
       const fuelProduction = fuelProd.map((p) => ({
         ...p,
+        // @ts-ignore
         co2: co2FromVolume(p),
         // TODO: Fix when there is a need of ch4
         co2e: pipe(
@@ -415,6 +366,7 @@ export const useConversionHooks = (props: Props) => {
         ),
       }))
       const totalCO2E = fuelProduction.reduce(
+        // eslint-disable-next-line no-unsafe-optional-chaining
         (acc, p) => acc + p.co2?.scope1?.[1] + p.co2?.scope3?.[1],
         0
       )
@@ -430,6 +382,7 @@ export const useConversionHooks = (props: Props) => {
     return sourceProd
   }
 
+  // eslint-disable-next-line consistent-return
   const getCountryCurrentCO2 = async (iso3166: string | undefined | null) => {
     if (!iso3166) return null
 
@@ -449,9 +402,8 @@ export const useConversionHooks = (props: Props) => {
   }
 
   const projectCO2 = (project: ProjectDataRecord) => {
-    // @ts-ignore
+    const DEBUG = true
     DEBUG && console.info({ project })
-    const DEBUG = false
     const points = project?.projectDataPoints?.nodes ?? []
     const productionPerFuel = { totalCO2: 0, fuels: [] }
 
@@ -477,7 +429,6 @@ export const useConversionHooks = (props: Props) => {
       const co2 = co2FromVolume({
         ...lastYearProd,
         projectId: project.id,
-        methaneM3Ton: project.methaneM3Ton,
       })
       let targetUnit
 
@@ -506,21 +457,24 @@ export const useConversionHooks = (props: Props) => {
       co2.scope3 = co2.scope3?.map((c) => Math.round(c * 100) / 100)
 
       const sources = fuelData.reduce((s, p) => {
+        // @ts-ignore
         if (!s.includes(p.sourceId)) s.push(p.sourceId)
         return s
       }, [])
 
       // @ts-ignore
-      co2.productionString = `${co2.productionVolume?.toFixed(1)} ${getText(
-        targetUnit
-      )} ${getText(fuel)}`
+      co2.productionString = `${co2.productionVolume?.toFixed(1)} ${getText('targetUnit')} ${getText(fuel)}`
       // @ts-ignore
       co2.sources = sources.map((id) =>
         allSources.find((s) => s.sourceId === id)
       )
+      // @ts-ignore
       productionPerFuel[fuel] = co2
+      // @ts-ignore
       productionPerFuel.fuels.push(fuel)
+      // eslint-disable-next-line no-unsafe-optional-chaining
       productionPerFuel.totalCO2 += co2.scope1?.[1]
+      // eslint-disable-next-line no-unsafe-optional-chaining
       productionPerFuel.totalCO2 += co2.scope3?.[1]
     })
     DEBUG && console.info('CO2', productionPerFuel)
@@ -539,8 +493,6 @@ export const useConversionHooks = (props: Props) => {
     calculateCountryProductionCO2,
     getCountryCurrentCO2,
     projectCO2,
-    // pageQuery,
-    // goToCountryOverview,
     // conversionPathLoggerReset,
   }
 }

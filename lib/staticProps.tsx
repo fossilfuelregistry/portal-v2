@@ -78,7 +78,6 @@ async function getConversions() {
 	const conversions = constants.map((c: any) => {
 		const cc = {...c}
 		cc.fullFuelType = getFullFuelType(c)
-		// eslint-disable-next-line no-underscore-dangle
 		delete cc.__typename
 		return cc
 	})
@@ -113,7 +112,6 @@ export async function getProducingCountries() {
 	const countr = q?.data?.getProducingIso3166?.nodes ?? []
 	const countries = countr.map((c: any) => {
 		const cc = {...c}
-		// eslint-disable-next-line no-underscore-dangle
 		delete cc.__typename
 		return cc
 	})
@@ -129,7 +127,6 @@ async function getSources() {
 	const srcs = q?.data?.sources?.nodes ?? []
 	const sources = srcs.map((c: any) => {
 		const cc = {...c}
-		// eslint-disable-next-line no-underscore-dangle
 		delete cc.__typename
 		return cc
 	})
@@ -145,7 +142,6 @@ async function getCO2Costs() {
 	const co2Cost = q?.data?.co2Costs?.nodes ?? []
 	const co2Costs = co2Cost.map((c: any) => {
 		const cc = {...c}
-		// eslint-disable-next-line no-underscore-dangle
 		delete cc.__typename
 		return cc
 	})
@@ -153,7 +149,6 @@ async function getCO2Costs() {
 	return co2Costs
 }
 
-// eslint-disable-next-line no-unused-vars
 type GetCommonStaticProps = (context: GetStaticPropsContext) => Promise<any>
 
 export const getCommonStaticProps: GetCommonStaticProps = async (context: GetStaticPropsContext) => {
@@ -186,7 +181,6 @@ export const getCommonStaticProps: GetCommonStaticProps = async (context: GetSta
 	}
 }
 
-// eslint-disable-next-line no-unused-vars
 type GetArticleStaticProps = (context: GetStaticPropsContext) => Promise<any>
 
 export const getArticleStaticProps: GetArticleStaticProps = async (context) => {
@@ -220,7 +214,6 @@ export const getArticleStaticProps: GetArticleStaticProps = async (context) => {
 	}
 }
 
-// eslint-disable-next-line no-unused-vars
 type GetPageStaticProps = (context: GetStaticPropsContext, staticSlug?: string) => Promise<any>
 
 export const getPageStaticProps: GetPageStaticProps = async (context, staticSlug) => {

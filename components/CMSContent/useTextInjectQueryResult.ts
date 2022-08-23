@@ -14,8 +14,10 @@ export default function useTextInjectQueryResult() {
 		if( !queries ) return text
 
 		let result = text
+		// eslint-disable-next-line no-restricted-syntax
 		for( const query of queries ) {
 			const ql = gql`query ${ query.query } { ${ query.query } }`
+			// eslint-disable-next-line no-await-in-loop
 			const res = await client.query( { query: ql } )
 			result = result.replace( query.string, res?.data?.[ query.query ] )
 		}

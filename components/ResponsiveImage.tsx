@@ -12,22 +12,18 @@ interface Props {
 	gradient?: string
 }
 
-export const getResponsiveStyle = ( url: string, gradient?: string, sizing?: string ) => {
-	return {
-		backgroundImage: 'url(' + url + ')',
+export const getResponsiveStyle = ( url: string, gradient?: string, sizing?: string ) => ({
+		backgroundImage: `url(${  url  })`,
 		backgroundSize: sizing || 'cover',
 		backgroundRepeat: 'no-repeat',
 		backgroundPosition: 'center'
-	}
-}
+	})
 
 const ResponsiveImage = ( { src, height, width, sizing, borderRadius, id, className, gradient }: Props ) => {
 
-	let _style = Object.assign( {
-		width: '100%',
+	const _style = { width: '100%',
 		height: '100%',
-		borderRadius: borderRadius || 'unset',
-	}, getResponsiveStyle( src, gradient, sizing ) )
+		borderRadius: borderRadius || 'unset', ...getResponsiveStyle( src, gradient, sizing ) }
 
 	return (
 		<Box
@@ -35,7 +31,7 @@ const ResponsiveImage = ( { src, height, width, sizing, borderRadius, id, classN
 			className={ className }
 			w={ width ?? '100%' }
 			h={ height ?? '100%' }
-			position={ 'relative' }
+			position="relative"
 			flex="1 1 auto"
 		>
 			<div style={ _style }/>

@@ -5,12 +5,10 @@ type ContainerProps = {
   children: React.ReactNode
 }
 
-const Container: FC<ContainerProps> = ({ children }) => {
-  return (
+const Container: FC<ContainerProps> = ({ children }) => (
     <Box maxWidth="1270px" width="100%" px="15px" margin="0 auto">
       {children}
     </Box>
   )
-}
 
 export default Container

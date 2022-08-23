@@ -11,6 +11,7 @@ interface Props {
 
 const CMSImage = ( { image, height }: Props ) => (
 		<ResponsiveImage
+			// eslint-disable-next-line no-unsafe-optional-chaining
 			src={ process.env.NEXT_PUBLIC_CMS_URL + image?.data?.attributes?.url}
 			height={height}
 			width="100%"

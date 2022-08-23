@@ -1,6 +1,24 @@
 /* eslint-disable camelcase */
 import { gql } from '@apollo/client/core'
+import { DatabaseRecord } from 'lib/calculations/calculation-constants/types'
+import { PrefixRecord } from 'lib/calculations/prefix-conversion'
+import { FossilFuelType } from 'lib/types'
+import { GQLNodes } from './types'
 
+export type GQL_ConversionConstants = GQLNodes<{
+  id: number
+  authority: string
+  description: string | null
+  fossilFuelType: FossilFuelType | null
+  fromUnit: string
+  toUnit: string
+  high: number | null
+  factor: number
+  low: number | null
+  country: string | null
+  modifier: string | null
+  subtype: string | null
+}, "conversionConstants">
 export const GQL_conversions = gql`
   query conversions {
     conversionConstants {
@@ -22,6 +40,7 @@ export const GQL_conversions = gql`
   }
 `
 
+export type GQL_CalculationConstants = GQLNodes<DatabaseRecord, "calculationConstants">
 export const GQL_calculationConstants = gql`
   query calculationConstants {
     calculationConstants {
@@ -175,6 +194,7 @@ export const GQL_projectsTableData = gql`
   }
 `
 
+export type GQL_PrefixConversions = GQLNodes<PrefixRecord, "prefixConversions">
 export const GQL_prefixConversions = gql`
   query prefixConversions {
     prefixConversions {

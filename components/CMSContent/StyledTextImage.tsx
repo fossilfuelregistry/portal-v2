@@ -14,7 +14,7 @@ interface Props {
 	block: Block
 }
 
-export default function StyledTextImage( { block }: Props ) {
+const   StyledTextImage = ( { block }: Props ) => {
 	switch( block.Template ) {
 
 		case 'Hero':
@@ -35,6 +35,9 @@ export default function StyledTextImage( { block }: Props ) {
 			)
 
 		default:
+			// eslint-disable-next-line react/no-unescaped-entities
 			return <div>"StyledTextImage Unsupported Template: " + block.Template</div>
 	}
 }
+
+export default StyledTextImage
