@@ -49,6 +49,7 @@ export const applyModifierFilter = flow(applyFilter(filterByModifier))
 export const applyProjectFilter = flow(applyFilter(filterByProjectId))
 
 const ordNumberOrNull: Ord.Ord<number | null> = Ord.fromCompare((x, y) => {
+    // eslint-disable-next-line no-nested-ternary
     if (isNumber(x) && isNumber(y)) return x < y ? -1 : x > y ? 1 : 0
     if (isNumber(x)) return 1
     if (isNumber(y)) return -1

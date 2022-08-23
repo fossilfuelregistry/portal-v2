@@ -50,8 +50,7 @@ const productionOptions = [
   },
 ]
 
-const HistoricProduction = () => {
-  return (
+const HistoricProduction = () => (
     <InfoSection title="Historic production">
       <SimpleGrid mb="40px" columns={3} gridGap="20px">
         <Select
@@ -66,6 +65,5 @@ const HistoricProduction = () => {
       </Box>
     </InfoSection>
   )
-}
 
 export default HistoricProduction

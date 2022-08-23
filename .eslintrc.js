@@ -44,6 +44,9 @@ module.exports = {
         'no-unused-vars': 0,
         'no-shadow': 0,
         'no-console': 0,
-        'camelcase': 0
+        'camelcase': 0,
+        'no-underscore-dangle': 0,
+        'no-unused-expressions': 0,
+
     },
 }

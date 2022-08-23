@@ -4,7 +4,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable camelcase */
-/* eslint-disable no-unused-expressions */
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useQuery, useApolloClient } from '@apollo/client'
 import {

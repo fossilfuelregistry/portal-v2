@@ -22,7 +22,6 @@ const useProjectData = ({ country, region }: Props) => {
       .filter((p) => p.co2 > 0)
       // @ts-ignore
       .sort((a, b) => Math.sign(b.co2 - a.co2))
-    // eslint-disable-next-line no-unused-expressions
     DEBUG && console.info(projs[0])
 
     // Remove non-current entries and get one entry per project..

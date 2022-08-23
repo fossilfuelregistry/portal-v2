@@ -1,5 +1,4 @@
 /* eslint-disable no-underscore-dangle */
-/* eslint-disable no-unused-expressions */
 /* eslint-disable no-shadow */
 /* eslint-disable no-unsafe-optional-chaining */
 import { FossilFuelType } from 'lib/types'
@@ -53,7 +52,6 @@ export type NormalizedDataset<Fuel extends FossilFuelType> = {
   unit: typeof settings.fuelsNormalizedVolumeUnit[Fuel]
 }
 
-// eslint-disable-next-line no-underscore-dangle
 function _sumOfFuelCO2(fuel: CO2EScope, range: Range): number {
   try {
     return (fuel.scope1?.[range] ?? 0) + (fuel.scope3?.[range] ?? 0)
