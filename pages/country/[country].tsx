@@ -19,6 +19,7 @@ import PageHead from 'components/CMSContent/PageHead'
 import Map from 'components/Map/Map'
 import AnnualEmissions from 'components/country/AnnualEmissions'
 import HistoricProduction from 'components/country/HistoricProduction'
+import EmissionsIntensity from 'components/country/EmissionsIntensity'
 import Footer from 'components/navigation/Footer'
 import { Country } from 'components/Map/types'
 import { FooterProps, Page } from 'lib/types'
@@ -115,6 +116,7 @@ const CountryPage: React.FC<Props> = (props) => {
         conversions={conversions}
         prefixConversions={prefixConversions}
       />
+      <EmissionsIntensity />
       <HistoricProduction />
       <Footer footer={footer} texts={texts} />
     </div>

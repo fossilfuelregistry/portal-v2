@@ -5,7 +5,6 @@ import InfoSection from 'components/InfoSection'
 import WarmingPotentialSelect, {
   WarmingPotential,
 } from 'components/filters/WarmingPotentialSelect'
-import Select from 'components/Select'
 import RangeChart from 'components/charts/RangeChart'
 import ProductionSourceSelect from 'components/filters/ProductionSourceSelect'
 import useCountrySources from 'lib/useCountrySources'
@@ -13,13 +12,6 @@ import useCountryData from 'lib/useCountryData'
 import { colors } from '../../assets/theme'
 import useVolumes from '../../hooks/useVolumes'
 import useRangeOfCertainty from '../../hooks/useRangeOfCertainty'
-
-const timeOptions = [
-  {
-    label: 'Latest year: 2020',
-    value: 'Latest year: 2020',
-  },
-]
 
 const AnnualEmissions = ({
   country,
@@ -76,12 +68,6 @@ const AnnualEmissions = ({
           sources={productionSources}
           value={productionSourceId}
           onChange={(option) => setProductionSourceId(option?.value as any)}
-        />
-        <Select
-          label="Time"
-          value={timeOptions[0].value}
-          options={timeOptions}
-          onChange={() => {}}
         />
       </SimpleGrid>
       <SimpleGrid
