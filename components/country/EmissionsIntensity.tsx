@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { SimpleGrid, Box, Flex } from '@chakra-ui/react'
 import InfoSection from 'components/InfoSection'
+import { InfoIcon } from 'components/Icons'
 import BarStackChart from '../charts/BarStackChart'
 import WarmingPotentialSelect, {
   WarmingPotential,
 } from '../filters/WarmingPotentialSelect'
 import { colors } from '../../assets/theme'
-import { InfoIcon, LineIcon } from 'components/Icons'
 
 const EmissionsIntensity = () => {
   const [gwp, setGwp] = useState<string>(WarmingPotential.GWP100)

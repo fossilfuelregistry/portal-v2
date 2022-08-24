@@ -22,6 +22,7 @@ import EmissionsIntensity from 'components/country/EmissionsIntensity'
 import Footer from 'components/navigation/Footer'
 import { Country } from 'components/Map/types'
 import { FooterProps, Page } from 'lib/types'
+import ForecastSection from 'components/country/ForecastSection'
 
 export type Props = {
   sources: any
@@ -117,6 +118,7 @@ const CountryPage: React.FC<Props> = (props) => {
       />
       <EmissionsIntensity />
       <HistoricProduction />
+      <ForecastSection />
       <Footer footer={footer} texts={texts} />
     </div>
   )

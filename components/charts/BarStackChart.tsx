@@ -1,11 +1,11 @@
 import React, { FC } from 'react'
-import { Box, Flex, Heading } from '@chakra-ui/react'
+import { Box, Heading } from '@chakra-ui/react'
 import { BarStack } from '@visx/shape'
 import { Group } from '@visx/group'
 import { GridRows } from '@visx/grid'
 import { AxisBottom, AxisLeft } from '@visx/axis'
 import { scaleBand, scaleLinear, scaleOrdinal } from '@visx/scale'
-import { useTooltip, useTooltipInPortal } from '@visx/tooltip'
+import { useTooltip } from '@visx/tooltip'
 import { colors } from '../../assets/theme'
 
 type TooltipData = any
