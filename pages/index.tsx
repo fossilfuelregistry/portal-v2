@@ -16,7 +16,6 @@ interface Props {
 
 const Home: NextPage<Props> = (props) => {
   const { page, menu, texts, footer } = props
-  console.log('page', page)
   return (
     <div id="page_main">
       <Navbar menu={menu} texts={texts} />

@@ -11,6 +11,7 @@ import settings from 'settings'
 import {captureException} from '@sentry/nextjs'
 import {ICMSPage, Datapoint} from "lib/types";
 import {GetStaticPropsContext} from "next";
+import { PHASE_PRODUCTION_BUILD } from 'next/constants';
 
 const backendCache = new NodeCache()
 
@@ -221,8 +222,10 @@ export const getPageStaticProps: GetPageStaticProps = async (context, staticSlug
 	const {locale} = context
 
 	let api
+
 	let pages: ICMSPage[] | undefined = backendCache.get(`pages-${locale}`)
-	if (!pages) {
+
+	if (!pages || process.env.NEXT_PHASE !== PHASE_PRODUCTION_BUILD) {
 		api = await fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/pages?locale=${context.locale}`, {headers})
 		if (!api.ok) throw new Error(`Page fetch failed: ${api.status} ${api.statusText}`)
 		pages = (await api.json()).data
@@ -277,4 +280,3 @@ export const getPageStaticProps: GetPageStaticProps = async (context, staticSlug
 		revalidate: 60
 	}
 }
-
