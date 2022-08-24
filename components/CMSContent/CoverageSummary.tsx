@@ -15,7 +15,7 @@ type CoverageSummaryProps = {
 
 const CoverageSummary: FC<CoverageSummaryProps> = ({ block }) => {
   const { Headline, Intro } = block
-  console.log(block)
+  // console.log(block)
 
   return (
     <Box bg={colors.primary.richBlue} py={{ base: '40px', md: '78px' }}>

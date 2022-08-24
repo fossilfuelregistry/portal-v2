@@ -1,6 +1,5 @@
 /* eslint-disable no-shadow */
 /* eslint-disable camelcase */
-/* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unused-prop-types */
 import React, { useState, useEffect } from 'react'
 import { GetStaticPaths } from 'next'
@@ -45,7 +44,7 @@ export type Props = {
   prefixConversions: PrefixRecord[]
 }
 
-const DEBUG = true
+const DEBUG = false
 
 const CountryPage: React.FC<Props> = (props) => {
   const {
@@ -58,7 +57,7 @@ const CountryPage: React.FC<Props> = (props) => {
     prefixConversions,
     countries,
   } = props
-  console.log('countries', countries)
+  DEBUG && console.log('countries', countries)
   const apolloClient = useApolloClient()
   const router = useRouter()
 
@@ -71,7 +70,7 @@ const CountryPage: React.FC<Props> = (props) => {
   const { productionSources, projectionSources, reservesSources } =
     useCountrySources({ country })
 
-  console.log('productionSources', productionSources)
+  DEBUG && console.log('productionSources', productionSources)
 
   /**
    * Downloads and populates arrays with volume, co2e etc
@@ -124,10 +123,6 @@ const CountryPage: React.FC<Props> = (props) => {
   )
 }
 
-/*
-export const getStaticProps: GetStaticProps = async (context) => {
-    // ...
-  } */
 export const getStaticPaths: GetStaticPaths = async () => {
   const countries = await getProducingCountries()
   countries.push({ iso3166: '-' })
@@ -143,6 +138,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 // @ts-ignore
-export const getStaticProps = (context) => getPageStaticProps(context, `/`)
+export const getStaticProps = (context) => getPageStaticProps(context, `country`)
 
 export default CountryPage
