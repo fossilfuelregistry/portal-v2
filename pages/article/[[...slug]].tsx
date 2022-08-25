@@ -1,20 +1,34 @@
 import React from 'react'
-import { Box, chakra, Flex, Heading } from "@chakra-ui/react"
+import {Box, Flex, Heading} from "@chakra-ui/react"
+import {FooterProps} from "lib/types"
+import {GetStaticPaths, GetStaticProps, NextPage} from "next"
+import {getPageStaticProps} from "lib/staticProps";
 import DynamicZone from "../../components/CMSContent/DynamicZone"
 import CMSImage from "../../components/CMSContent/CMSImage"
 import ArticleTag from "../../components/CMSContent/ArticleTag"
+import Navbar from "../../components/navigation/Navbar"
+import Footer from "../../components/navigation/Footer"
 
 const headers = {
 	Authorization: `Bearer ${ process.env.NEXT_PUBLIC_CMS_TOKEN }`
 }
 
-export default function Page( props ) {
-	const { page } = props
+interface Props {
+	page: any,
+	menu: Array<any>,
+	footer: FooterProps,
+	texts: Array<any>
+}
+
+const Article: NextPage<Props> = (props) => {
+	const {page, menu, texts, footer} = props
+
 	if( !page ) return null
-	const article = page.attributes
+	const article = page
 
 	return (
-		<div className="cms-page">
+		<div id="page_main">
+			<Navbar menu={ menu } texts={ texts }/>
 
 			<Box w={ { base: '100%' } } position="relative">
 				<CMSImage image={ article.Image } gradient
@@ -27,7 +41,7 @@ export default function Page( props ) {
 							maxWidth="750px"
 							direction="column"
 						>
-							<ArticleTag article={article }/>
+							<ArticleTag article={ article }/>
 							<Heading as="h1" textStyle="inverse">{ article.Headline }</Heading>
 						</Flex>
 					</Box>
@@ -41,21 +55,25 @@ export default function Page( props ) {
                 padding: 40px
               }
 			` }</style>
+
+			<Footer footer={ footer } texts={ texts }/>
 		</div>
 	)
 }
 
-export { getArticleStaticProps as getStaticProps } from '../../lib/staticProps'
+export default Article
 
-export async function getStaticPaths() {
+export const getStaticProps: GetStaticProps = context => getPageStaticProps(context, '/article')
+
+export const getStaticPaths: GetStaticPaths = async () => {
 	try {
 		const api = await fetch( `${ process.env.NEXT_PUBLIC_CMS_URL }/api/Articles`, { headers } )
 		if( !api.ok ) throw new Error( `Pages fetch failed: ${ api.status } ${ api.statusText }` )
 		const pages = await api.json()
 		const result = {
 			paths: pages?.data
-			.filter( p => p.attributes?.slug?.length > 0 )
-			.map( p => ( { params: { slug: p.attributes?.slug.split( '/' ) } } ) ) ?? [],
+			.filter( (p: any) => p.attributes?.slug?.length > 0 )
+			.map( (p: any) => ( { params: { slug: p.attributes?.slug.split( '/' ) } } ) ) ?? [],
 			fallback: true
 		}
 		// console.log( pages )

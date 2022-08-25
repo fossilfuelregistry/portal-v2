@@ -11,7 +11,7 @@ import settings from 'settings'
 import {captureException} from '@sentry/nextjs'
 import {ICMSPage, Datapoint} from "lib/types";
 import {GetStaticPropsContext} from "next";
-import { PHASE_PRODUCTION_BUILD } from 'next/constants';
+import {PHASE_PRODUCTION_BUILD} from 'next/constants';
 
 const backendCache = new NodeCache()
 
@@ -182,51 +182,24 @@ export const getCommonStaticProps: GetCommonStaticProps = async (context: GetSta
 	}
 }
 
-type GetArticleStaticProps = (context: GetStaticPropsContext) => Promise<any>
-
-export const getArticleStaticProps: GetArticleStaticProps = async (context) => {
-	const slg = context.params?.slug
-	let slug = slg
-	if (Array.isArray(slg)) slug = slg.join('/')
-
-	let api = await fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/articles?locale=${context.locale}`, {headers})
-	if (!api.ok) throw new Error(`Article fetch failed: ${api.status} ${api.statusText}`)
-	const articles = await api.json()
-
-	const p = articles.data?.find((pg: ICMSPage) => pg.attributes?.slug === slug)
-	if (!p) return {notFound: true}
-
-	api = await fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/articles/${p.id}?locale=${context.locale}&populate=*`, {headers})
-
-	if (!api.ok) {
-		if (api.status === 404) return {notFound: true}
-		throw new Error(`Article fetch failed: ${api.status} ${api.statusText}`)
-	}
-
-	const response = await api.json()
-	const page = response.data
-	if (!page) return {notFound: true}
-
-	const common = await getCommonStaticProps(context)
-	common.props.page = page
-	return {
-		...common,
-		revalidate: 60
-	}
-}
-
 type GetPageStaticProps = (context: GetStaticPropsContext, staticSlug?: string) => Promise<any>
 
 export const getPageStaticProps: GetPageStaticProps = async (context, staticSlug) => {
-	const slug = staticSlug ?? context.params?.slug
+	let slug = context.params?.slug
 	const {locale} = context
 
 	let api
+	let endpoint = 'pages'
+	if (staticSlug === '/') slug = '/'
+	if (staticSlug === '/article') {
+		endpoint = 'articles'
+		slug = context.params?.slug?.[0]
+	}
 
 	let pages: ICMSPage[] | undefined = backendCache.get(`pages-${locale}`)
 
 	if (!pages || process.env.NEXT_PHASE !== PHASE_PRODUCTION_BUILD) {
-		api = await fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/pages?locale=${context.locale}`, {headers})
+		api = await fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/${endpoint}?locale=${context.locale}`, {headers})
 		if (!api.ok) throw new Error(`Page fetch failed: ${api.status} ${api.statusText}`)
 		pages = (await api.json()).data
 		backendCache.set(`pages-${locale}`, pages, 300)
@@ -235,7 +208,7 @@ export const getPageStaticProps: GetPageStaticProps = async (context, staticSlug
 	const p = pages?.find(pg => pg.attributes?.slug === slug)
 	if (!p) return {notFound: true}
 
-	api = await fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/pages/${p.id}?locale=${context.locale}&populate=deep`, {headers})
+	api = await fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/${endpoint}/${p.id}?locale=${context.locale}&populate=deep`, {headers})
 
 	if (!api.ok) {
 		if (api.status === 404) return {notFound: true}
@@ -244,6 +217,7 @@ export const getPageStaticProps: GetPageStaticProps = async (context, staticSlug
 
 	const response = await api.json()
 	const page = response.data
+
 	if (!page) return {notFound: true}
 
 	let menu = backendCache.get('menu')
