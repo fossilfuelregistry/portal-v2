@@ -30,7 +30,14 @@ export default function TextWithQuery( { block }: Props ) {
 		<CMSBlock>
 			<Box w="100%" maxWidth="710px">
 				<Heading as="h2" size="2xl">{Headline}</Heading>
-				<ReactMarkdown skipHtml>{ result }</ReactMarkdown>
+				<ReactMarkdown
+					skipHtml
+					transformImageUri={uri =>
+						uri.startsWith("http") ? uri : `${process.env.NEXT_PUBLIC_CMS_URL}${uri}`
+					}
+				>
+					{ result }
+				</ReactMarkdown>
 			</Box>
 		</CMSBlock>
 	)

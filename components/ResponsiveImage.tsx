@@ -9,10 +9,10 @@ interface Props {
 	borderRadius?: string,
 	id?: string,
 	className?: string,
-	gradient?: string
+	gradient?: boolean
 }
 
-export const getResponsiveStyle = ( url: string, gradient?: string, sizing?: string ) => ({
+export const getResponsiveStyle = ( url: string, gradient?: boolean, sizing?: string ) => ({
 		backgroundImage: `url(${  url  })`,
 		backgroundSize: sizing || 'cover',
 		backgroundRepeat: 'no-repeat',
@@ -42,7 +42,7 @@ const ResponsiveImage = ( { src, height, width, sizing, borderRadius, id, classN
 						height: '100%',
 						position: "absolute",
 						top: 0,
-						background: 'linear-gradient(11.74deg, rgba(0, 0, 0, 0.6) 6.04%, rgba(0, 0, 0, 0) 55.99%)'
+						background: 'linear-gradient(160deg, rgba(0, 0, 0, 0.7) 6.04%, rgba(0, 0, 0, 0) 110%)'
 					} }
 				/>
 			}

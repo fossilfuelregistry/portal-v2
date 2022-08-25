@@ -26,7 +26,8 @@ export interface Article {
 	Category: string,
 	slug: string,
 	Content: Array<any>,
-	Image: ICMSImage
+	Image: ICMSImage,
+	Inverted_headline_color: boolean
 }
 
 export interface ICMSArticle {

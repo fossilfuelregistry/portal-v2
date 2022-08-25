@@ -1630,6 +1630,14 @@
     "@chakra-ui/utils" "2.0.4"
     csstype "^3.0.11"
 
+"@chakra-ui/styled-system@^2.2.8":
+  version "2.2.8"
+  resolved "https://registry.yarnpkg.com/@chakra-ui/styled-system/-/styled-system-2.2.8.tgz#d849be1fabc7563d1fedfcfa2fb56a4a7f9804ce"
+  integrity sha512-HvXtCVUt3kY/RTd0sY7k6dX8ZHCOUbtq5TSS+/E9zESZegwxsG84XKdLhRbLaguYyRB81cOgmFmT5WJmcWxMWA==
+  dependencies:
+    csstype "^3.0.11"
+    lodash.mergewith "4.6.2"
+
 "@chakra-ui/switch@2.0.6":
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/@chakra-ui/switch/-/switch-2.0.6.tgz#60553d99c39bc7e4e09a242a6870c486142713d7"
