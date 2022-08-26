@@ -11,8 +11,6 @@ type InfoSectionProps = {
 const InfoSection: FC<InfoSectionProps> = ({ title, children }) => (
   <Box
     bg={colors.primary.grey2}
-    maxW="1240px"
-    m="100%"
     margin="0 auto"
     marginBottom="80px"
     padding="32px"

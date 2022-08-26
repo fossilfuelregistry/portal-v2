@@ -14,6 +14,7 @@ export const colors = {
     grey70: '#858585',
     grey25: '#BFBFBF',
     grey10: '#EBEBEB',
+    grey30: '#ccc',
     grey5: '#F6F6F6',
     grey2: '#FAFAFA',
     red: '#C4362D',
@@ -53,8 +54,8 @@ export default extendTheme({
         fontWeight: '700',
       },
       a: {
-        color: "primary.brandingBlue"
-      }
+        color: 'primary.brandingBlue',
+      },
     },
   },
 
@@ -62,7 +63,7 @@ export default extendTheme({
     menu: {
       fontSize: ['16px'],
       fontWeight: '700',
-      color: "common.black"
+      color: 'common.black',
     },
     inverse: {
       color: '#ffffff',

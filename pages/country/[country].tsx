@@ -126,6 +126,7 @@ const CountryPage: React.FC<Props> = (props) => {
 export const getStaticPaths: GetStaticPaths = async () => {
   const countries = await getProducingCountries()
   countries.push({ iso3166: '-' })
+  console.log('countries')
   return {
     // @ts-ignore
     paths: countries.flatMap((c) => [
@@ -138,6 +139,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 // @ts-ignore
-export const getStaticProps = (context) => getPageStaticProps(context, `country`)
+export const getStaticProps = (context) =>
+  getPageStaticProps(context, `country`)
 
 export default CountryPage
