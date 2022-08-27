@@ -1,9 +1,8 @@
 import React from 'react'
 import InfoSection from 'components/InfoSection'
-import ForecastChart from 'components/charts/ForecastChart'
+import ExcessReservesChart from 'components/charts/ExcessReservesChart'
 import { Box } from '@chakra-ui/react'
 import { colors } from '../../assets/theme'
-import ExcessReservesChart from 'components/charts/ExcessReservesChart'
 
 const ExcessReservesSection = () => {
   return (
@@ -15,7 +14,7 @@ const ExcessReservesSection = () => {
         selected scenario forecasts an additional AMOUNT of reserves to be
         identified out to YEAR.
       </Box>
-      <ExcessReservesChart width={1176} height={500} title="Year" />
+      <ExcessReservesChart width={1176} height={500} />
     </InfoSection>
   )
 }
