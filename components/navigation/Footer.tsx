@@ -58,5 +58,5 @@ export default function Footer({footer, texts}: FooterCompProps) {
 				</Box>
 			</CMSBlock>
 		</Box>
-	);
+	)
 }
