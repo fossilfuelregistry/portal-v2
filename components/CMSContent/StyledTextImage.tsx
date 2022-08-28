@@ -1,5 +1,6 @@
 import React from 'react'
-import {Alert, AlertDescription, AlertIcon, AlertTitle, Box, Flex, Heading, Text} from "@chakra-ui/react"
+import {Alert, AlertDescription, AlertIcon, AlertTitle, Box, Button, Flex, Heading, Text} from "@chakra-ui/react"
+import Link from "next/link";
 import {ICMSImage} from "lib/types";
 import CMSBlock from "components/CMSContent/CMSBlock";
 import CMSImage from "./CMSImage"
@@ -8,6 +9,7 @@ interface Block {
 	Text: string,
 	Headline: string,
 	Template: string,
+	Buttons: any[],
 	Image: ICMSImage
 }
 
@@ -24,11 +26,22 @@ const StyledTextImage = ({block}: Props) => {
 					<CMSImage image={block.Image}
 							  height={{base: '250px', sm: '350px', md: '450px', lg: '680px'}}/>
 					<Box position="absolute" top={0} left={0} h="100%" w="100%">
-						<Box maxWidth="1440px" m="0 auto">
+						<Box maxWidth="1440px" m="0 auto" h="100%">
 							<Flex
-								pl={{base: '24px', md: '100px'}} pt={{base: '24px', md: '100px'}}
+								direction="column"
+								h="100%"
+								justifyContent="space-between"
+								pl={{base: '24px', md: '100px'}} py={{base: '24px', md: '160px'}}
 								maxWidth="750px">
 								<Heading as="h1" textStyle="inverse">{block.Headline}</Heading>
+								{block.Buttons?.map((b: any) => (
+									<Link href={b.URL}>
+										{/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+										<a>
+											<Button variant="inverse">{b.Text}</Button>
+										</a>
+									</Link>
+								))}
 							</Flex>
 						</Box>
 					</Box>

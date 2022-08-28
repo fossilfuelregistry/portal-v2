@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
-import ReactMarkdown from "react-markdown"
 import {Box, Heading} from "@chakra-ui/react"
+import Markdown from "components/CMSContent/Markdown";
 import useTextInjectQueryResult from "./useTextInjectQueryResult"
 import CMSBlock from "./CMSBlock"
 
@@ -13,31 +13,26 @@ interface Props {
 	block: Block
 }
 
-export default function TextWithQuery( { block }: Props ) {
-	const { Text, Headline } = block
+export default function TextWithQuery({block}: Props) {
+	const {Text, Headline} = block
 	const injectQueryResult = useTextInjectQueryResult()
-	const [ result, set_result ] = useState( Text )
+	const [result, set_result] = useState(Text)
 
-	useEffect( () => {
-			const asyncEffect = async() => {
-				set_result( await injectQueryResult( Text ) )
+	useEffect(() => {
+			const asyncEffect = async () => {
+				set_result(await injectQueryResult(Text))
 			}
 			asyncEffect()
 		},
-		[ Text ] )
+		[Text])
 
 	return (
 		<CMSBlock>
-			<Box w="100%" maxWidth="710px">
-				<Heading as="h2" size="2xl">{Headline}</Heading>
-				<ReactMarkdown
-					skipHtml
-					transformImageUri={uri =>
-						uri.startsWith("http") ? uri : `${process.env.NEXT_PUBLIC_CMS_URL}${uri}`
-					}
-				>
-					{ result }
-				</ReactMarkdown>
+			<Box w="100%" maxWidth="710px" my={{base: '24px', md: '72px', lg: '120px'}}>
+				<Heading as="h2" size="2xl" mb="32px">{Headline}</Heading>
+				<Markdown>
+					{result}
+				</Markdown>
 			</Box>
 		</CMSBlock>
 	)

@@ -3,9 +3,9 @@ import {Box, chakra, Flex} from "@chakra-ui/react"
 import {FooterProps, MenuItem} from "lib/types";
 import CMSBlock from "components/CMSContent/CMSBlock";
 import {useRouter} from "next/router";
-import ReactMarkdown from "react-markdown";
 import {RenderLinkOrSubmenu} from "components/navigation/Navbar";
 import Link from "next/link";
+import Markdown from "components/CMSContent/Markdown";
 
 interface FooterCompProps {
 	footer: FooterProps,
@@ -42,7 +42,7 @@ export default function Footer({footer, texts}: FooterCompProps) {
 								<img src="/cc.svg" width="107px" alt="Creative Commons CC-BY-SA"/>
 							</Box>
 							<Box maxWidth="450px" color="rgba(255,255,255,0.4)">
-								<ReactMarkdown>{footer.Copyright}</ReactMarkdown>
+								<Markdown>{footer.Copyright}</Markdown>
 							</Box>
 						</Flex>
 						<Flex>

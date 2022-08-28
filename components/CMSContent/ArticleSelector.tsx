@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react'
-import ReactMarkdown from "react-markdown"
 import {Box, chakra, Flex, Heading, SimpleGrid} from "@chakra-ui/react"
 import {headers} from "lib/staticProps";
 import {useRouter} from "next/router";
 import {Article} from "lib/types";
 import Link from "next/link";
 import ResponsiveImage from "components/ResponsiveImage";
+import Markdown from "components/CMSContent/Markdown";
 import CMSBlock from "./CMSBlock"
 
 interface Block {
@@ -52,7 +52,7 @@ export default function ArticleSelector({block}: Props) {
 		<CMSBlock>
 			<Box w="100%" maxWidth="710px" mb="20px">
 				<Heading as="h2" size="2xl">{Headline}</Heading>
-				<ReactMarkdown skipHtml>{Intro}</ReactMarkdown>
+				<Markdown>{Intro}</Markdown>
 			</Box>
 			<SimpleGrid columns={{base: 1, md: 2}} spacing="20px">
 				{articles.map((article: Article) => (
