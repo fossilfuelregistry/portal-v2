@@ -22,6 +22,12 @@ import Footer from 'components/navigation/Footer'
 import { Country } from 'components/Map/types'
 import { FooterProps, Page } from 'lib/types'
 import ForecastSection from 'components/country/ForecastSection'
+import { Box, Heading } from '@chakra-ui/react'
+import { colors } from '../../assets/theme'
+import ReservesLifeSection from 'components/country/ReservesLifeSection'
+import ExcessReservesSection from 'components/country/ExcessReservesSection'
+import HistoricalSection from 'components/country/HistoricalSection'
+import Container from 'components/Container'
 
 export type Props = {
   sources: any
@@ -108,16 +114,39 @@ const CountryPage: React.FC<Props> = (props) => {
         type="country"
         onChangeCountry={setCountry}
       />
-      <AnnualEmissions
-        country={country}
-        constants={constants}
-        texts={texts}
-        conversions={conversions}
-        prefixConversions={prefixConversions}
-      />
-      <EmissionsIntensity />
-      <HistoricProduction />
-      <ForecastSection />
+      <Container>
+        <AnnualEmissions
+          country={country}
+          constants={constants}
+          texts={texts}
+          conversions={conversions}
+          prefixConversions={prefixConversions}
+        />
+        <EmissionsIntensity />
+        <HistoricProduction />
+        <Box h="1px" background={colors.primary.grey30} mb="80px" />
+        <Heading
+          as="h3"
+          fontSize="32px"
+          mb="24px"
+          color={colors.primary.richBlue}
+        >
+          Emissions from Fossil Fuels produced under various scenarios
+        </Heading>
+        <ForecastSection />
+        <ReservesLifeSection />
+        <ExcessReservesSection />
+        <Box h="1px" background={colors.primary.grey30} mb="80px" />
+        <Heading
+          as="h3"
+          fontSize="32px"
+          mb="24px"
+          color={colors.primary.richBlue}
+        >
+          Historical production and reserves data
+        </Heading>
+        <HistoricalSection />
+      </Container>
       <Footer footer={footer} texts={texts} />
     </div>
   )
