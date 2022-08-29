@@ -191,6 +191,7 @@ export const getPageStaticProps: GetPageStaticProps = async (context, staticSlug
 	let api
 	let endpoint = 'pages'
 	if (staticSlug === '/') slug = '/'
+	if (staticSlug === '/country') slug = '/'
 	if (staticSlug === '/article') {
 		endpoint = 'articles'
 		slug = context.params?.slug?.[0]

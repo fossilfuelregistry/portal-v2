@@ -140,6 +140,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 // @ts-ignore
 export const getStaticProps = (context) =>
-  getPageStaticProps(context, `country`)
+  getPageStaticProps(context, `/country`)
 
 export default CountryPage
