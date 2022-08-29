@@ -51,19 +51,19 @@ const productionOptions = [
 ]
 
 const HistoricProduction = () => (
-    <InfoSection title="Historic production">
-      <SimpleGrid mb="40px" columns={3} gridGap="20px">
-        <Select
-          label="Historic production source"
-          value={productionOptions[0].value}
-          options={productionOptions}
-          onChange={() => {}}
-        />
-      </SimpleGrid>
-      <Box mb="40px" position="relative">
-        <GroupBarChart data={data} width={1176} height={400} />
-      </Box>
-    </InfoSection>
-  )
+  <InfoSection title="Historic production">
+    <SimpleGrid mb="40px" columns={3} gridGap="20px">
+      <Select
+        label="Historic production source"
+        value={productionOptions[0].value}
+        options={productionOptions}
+        onChange={() => {}}
+      />
+    </SimpleGrid>
+    <Box mb="40px" position="relative">
+      <GroupBarChart data={data} width={1176} height={400} />
+    </Box>
+  </InfoSection>
+)
 
 export default HistoricProduction

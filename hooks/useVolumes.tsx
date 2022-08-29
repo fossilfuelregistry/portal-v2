@@ -11,7 +11,7 @@ const useVolumes = (emissionsData: any, productionSourceId: number) => {
     if (source) {
       const total = source.production.reduce(
         (prev: any, curr: any) =>
-          prev + (curr.co2e.scope1.co2.wa + curr.co2e.scope3.co2.wa),
+          prev + (curr.co2e.scope1.total.wa + curr.co2e.scope3.total.wa),
         0
       )
 
@@ -25,7 +25,7 @@ const useVolumes = (emissionsData: any, productionSourceId: number) => {
             // @ts-ignore
             fillColor: PIE_CHART_COLORS[p.fossilFuelType].scope1,
             quantity: p.co2e.scope1.co2.wa.toFixed(2),
-            percentage: calculatePercentage(p.co2e.scope1.co2.wa as number),
+            percentage: calculatePercentage(p.co2e.scope1.total.wa as number),
             year: p.year,
           },
           {
@@ -34,7 +34,7 @@ const useVolumes = (emissionsData: any, productionSourceId: number) => {
             // @ts-ignore
             fillColor: PIE_CHART_COLORS[p.fossilFuelType].scope3,
             quantity: p.co2e.scope3.co2.wa.toFixed(2),
-            percentage: calculatePercentage(p.co2e.scope3.co2.wa as number),
+            percentage: calculatePercentage(p.co2e.scope3.total.wa as number),
             year: p.year,
           },
         ])

@@ -28,7 +28,7 @@ const AnnualEmissions = ({
   const [emissionsData, setEmissionsData] = useState<any[]>([])
   const { volumesData } = useVolumes(emissionsData, productionSourceId)
   const { rangeData } = useRangeOfCertainty(emissionsData, productionSourceId)
-  const { getCurrentCO2E } = useCountryData({
+  const { getCurrentCO2E, production } = useCountryData({
     texts,
     gwp,
     productionSourceId,
@@ -40,6 +40,8 @@ const AnnualEmissions = ({
     constants,
     conversionPrefixes: prefixConversions,
   })
+
+  console.log('production----', production)
 
   useEffect(() => {
     if (productionSources.length && !productionSourceId) {

@@ -11,8 +11,8 @@ const useRangeOfCertainty = (
 
     if (source) {
       return source.production.reduce((prev: any, curr: any) => {
-        const { p5: p5S1, wa: waS1, p95: p95S1 } = curr.co2e.scope1.co2
-        const { p5: p5S3, wa: waS3, p95: p95S3 } = curr.co2e.scope3.co2
+        const { p5: p5S1, wa: waS1, p95: p95S1 } = curr.co2e.scope1.total
+        const { p5: p5S3, wa: waS3, p95: p95S3 } = curr.co2e.scope3.total
         const totalP5 = p5S1 + p5S3
         const totalWa = waS1 + waS3
         const totalP95 = p95S1 + p95S3
