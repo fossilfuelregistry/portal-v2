@@ -10,6 +10,10 @@ const Markdown = ({children}: Props) => (
 	<chakra.div lineHeight={{base: '28px'}}>
 		<ReactMarkdown
 			skipHtml
+			linkTarget={(href, children, title) => {
+				if(title?.startsWith('_')) return title
+				return ''
+			}}
 			transformImageUri={(uri: string) =>
 				uri.startsWith("http") ? uri : `${process.env.NEXT_PUBLIC_CMS_URL}${uri}`
 			}
