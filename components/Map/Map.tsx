@@ -89,6 +89,8 @@ const Map: FC<MapProps> = ({ country, countries, type, onChangeCountry }) => {
       localIdeographFontFamily: "'Roboto', sans-serif",
     })
 
+    map.current.scrollZoom.disable()
+
     map.current.on('load', () => {
       setIsLoaded(true)
     })

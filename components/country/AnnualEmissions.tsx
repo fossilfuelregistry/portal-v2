@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, FC } from 'react'
 import { SimpleGrid, Box } from '@chakra-ui/react'
 import PieChart from 'components/charts/PieChart'
 import InfoSection from 'components/InfoSection'
@@ -9,17 +9,28 @@ import RangeChart from 'components/charts/RangeChart'
 import ProductionSourceSelect from 'components/filters/ProductionSourceSelect'
 import useCountrySources from 'lib/useCountrySources'
 import useCountryData from 'lib/useCountryData'
+import { ConversionFactorInStore } from 'lib/types-legacy'
+import { DatabaseRecord } from 'lib/calculations/calculation-constants/types'
+import { PrefixRecord } from 'lib/calculations/prefix-conversion'
 import { colors } from '../../assets/theme'
 import useVolumes from '../../hooks/useVolumes'
 import useRangeOfCertainty from '../../hooks/useRangeOfCertainty'
 
-const AnnualEmissions = ({
+type AnnualEmissionsProps = {
+  country: string
+  texts: Record<string, string>
+  conversions: ConversionFactorInStore[]
+  constants: DatabaseRecord[]
+  prefixConversions: PrefixRecord[]
+}
+
+const AnnualEmissions: FC<AnnualEmissionsProps> = ({
   country,
   texts,
   conversions,
   constants,
   prefixConversions,
-}: any) => {
+}) => {
   const { productionSources } = useCountrySources({
     country,
   })
@@ -28,7 +39,7 @@ const AnnualEmissions = ({
   const [emissionsData, setEmissionsData] = useState<any[]>([])
   const { volumesData } = useVolumes(emissionsData, productionSourceId)
   const { rangeData } = useRangeOfCertainty(emissionsData, productionSourceId)
-  const { getCurrentCO2E, production } = useCountryData({
+  const { getCurrentCO2E } = useCountryData({
     texts,
     gwp,
     productionSourceId,
@@ -40,8 +51,6 @@ const AnnualEmissions = ({
     constants,
     conversionPrefixes: prefixConversions,
   })
-
-  console.log('production----', production)
 
   useEffect(() => {
     if (productionSources.length && !productionSourceId) {

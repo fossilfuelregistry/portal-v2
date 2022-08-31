@@ -23,11 +23,11 @@ import { Country } from 'components/Map/types'
 import { FooterProps, Page } from 'lib/types'
 import ForecastSection from 'components/country/ForecastSection'
 import { Box, Heading } from '@chakra-ui/react'
-import { colors } from '../../assets/theme'
 import ReservesLifeSection from 'components/country/ReservesLifeSection'
 import ExcessReservesSection from 'components/country/ExcessReservesSection'
 import HistoricalSection from 'components/country/HistoricalSection'
 import Container from 'components/Container'
+import { colors } from '../../assets/theme'
 
 export type Props = {
   sources: any
@@ -123,7 +123,13 @@ const CountryPage: React.FC<Props> = (props) => {
           prefixConversions={prefixConversions}
         />
         <EmissionsIntensity />
-        <HistoricProduction />
+        <HistoricProduction
+          country={country}
+          constants={constants}
+          texts={texts}
+          conversions={conversions}
+          prefixConversions={prefixConversions}
+        />
         <Box h="1px" background={colors.primary.grey30} mb="80px" />
         <Heading
           as="h3"
