@@ -8,6 +8,7 @@ import { PrefixRecord } from 'lib/calculations/prefix-conversion'
 import useCountrySources from 'lib/useCountrySources'
 import useCountryData from 'lib/useCountryData'
 import ProductionSourceSelect from 'components/filters/ProductionSourceSelect'
+import { WarmingPotential } from 'components/filters/WarmingPotentialSelect'
 
 type HistoricProductionProps = {
   country: string
@@ -40,7 +41,6 @@ const HistoricProduction: FC<HistoricProductionProps> = ({
   const { production } = useCountryData({
     texts,
     productionSourceId,
-    region: '',
     gwp: 'GWP100',
     country,
     conversionConstants: conversions,
@@ -55,8 +55,6 @@ const HistoricProduction: FC<HistoricProductionProps> = ({
       setProductionSourceId(productionSources[0].sourceId)
     }
   }, [productionSources])
-
-  console.log('productionSourceId', productionSourceId)
 
   const historicData = useMemo(() => {
     const calculateTotal = (data: any[]) =>

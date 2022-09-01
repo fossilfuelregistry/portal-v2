@@ -122,7 +122,13 @@ const CountryPage: React.FC<Props> = (props) => {
           conversions={conversions}
           prefixConversions={prefixConversions}
         />
-        <EmissionsIntensity />
+        <EmissionsIntensity
+          country={country}
+          constants={constants}
+          texts={texts}
+          conversions={conversions}
+          prefixConversions={prefixConversions}
+        />
         <HistoricProduction
           country={country}
           constants={constants}

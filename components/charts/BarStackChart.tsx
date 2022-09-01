@@ -15,61 +15,17 @@ export type BarStackProps = {
   height: number
   margin?: { top: number; right: number; bottom: number; left: number }
   title: string
+  data: any[]
 }
 
 const defaultMargin = { top: 40, right: 0, bottom: 0, left: 64 }
-
-const data = [
-  {
-    'Pre-combustion': 0.8,
-    Combustion: 0.1,
-    fuel: 'Oil',
-  },
-  {
-    'Pre-combustion': 0.7,
-    Combustion: 0.9,
-    fuel: 'Gas',
-  },
-  {
-    'Pre-combustion': 1,
-    Combustion: 0.5,
-    fuel: 'Coal',
-  },
-]
-const keys = Object.keys(data[0]).filter((d) => d !== 'fuel')
-
-const totals = data.reduce((allTotals, current: any) => {
-  const totalTemperature = keys.reduce((t: any, k) => {
-    // eslint-disable-next-line no-param-reassign
-    t += Number(current[k])
-    return t
-  }, 0)
-  allTotals.push(totalTemperature)
-  return allTotals
-}, [] as number[])
-
-// accessors
-const getFuel = (d: any) => d.fuel
-
-// scales
-const fuelScale = scaleBand<string>({
-  domain: data.map(getFuel),
-  padding: 0.6,
-})
-const combustionScale = scaleLinear<number>({
-  domain: [0, Math.max(...totals)],
-  nice: true,
-})
-const colorScale = scaleOrdinal<any, string>({
-  domain: keys,
-  range: ['#4C6EE6', '#87BFFF'],
-})
 
 const BarStackChart: FC<BarStackProps> = ({
   width,
   height,
   margin = defaultMargin,
   title,
+  data,
 }) => {
   const {
     tooltipOpen,
@@ -80,10 +36,41 @@ const BarStackChart: FC<BarStackProps> = ({
     showTooltip,
   } = useTooltip<TooltipData>()
 
+  console.log('data-----', data)
+
   if (width < 10) return null
   // bounds
   const xMax = width - margin.left
   const yMax = height - margin.top - 30
+
+  const keys = Object.keys(data[0]).filter((d) => d !== 'fuel')
+
+  const totals = data.reduce((allTotals, current: any) => {
+    const totalTemperature = keys.reduce((t: any, k) => {
+      // eslint-disable-next-line no-param-reassign
+      t += Number(current[k])
+      return t
+    }, 0)
+    allTotals.push(totalTemperature)
+    return allTotals
+  }, [] as number[])
+
+  // accessors
+  const getFuel = (d: any) => d.fuel
+
+  // scales
+  const fuelScale = scaleBand<string>({
+    domain: data.map(getFuel),
+    padding: 0.6,
+  })
+  const combustionScale = scaleLinear<number>({
+    domain: [0, Math.max(...totals)],
+    nice: true,
+  })
+  const colorScale = scaleOrdinal<any, string>({
+    domain: keys,
+    range: ['#4C6EE6', '#87BFFF'],
+  })
 
   fuelScale.rangeRound([0, xMax])
   combustionScale.range([yMax, 0])
@@ -164,7 +151,7 @@ const BarStackChart: FC<BarStackProps> = ({
         </g>
         <AxisBottom
           top={yMax + margin.top}
-          left={54}
+          left={56}
           scale={fuelScale}
           tickStroke="transparent"
           hideAxisLine
