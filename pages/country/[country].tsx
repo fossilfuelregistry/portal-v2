@@ -104,6 +104,8 @@ const CountryPage: React.FC<Props> = (props) => {
    */
   getCurrentCO2E()
 
+  console.log('with real data', country)
+
   return (
     <div id="page_main">
       <Navbar menu={menu} texts={texts} />
@@ -114,51 +116,53 @@ const CountryPage: React.FC<Props> = (props) => {
         type="country"
         onChangeCountry={setCountry}
       />
-      <Container>
-        <AnnualEmissions
-          country={country}
-          constants={constants}
-          texts={texts}
-          conversions={conversions}
-          prefixConversions={prefixConversions}
-        />
-        <EmissionsIntensity
-          country={country}
-          constants={constants}
-          texts={texts}
-          conversions={conversions}
-          prefixConversions={prefixConversions}
-        />
-        <HistoricProduction
-          country={country}
-          constants={constants}
-          texts={texts}
-          conversions={conversions}
-          prefixConversions={prefixConversions}
-        />
-        <Box h="1px" background={colors.primary.grey30} mb="80px" />
-        <Heading
-          as="h3"
-          fontSize="32px"
-          mb="24px"
-          color={colors.primary.richBlue}
-        >
-          Emissions from Fossil Fuels produced under various scenarios
-        </Heading>
-        <ForecastSection />
-        <ReservesLifeSection />
-        <ExcessReservesSection />
-        <Box h="1px" background={colors.primary.grey30} mb="80px" />
-        <Heading
-          as="h3"
-          fontSize="32px"
-          mb="24px"
-          color={colors.primary.richBlue}
-        >
-          Historical production and reserves data
-        </Heading>
-        <HistoricalSection />
-      </Container>
+      {country !== 'global' && (
+        <Container>
+          <AnnualEmissions
+            country={country}
+            constants={constants}
+            texts={texts}
+            conversions={conversions}
+            prefixConversions={prefixConversions}
+          />
+          <EmissionsIntensity
+            country={country}
+            constants={constants}
+            texts={texts}
+            conversions={conversions}
+            prefixConversions={prefixConversions}
+          />
+          <HistoricProduction
+            country={country}
+            constants={constants}
+            texts={texts}
+            conversions={conversions}
+            prefixConversions={prefixConversions}
+          />
+          <Box h="1px" background={colors.primary.grey30} mb="80px" />
+          <Heading
+            as="h3"
+            fontSize="32px"
+            mb="24px"
+            color={colors.primary.richBlue}
+          >
+            Emissions from Fossil Fuels produced under various scenarios
+          </Heading>
+          <ForecastSection />
+          <ReservesLifeSection />
+          <ExcessReservesSection />
+          <Box h="1px" background={colors.primary.grey30} mb="80px" />
+          <Heading
+            as="h3"
+            fontSize="32px"
+            mb="24px"
+            color={colors.primary.richBlue}
+          >
+            Historical production and reserves data
+          </Heading>
+          <HistoricalSection />
+        </Container>
+      )}
       <Footer footer={footer} texts={texts} />
     </div>
   )
