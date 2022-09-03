@@ -160,7 +160,13 @@ const CountryPage: React.FC<Props> = (props) => {
           >
             Historical production and reserves data
           </Heading>
-          <HistoricalSection />
+          <HistoricalSection
+            country={country}
+            constants={constants}
+            texts={texts}
+            conversions={conversions}
+            prefixConversions={prefixConversions}
+          />
         </Container>
       )}
       <Footer footer={footer} texts={texts} />

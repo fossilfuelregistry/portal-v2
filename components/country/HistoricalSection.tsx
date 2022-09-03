@@ -1,12 +1,58 @@
-import React from 'react'
+import React, { FC } from 'react'
 import InfoSection from 'components/InfoSection'
 import LineChart from 'components/charts/LineChart'
+import { ConversionFactorInStore } from 'lib/types-legacy'
+import { DatabaseRecord } from 'lib/calculations/calculation-constants/types'
+import { PrefixRecord } from 'lib/calculations/prefix-conversion'
+import useCountrySources from 'lib/useCountrySources'
+import HistoricalFuel from 'components/country/HistoricalFuel'
 
-const HistoricalSection = () => {
+type HistoricalSectionProps = {
+  country: string
+  texts: Record<string, string>
+  conversions: ConversionFactorInStore[]
+  constants: DatabaseRecord[]
+  prefixConversions: PrefixRecord[]
+}
+
+const HistoricalSection: FC<HistoricalSectionProps> = ({
+  country,
+  texts,
+  conversions,
+  constants,
+  prefixConversions,
+}) => {
+  const { productionSources, reservesSources } = useCountrySources({
+    country,
+  })
+
   return (
-    <InfoSection title="Historical Oil production">
-      <LineChart title="Million barrels" fuel="oil" width={1176} height={400} />
-    </InfoSection>
+    <>
+      <HistoricalFuel
+        sourceType="production"
+        fuel="oil"
+        title="Historical Oil production"
+        measure="Million barrels"
+        sources={productionSources}
+        country={country}
+        texts={texts}
+        conversions={conversions}
+        constants={constants}
+        prefixConversions={prefixConversions}
+      />
+      <HistoricalFuel
+        sourceType="reserves"
+        fuel="oil"
+        title="Historical Oil Reserves"
+        measure="Million barrels"
+        sources={reservesSources}
+        country={country}
+        texts={texts}
+        conversions={conversions}
+        constants={constants}
+        prefixConversions={prefixConversions}
+      />
+    </>
   )
 }
 

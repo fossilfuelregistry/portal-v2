@@ -7,8 +7,7 @@ import { DatabaseRecord } from 'lib/calculations/calculation-constants/types'
 import { PrefixRecord } from 'lib/calculations/prefix-conversion'
 import useCountrySources from 'lib/useCountrySources'
 import useCountryData from 'lib/useCountryData'
-import ProductionSourceSelect from 'components/filters/ProductionSourceSelect'
-import { WarmingPotential } from 'components/filters/WarmingPotentialSelect'
+import SourceSelect from 'components/filters/SourceSelect'
 
 type HistoricProductionProps = {
   country: string
@@ -85,7 +84,8 @@ const HistoricProduction: FC<HistoricProductionProps> = ({
   return (
     <InfoSection title="Historic production">
       <SimpleGrid mb="40px" columns={3} gridGap="20px">
-        <ProductionSourceSelect
+        <SourceSelect
+          label="Production estimates source"
           sources={productionSources}
           value={productionSourceId}
           onChange={(option) => setProductionSourceId(option?.value as any)}

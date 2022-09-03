@@ -14,12 +14,11 @@ type LineChartProps = {
   title: string
   width: number
   height: number
-  fuel: string
 }
 
 const COLORS = ['#87BFFF', '#4C6EE6', '#52B9BF', '#81D986']
 
-const LineChart: FC<LineChartProps> = ({ width, height, title, fuel }) => {
+const LineChart: FC<LineChartProps> = ({ width, height, title }) => {
   const years: any = [
     1970, 1971, 1972, 1973, 1974, 1975, 1976, 1977, 1978, 1979, 1980, 1981,
     1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 1991, 1992, 1993,
@@ -27,7 +26,7 @@ const LineChart: FC<LineChartProps> = ({ width, height, title, fuel }) => {
     2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017,
     2018, 2019, 2020,
   ]
-  const sources: any = [3, 2]
+  const sources: any = [3, 2, 1]
   const dataset: any = [
     { '3': 0.04, year: 1970 },
     { '3': 0.044, year: 1971 },

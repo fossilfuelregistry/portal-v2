@@ -6,7 +6,7 @@ import WarmingPotentialSelect, {
   WarmingPotential,
 } from 'components/filters/WarmingPotentialSelect'
 import RangeChart from 'components/charts/RangeChart'
-import ProductionSourceSelect from 'components/filters/ProductionSourceSelect'
+import SourceSelect from 'components/filters/SourceSelect'
 import useCountrySources from 'lib/useCountrySources'
 import useCountryData from 'lib/useCountryData'
 import { ConversionFactorInStore } from 'lib/types-legacy'
@@ -75,7 +75,8 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({
           value={gwp}
           onChange={(option) => setGwp(option?.value as string)}
         />
-        <ProductionSourceSelect
+        <SourceSelect
+          label="Production estimates source"
           sources={productionSources}
           value={productionSourceId}
           onChange={(option) => setProductionSourceId(option?.value as any)}
