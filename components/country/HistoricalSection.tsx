@@ -52,6 +52,54 @@ const HistoricalSection: FC<HistoricalSectionProps> = ({
         constants={constants}
         prefixConversions={prefixConversions}
       />
+      <HistoricalFuel
+        sourceType="production"
+        fuel="gas"
+        title="Historical Gas production"
+        measure="Billion cubic metres"
+        sources={productionSources}
+        country={country}
+        texts={texts}
+        conversions={conversions}
+        constants={constants}
+        prefixConversions={prefixConversions}
+      />
+      <HistoricalFuel
+        sourceType="reserves"
+        fuel="gas"
+        title="Historical Gas Reserves"
+        measure="Billion cubic metres"
+        sources={reservesSources}
+        country={country}
+        texts={texts}
+        conversions={conversions}
+        constants={constants}
+        prefixConversions={prefixConversions}
+      />
+      <HistoricalFuel
+        sourceType="production"
+        fuel="coal"
+        title="Historical Coal production"
+        measure="Thousand tonnes"
+        sources={productionSources}
+        country={country}
+        texts={texts}
+        conversions={conversions}
+        constants={constants}
+        prefixConversions={prefixConversions}
+      />
+      <HistoricalFuel
+        sourceType="reserves"
+        fuel="coal"
+        title="Historical Coal Reserves"
+        measure="Thousand tonnes"
+        sources={reservesSources}
+        country={country}
+        texts={texts}
+        conversions={conversions}
+        constants={constants}
+        prefixConversions={prefixConversions}
+      />
     </>
   )
 }

@@ -36,17 +36,15 @@ const HistoricalFuel: FC<HistoricalFuelProps> = ({
   title,
   measure,
 }) => {
-  const [emissionsData, setEmissionsData] = useState<any[]>([])
   const [sourceId, setSourceId] = useState<number>(0)
   // @ts-ignore
-  const { getCurrentCO2E, production, reserves } = useCountryData({
+  const { production, reserves } = useCountryData({
     texts,
     region: '',
     country,
-    gwp: 'GWP100',
     conversionConstants: conversions,
-    productionSourceId: sourceId,
-    reservesSourceId: sourceId,
+    productionSourceId: 2,
+    reservesSourceId: 2,
     // @ts-ignore
     allSources: sources,
     constants,
@@ -55,50 +53,42 @@ const HistoricalFuel: FC<HistoricalFuelProps> = ({
 
   const conversion = usePrefixConversion(prefixConversions)
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    const calculateData = async () => {
-      const data = await getCurrentCO2E()
-      setEmissionsData(data as any[])
-      console.log('HistoricalFuel-pro', production)
-      conversion('e6m3', 'e9m3')
-      console.log('HistoricalFuel-e9m3', conversion('e3bblsday', 'e6bbl'))
-    }
+  const sourceData = useMemo(() => {
+    const data = sourceType === 'production' ? production : reserves
+    const filteredByFuel = data.filter((d) => d.fossilFuelType === fuel)
+    const filteredBySource = sourceId
+      ? filteredByFuel.filter((d) => d.sourceId === sourceId)
+      : filteredByFuel
 
-    calculateData()
-  }, [country, sourceId])
-
-  const data = useMemo(() => {
     const years: number[] = []
     const sources: any[] = []
     const dataset: any[] = []
     let currentYearSet: any = {}
     let max: number = 0
 
-    emissionsData?.length &&
-      emissionsData[0].production.forEach((point: any) => {
-        if (point.fossilFuelType !== fuel) return
+    filteredBySource.forEach((point: any) => {
+      if (point.fossilFuelType !== fuel) return
 
-        if (!sources.includes(point.sourceId)) {
-          sources.push(point.sourceId)
-        }
+      if (!sources.includes(point.sourceId)) {
+        sources.push(point.sourceId)
+      }
 
-        if (!years.includes(point.year)) {
-          years.push(point.year)
-          currentYearSet = { year: point.year }
-          dataset.push(currentYearSet)
-        }
+      if (!years.includes(point.year)) {
+        years.push(point.year)
+        currentYearSet = { year: point.year }
+        dataset.push(currentYearSet)
+      }
 
-        let y
-        if (point.fossilFuelType === 'gas') y = conversion(point.unit, 'e9m3')
-        if (point.fossilFuelType === 'oil') y = conversion(point.unit, 'e6bbl')
-        if (point.fossilFuelType === 'coal') y = conversion(point.unit, 'e6ton')
+      let y
+      if (point.fossilFuelType === 'gas') y = conversion(point.unit, 'e9m3')
+      if (point.fossilFuelType === 'oil') y = conversion(point.unit, 'e6bbl')
+      if (point.fossilFuelType === 'coal') y = conversion(point.unit, 'e6ton')
 
-        currentYearSet[point.sourceId] = y
+      currentYearSet[point.sourceId] = y
 
-        // @ts-ignore
-        max = Math.max(max, y)
-      })
+      // @ts-ignore
+      max = Math.max(max, y)
+    })
 
     return {
       years,
@@ -107,12 +97,7 @@ const HistoricalFuel: FC<HistoricalFuelProps> = ({
       currentYearSet,
       max,
     }
-  }, [emissionsData])
-
-  console.log('HistoricalFuel-sourceId', sourceId)
-  console.log('HistoricalFuel type', sourceType)
-  console.log('HistoricalFuel-data', emissionsData)
-  console.log('HistoricalFuel-ready', data)
+  }, [production, reserves, fuel, sourceId, country])
 
   return (
     <InfoSection title={title}>
@@ -125,7 +110,13 @@ const HistoricalFuel: FC<HistoricalFuelProps> = ({
           onChange={(option) => setSourceId(option?.value as any)}
         />
       </SimpleGrid>
-      <LineChart title={measure} width={1176} height={400} />
+      <LineChart
+        title={measure}
+        data={sourceData}
+        allSources={sources}
+        width={1176}
+        height={400}
+      />
     </InfoSection>
   )
 }
