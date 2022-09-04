@@ -29,7 +29,7 @@ import {
 import { DatabaseRecord } from './calculations/calculation-constants/types'
 import { PrefixRecord } from './calculations/prefix-conversion'
 
-const DEBUG = true
+const DEBUG = false
 
 type Props = {
   texts: Record<string, string>
@@ -143,7 +143,7 @@ const useCountryData = ({
 
   const projection = useMemo(() => {
     try {
-      console.info({ stableProduction })
+      // console.info({ stableProduction })
       // Synthesize stable projection data points if selected
       if (projectionSourceId === settings.stableProductionSourceId) {
         if (!stableProduction?.oil) return []
@@ -222,7 +222,6 @@ const useCountryData = ({
   }, [production, productionSourceId, gwp])
 
   // Figure out available years when data loaded.
-
   useEffect(() => {
     if (!(production?.length > 0)) return
 
@@ -393,25 +392,6 @@ const useCountryData = ({
     grades,
   ])
 
-  /* if (loadingProduction || errorLoadingProduction)
-    return (
-      <GraphQLStatus
-        loading={loadingProduction}
-        error={errorLoadingProduction}
-      />
-    )
-  if (loadingProjection || errorLoadingProjection)
-    return (
-      <GraphQLStatus
-        loading={loadingProjection}
-        error={errorLoadingProjection}
-      />
-    )
-  if (loadingReserves || errorLoadingReserves)
-    return (
-      <GraphQLStatus loading={loadingReserves} error={errorLoadingReserves} />
-    )
-*/
   // Don't try to render a chart until all data looks good
   if (
     // @ts-ignore

@@ -186,6 +186,7 @@ export const GQL_projectProduction = gql`
                 subtype
                 sourceId
                 quality
+                projectId
             }
         }
     }
