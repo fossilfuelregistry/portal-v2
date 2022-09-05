@@ -80,9 +80,14 @@ const HistoricalFuel: FC<HistoricalFuelProps> = ({
       }
 
       let y
-      if (point.fossilFuelType === 'gas') y = conversion(point.unit, 'e9m3')
-      if (point.fossilFuelType === 'oil') y = conversion(point.unit, 'e6bbl')
-      if (point.fossilFuelType === 'coal') y = conversion(point.unit, 'e6ton')
+      if (point.fossilFuelType === 'gas')
+        y = (conversion(point?.unit, 'e9m3') ?? 1) * point.volume
+      if (point.fossilFuelType === 'oil')
+        y = (conversion(point.unit, 'e6bbl') ?? 1) * point.volume
+
+      if (point.fossilFuelType === 'coal') {
+        y = (conversion(point.unit, 'e6ton') ?? 1) * point.volume
+      }
 
       currentYearSet[point.sourceId] = y
 
@@ -98,6 +103,8 @@ const HistoricalFuel: FC<HistoricalFuelProps> = ({
       max,
     }
   }, [production, reserves, fuel, sourceId, country])
+
+  console.log('sourceData', sourceData)
 
   return (
     <InfoSection title={title}>
