@@ -70,6 +70,7 @@ const useProjectData = ({
     co2FromVolume,
     reservesProduction,
     co2eFromVolume,
+	projectCO2,
   } = useConversionHooks({
     conversionConstants,
     allSources,
@@ -307,24 +308,6 @@ const useProjectData = ({
     DEBUG && console.info('What to do?', { limits, production })
   }
 
-  // const { data:projectData , loading, error } = useQuery( GQL_project, {
-	// 	variables: { id: projectId },
-	// 	skip: !projectId
-	// } )
-
-  // const theProject = projectData?.project ?? {}
-
-  //   DEBUG && console.log({theProject})
-
-  //   const pppp = useMemo( () => {
-	// 	if( !theProject?.id ) return {}
-	// 	const co2 = projectCO2( theProject )
-	// 	DEBUG && console.info( 'DenseProject projectCO2', { theProject, co2 } )
-	// 	return co2
-	// }, [ theProject?.id ] )
-
-  // console.log({pppp})
-
   const isLoading = loadingProduction || loadingProjection || loadingReserves
 
   return {
@@ -333,6 +316,7 @@ const useProjectData = ({
     projection,
     reserves,
     projectedProduction,
+	projectCO2
   }
 }
 

@@ -9,6 +9,6 @@ export type ProjectSourcesRecord = {
     namePretty: 'name_projection_stable_pretty' | string | null
     quality: number | null
     records: null | any
-    sourceId: string
+    sourceId: number
     url: string | undefined
 }

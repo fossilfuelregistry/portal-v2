@@ -26,13 +26,13 @@ export type Graphs = {
 }
 
 export type Source = {
-  description: string
-  name: string
-  namePretty: string
+  description: string | undefined | null
+  name: string | undefined | null
+  namePretty: string | undefined | null
   sourceId: number
-  url: string
-  documentUrl: string | null
-  latestCurationAt: string | null
+  url: string |  undefined | null
+  documentUrl: string | undefined | null
+  latestCurationAt: string | undefined | null
 }
 
 /**

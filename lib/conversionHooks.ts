@@ -426,10 +426,11 @@ export const useConversionHooks = (props: Props) => {
       )
       DEBUG && console.log({ points, fuel, fuelData, lastYearProd })
       if (lastYearProd.year === 0) return
-      const co2 = co2FromVolume({
+      const co2 = co2eFromVolume({
         ...lastYearProd,
         projectId: project.id,
       })
+
       let targetUnit
 
       switch (fuel) {
@@ -449,13 +450,6 @@ export const useConversionHooks = (props: Props) => {
       // @ts-ignore
       co2.dataYear = lastYearProd.dataYear
 
-      // co2.productionVolume = convertVolume(lastYearProd, targetUnit)
-
-      // @ts-ignore
-      co2.scope1 = co2.scope1?.map((c) => Math.round(c * 100) / 100)
-      // @ts-ignore
-      co2.scope3 = co2.scope3?.map((c) => Math.round(c * 100) / 100)
-
       const sources = fuelData.reduce((s, p) => {
         // @ts-ignore
         if (!s.includes(p.sourceId)) s.push(p.sourceId)
@@ -463,19 +457,17 @@ export const useConversionHooks = (props: Props) => {
       }, [])
 
       // @ts-ignore
-      co2.productionString = `${co2.productionVolume?.toFixed(1)} ${getText('targetUnit')} ${getText(fuel)}`
-      // @ts-ignore
-      co2.sources = sources.map((id) =>
-        allSources.find((s) => s.sourceId === id)
+      co2.sources = sources?.map((id) =>
+        allSources?.find((s) => s.sourceId === id)
       )
       // @ts-ignore
       productionPerFuel[fuel] = co2
       // @ts-ignore
       productionPerFuel.fuels.push(fuel)
       // eslint-disable-next-line no-unsafe-optional-chaining
-      productionPerFuel.totalCO2 += co2.scope1?.[1]
+      productionPerFuel.totalCO2 += co2.scope1?.total.wa
       // eslint-disable-next-line no-unsafe-optional-chaining
-      productionPerFuel.totalCO2 += co2.scope3?.[1]
+      productionPerFuel.totalCO2 += co2.scope3?.total.wa
     })
     DEBUG && console.info('CO2', productionPerFuel)
     return productionPerFuel

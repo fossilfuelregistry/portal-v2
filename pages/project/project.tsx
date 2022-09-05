@@ -3,7 +3,7 @@
 /* eslint-disable camelcase */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unused-prop-types */
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { GetStaticPaths } from 'next'
 import { useRouter } from 'next/router'
 import Navbar from 'components/navigation/Navbar'
@@ -11,7 +11,7 @@ import Navbar from 'components/navigation/Navbar'
 import { getPageStaticProps, getProducingCountries } from 'lib/staticProps'
 import { ConversionFactorInStore } from 'lib/types-legacy'
 import { PrefixRecord } from 'lib/calculations/prefix-conversion'
-import { useApolloClient } from '@apollo/client'
+import { useApolloClient, useQuery } from '@apollo/client'
 import { DatabaseRecord } from 'lib/calculations/calculation-constants/types'
 import useCountryData from 'lib/useCountryData'
 import useCountrySources from 'lib/useCountrySources'
@@ -20,6 +20,7 @@ import useProjectSources from 'lib/useProjectSources'
 // eslint-disable-next-line import/no-named-as-default
 import useConversionHooks from 'lib/conversionHooks'
 import useProjectData from 'lib/useProjectData'
+import { GQL_project } from 'queries/country'
 
 export type Props = {
   sources: any
@@ -79,7 +80,7 @@ const allProjectsInACountry = useCountryProjects({country})
       country,
       conversionConstants: conversions,
       // @ts-ignore
-      allSources: productionSources,
+      allSources: projectSources,
       constants,
       conversionPrefixes: prefixConversions,
     })
@@ -100,8 +101,7 @@ const allProjectsInACountry = useCountryProjects({country})
       country,
       conversionConstants: conversions,
       constants,
-      // @ts-ignore
-      allSources: projectSources,
+      allSources: projectSources.productionSources,
       // @ts-ignore
       stableProduction: {},
       prefixes: prefixConversions,
@@ -109,9 +109,25 @@ const allProjectsInACountry = useCountryProjects({country})
 
   // useProject({projectId: 45352})
 
-  // useProjectData2
-
   // console.log({gg})
+
+   const { data:projectData , loading, error } = useQuery( GQL_project, {
+		variables: { id: projectId },
+		skip: !projectId
+	} )
+
+  const theProject = projectData?.project ?? {}
+
+    DEBUG && console.log({theProject})
+
+    const projInfo = useMemo( () => {
+		if( !theProject?.id ) return {}
+		const co2 = gg.projectCO2( theProject )
+		DEBUG && console.info( 'DenseProject projectCO2', { theProject, co2 } )
+		return co2
+	}, [ theProject?.id ] )
+
+   console.log({projInfo})
 
 
   return (
