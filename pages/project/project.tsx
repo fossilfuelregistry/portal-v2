@@ -19,7 +19,6 @@ import useCountryProjects from 'lib/useCountryProjects'
 import useProjectSources from 'lib/useProjectSources'
 // eslint-disable-next-line import/no-named-as-default
 import useConversionHooks from 'lib/conversionHooks'
-import useProject from 'lib/useProject__OLD'
 import useProjectData from 'lib/useProjectData'
 
 export type Props = {
