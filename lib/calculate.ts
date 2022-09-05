@@ -5,7 +5,7 @@ import { FossilFuelType } from 'lib/types'
 import { NextRouter } from 'next/router'
 import settings from 'settings'
 // eslint-disable-next-line import/no-cycle
-import { CO2EScope, FuelWithScope, Grades, ReservesData } from './types-legacy'
+import { CO2EScope, CombinedPoint, FuelWithScope, Grades, ReservesData, ScopeKey } from './types-legacy'
 
 const DEBUG = false
 
@@ -275,4 +275,48 @@ export function getPreferredReserveGrade(grades: string[]): string {
   else _cGrade = `${settings.gradesPreferenceOrder[cGrade]}c`
 
   return `${_pGrade}/${_cGrade}`
+}
+
+
+export function combineOilAndGasAndCoal(dataset: Dataset[]): CombinedPoint[] {
+  const newDataset: object[] = [];
+  let nextCombinedPoint = { year: 0 };
+
+  dataset.forEach((d) => {
+    if (nextCombinedPoint.year !== d.year) {
+      if (nextCombinedPoint.year !== 0) newDataset.push(nextCombinedPoint);
+      nextCombinedPoint = { year: d.year };
+    }
+    // @ts-ignore
+    nextCombinedPoint[d.fossilFuelType] = d;
+  });
+  newDataset.push(nextCombinedPoint);
+  return newDataset as CombinedPoint[];
+}
+
+export function addToTotal(
+  total: CO2EScope,
+  datapoint: CO2EScope | undefined,
+) {
+  if (!total) {
+    console.trace();
+    console.log({ datapoint });
+    throw new Error( 'Calculation problem, addToTotal( undefined, ... )' )
+  }
+  if (!datapoint) return;
+  const scopes = Object.keys(datapoint) as ScopeKey[];
+  if (!scopes?.length) return;
+  const ranges = Object.keys(datapoint[scopes[0]]).map((n) => parseInt(n, 10));
+
+  scopes.forEach((scope) => {
+    ranges?.forEach((range) => {
+      // eslint-disable-next-line no-param-reassign
+      if (!total[scope]) total[scope] = [0, 0, 0];
+      // eslint-disable-next-line no-param-reassign
+      if (!total[scope][range]) total[scope][range] = 0;
+      // eslint-disable-next-line no-param-reassign
+      total[scope][range] +=
+        datapoint[scope][range];
+    });
+  });
 }

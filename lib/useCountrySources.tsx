@@ -2,8 +2,7 @@
 /* eslint-disable no-unused-vars */
 import { useQuery } from '@apollo/client'
 import {
-  GQL_countryBorder,
-  GQL_countryCurrentProduction,
+  GQL_CountrySources,
   GQL_countrySources,
 } from 'queries/country'
 import { GQL_countrySourcesRecord } from 'queries/country-types'
@@ -14,7 +13,7 @@ export type Props = {
   country: string
 }
 
-const DEBUG = true
+const DEBUG = false
 
 const useCountrySources = ({ country }: Props) => {
   const { data: _countrySources, loading: cLoad } = useQuery(
@@ -23,10 +22,10 @@ const useCountrySources = ({ country }: Props) => {
       variables: { iso3166: country },
       skip: !country,
     }
-  )
+  ) as GQL_CountrySources
   const productionSources = (
     (_countrySources?.getCountrySources?.nodes ??
-      []) as GQL_countrySourcesRecord[]
+      [])
   )
     .filter((s) => s.dataType === 'PRODUCTION')
     .sort((a, b) => Math.sign((b.quality ?? 0) - (a.quality ?? 0)))
