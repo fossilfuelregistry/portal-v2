@@ -36,7 +36,10 @@ const getFactor =
           E.left(
             new Error(`Could not find prefix factor from ${from} to ${to}`)
           ),
-        () => E.right(graph.getEdgeWeight(from, to))
+        () => {
+          const paths = graph.shortestPath(from, to);
+          return E.right(paths.reduce((prev, curr, i)=>prev * graph.getEdgeWeight(curr, paths[i+1]), 1))
+        }
       ),
       E.getOrElse((e) => {
         console.error(e)
