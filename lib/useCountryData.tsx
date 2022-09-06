@@ -33,16 +33,14 @@ const DEBUG = false
 
 type Props = {
   texts: Record<string, string>
-  projectionSources: RawDataset[]
   gwp: string
   reservesSourceId: number
   projectionSourceId: number
   productionSourceId: number
-  region: string
+  region?: string
   country: string
 
   conversionConstants: ConversionFactorInStore[]
-  allSources: Source[]
   constants: DatabaseRecord[]
   conversionPrefixes: PrefixRecord[]
 }
@@ -56,7 +54,6 @@ const useCountryData = ({
   region,
   country,
   conversionConstants,
-  allSources,
   constants,
   conversionPrefixes,
 }: Props) => {
@@ -74,7 +71,6 @@ const useCountryData = ({
     getCountryCurrentCO2,
   } = useConversionHooks({
     conversionConstants,
-    allSources,
     gwp,
     country,
     // @ts-ignore

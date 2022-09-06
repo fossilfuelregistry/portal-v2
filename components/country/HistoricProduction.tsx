@@ -8,6 +8,7 @@ import { PrefixRecord } from 'lib/calculations/prefix-conversion'
 import useCountrySources from 'lib/useCountrySources'
 import useCountryData from 'lib/useCountryData'
 import SourceSelect from 'components/filters/SourceSelect'
+import groupBy from '../../utils/groupBy'
 
 type HistoricProductionProps = {
   country: string
@@ -18,13 +19,6 @@ type HistoricProductionProps = {
 }
 
 const startYear = 2010
-
-const groupBy = <T, K extends keyof any>(arr: T[], key: (i: T) => K) =>
-  arr.reduce((groups, item) => {
-    // eslint-disable-next-line no-param-reassign
-    ;(groups[key(item)] ||= []).push(item)
-    return groups
-  }, {} as Record<K, T[]>)
 
 const HistoricProduction: FC<HistoricProductionProps> = ({
   country,

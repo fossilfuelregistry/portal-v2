@@ -38,7 +38,7 @@ const DEBUG = true
 
 type Props = {
   conversionConstants: ConversionFactorInStore[]
-  allSources: Source[]
+  allSources?: Source[]
   gwp: 'GWP100' | 'GWP20' | string
   country: string
   stableProduction: StableProduction

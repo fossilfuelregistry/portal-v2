@@ -36,8 +36,6 @@ const BarStackChart: FC<BarStackProps> = ({
     showTooltip,
   } = useTooltip<TooltipData>()
 
-  console.log('data-----', data)
-
   if (width < 10) return null
   // bounds
   const xMax = width - margin.left

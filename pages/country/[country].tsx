@@ -148,7 +148,13 @@ const CountryPage: React.FC<Props> = (props) => {
           >
             Emissions from Fossil Fuels produced under various scenarios
           </Heading>
-          <ForecastSection />
+          <ForecastSection
+            country={country}
+            constants={constants}
+            texts={texts}
+            conversions={conversions}
+            prefixConversions={prefixConversions}
+          />
           <ReservesLifeSection />
           <ExcessReservesSection />
           <Box h="1px" background={colors.primary.grey30} mb="80px" />
