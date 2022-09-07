@@ -118,24 +118,14 @@ const CountryPage: React.FC<Props> = (props) => {
 						<EmissionsIntensity country={country}/>
 						<HistoricProduction country={country}/>
 						<Box h="1px" background={colors.primary.grey30} mb="80px"/>
-						<Heading
-							as="h3"
-							fontSize="32px"
-							mb="24px"
-							color={colors.primary.richBlue}
-						>
+						<Heading as="h3" fontSize="32px" mb="24px" color={colors.primary.richBlue}>
 							{texts.future_emissions}
 						</Heading>
 						<ForecastSection country={country}/>
 						<ReservesLifeSection/>
 						<ExcessReservesSection/>
 						<Box h="1px" background={colors.primary.grey30} mb="80px"/>
-						<Heading
-							as="h3"
-							fontSize="32px"
-							mb="24px"
-							color={colors.primary.richBlue}
-						>
+						<Heading as="h3" fontSize="32px" mb="24px" color={colors.primary.richBlue}>
 							Historical production and reserves data
 						</Heading>
 						<HistoricalSection country={country}/>
