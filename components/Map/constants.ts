@@ -11,11 +11,11 @@ export const COMBUSTION_OPTIONS: SelectOption[] = [
     value: '',
   },
   {
-    label: 'Combustion',
+    label: 'Pre-combustion',
     value: 'scope1',
   },
   {
-    label: 'Pre-combustion',
+    label: 'Combustion',
     value: 'scope3',
   },
 ]

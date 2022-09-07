@@ -1,16 +1,18 @@
-import React, {FC, useContext, useEffect, useState} from 'react'
-import {Box, SimpleGrid} from '@chakra-ui/react'
+import React, { FC, useContext, useEffect, useState } from 'react'
+import { Box, SimpleGrid } from '@chakra-ui/react'
 import PieChart from 'components/charts/PieChart'
 import InfoSection from 'components/InfoSection'
-import WarmingPotentialSelect, {WarmingPotential,} from 'components/filters/WarmingPotentialSelect'
+import WarmingPotentialSelect, {
+  WarmingPotential,
+} from 'components/filters/WarmingPotentialSelect'
 import RangeChart from 'components/charts/RangeChart'
 import SourceSelect from 'components/filters/SourceSelect'
 import useCountrySources from 'lib/useCountrySources'
 import useCountryData from 'lib/useCountryData'
-import {StaticData} from 'lib/types'
-import useText from "lib/useText";
-import {DataContext} from "components/DataContext";
-import {colors} from '../../assets/theme'
+import { StaticData } from 'lib/types'
+import useText from 'lib/useText'
+import { DataContext } from 'components/DataContext'
+import { colors } from '../../assets/theme'
 import useVolumes from '../../hooks/useVolumes'
 import useRangeOfCertainty from '../../hooks/useRangeOfCertainty'
 
@@ -18,10 +20,10 @@ type AnnualEmissionsProps = {
   country: string
 }
 
-const AnnualEmissions: FC<AnnualEmissionsProps> = ({country}) => {
-  const {translate} = useText()
-  const staticData: StaticData =  useContext(DataContext)
-  const {countries, conversions, constants, prefixConversions, texts} = staticData
+const AnnualEmissions: FC<AnnualEmissionsProps> = ({ country }) => {
+  const { translate } = useText()
+  const staticData: StaticData = useContext(DataContext)
+  const { conversions, constants, prefixConversions, texts } = staticData
 
   const { productionSources } = useCountrySources({
     country,

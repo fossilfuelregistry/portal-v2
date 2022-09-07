@@ -1,25 +1,27 @@
-import React, {FC, useContext, useEffect, useMemo, useState} from 'react'
-import {Box, Flex, SimpleGrid} from '@chakra-ui/react'
+import React, { FC, useContext, useEffect, useMemo, useState } from 'react'
+import { Box, Flex, SimpleGrid } from '@chakra-ui/react'
 import InfoSection from 'components/InfoSection'
-import {InfoIcon} from 'components/Icons'
-import {StaticData} from 'lib/types'
+import { InfoIcon } from 'components/Icons'
+import { StaticData } from 'lib/types'
 import useCountryData from 'lib/useCountryData'
 import useCountrySources from 'lib/useCountrySources'
-import {DataContext} from "components/DataContext";
+import { DataContext } from 'components/DataContext'
 import BarStackChart from '../charts/BarStackChart'
-import WarmingPotentialSelect, {WarmingPotential,} from '../filters/WarmingPotentialSelect'
-import {colors} from '../../assets/theme'
+import WarmingPotentialSelect, {
+  WarmingPotential,
+} from '../filters/WarmingPotentialSelect'
+import { colors } from '../../assets/theme'
 
 type EmissionsIntensityProps = {
   country: string
 }
 
-const EmissionsIntensity: FC<EmissionsIntensityProps> = ({country}) => {
+const EmissionsIntensity: FC<EmissionsIntensityProps> = ({ country }) => {
   const [gwp, setGwp] = useState<string>(WarmingPotential.GWP100)
   const [countryData, setCountryData] = useState<any[]>([])
-  const staticData: StaticData =  useContext(DataContext)
-  const {countries, conversions, constants, prefixConversions, texts} = staticData
-  const { productionSources } = useCountrySources({country})
+  const staticData: StaticData = useContext(DataContext)
+  const { conversions, constants, prefixConversions, texts } = staticData
+  const { productionSources } = useCountrySources({ country })
 
   const { getCurrentCO2E } = useCountryData({
     texts,
@@ -50,8 +52,8 @@ const EmissionsIntensity: FC<EmissionsIntensityProps> = ({country}) => {
   }
 
   const generateFuelData = (data: any, fuel: string, type: 'co2' | 'ch4') => ({
-    Combustion: data?.co2e.scope1[type].wa,
-    'Pre-combustion': data?.co2e.scope3[type].wa,
+    Combustion: data?.co2e.scope3[type].wa,
+    'Pre-combustion': data?.co2e.scope1[type].wa,
     fuel,
   })
 

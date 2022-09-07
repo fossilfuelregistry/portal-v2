@@ -20,11 +20,11 @@ const useRangeOfCertainty = (
         if (!prev.length) {
           return [
             {
-              value: [p5S3, waS3, p95S3],
+              value: [p5S1, waS1, p95S1],
               label: 'Pre-combustion',
             },
             {
-              value: [p5S1, waS1, p95S1],
+              value: [p5S3, waS3, p95S3],
               label: 'Combustion',
             },
             {
@@ -37,17 +37,17 @@ const useRangeOfCertainty = (
         return [
           {
             value: [
-              p5S3 + prev[0].value[0],
-              waS3 + prev[0].value[1],
-              p95S3 + prev[0].value[2],
+              p5S1 + prev[1].value[0],
+              waS1 + prev[1].value[1],
+              p95S1 + prev[1].value[2],
             ],
             label: 'Pre-combustion',
           },
           {
             value: [
-              p5S1 + prev[1].value[0],
-              waS1 + prev[1].value[1],
-              p95S1 + prev[1].value[2],
+              p5S3 + prev[0].value[0],
+              waS3 + prev[0].value[1],
+              p95S3 + prev[0].value[2],
             ],
             label: 'Combustion',
           },
