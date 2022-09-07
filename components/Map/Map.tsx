@@ -1,4 +1,11 @@
-import React, {useRef, useEffect, useState, useMemo, FC, useContext} from 'react'
+import React, {
+  useRef,
+  useEffect,
+  useState,
+  useMemo,
+  FC,
+  useContext,
+} from 'react'
 import maplibregl from 'maplibre-gl'
 import bbox from '@turf/bbox'
 import 'maplibre-gl/dist/maplibre-gl.css'
@@ -12,11 +19,11 @@ import {
   calculateFuelEmission,
   calculateTotalEmission,
 } from 'components/Map/utils'
-import {StaticData} from "lib/types";
+import { StaticData } from 'lib/types'
 import mapStyle from './style.json'
 import { colors } from '../../assets/theme'
 import updatePathname from '../../utils/updatePathname'
-import { DataContext } from "../DataContext"
+import { DataContext } from '../DataContext'
 
 const MIN_ZOOM = 1.25
 const MAX_ZOOM = 24
@@ -30,8 +37,8 @@ type MapProps = {
 }
 
 const Map: FC<MapProps> = ({ country, type, onChangeCountry }) => {
-  const staticData: StaticData =  useContext(DataContext)
-  const {countries} = staticData
+  const staticData: StaticData = useContext(DataContext)
+  const { countries } = staticData
 
   const [selectedCountry, setSelectedCountry] = useState<any>(() => {
     const currentCountry = countries.find((c) => c.iso3166 === country)
@@ -209,7 +216,9 @@ const Map: FC<MapProps> = ({ country, type, onChangeCountry }) => {
     const countryCode = countryOption.iso3166 || 'global'
     setSelectedCountry(countryOption)
     onChangeCountry(countryCode)
-    updatePathname(`/${type}/${countryCode}`)
+    if (type === 'country') {
+      updatePathname(`/${type}/${countryCode}`)
+    }
   }
 
   return (
