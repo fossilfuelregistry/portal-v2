@@ -561,6 +561,8 @@ const ForecastChart = ({
 }: ForecastChartProps) => {
   const { productionData, projectionData, projProdData } = data
 
+  console.log('projProdData', projProdData)
+
   const yearScale = scaleLinear({
     range: [0, width - margin.left],
     domain: [settings.year.start, settings.year.end],

@@ -4,19 +4,23 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable camelcase */
-import {useCallback, useEffect, useMemo, useState} from 'react'
-import {useQuery} from '@apollo/client'
-import {GQL_countryProduction, GQL_countryProjection, GQL_countryReserves,} from 'queries/country'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useQuery } from '@apollo/client'
+import {
+  GQL_countryProduction,
+  GQL_countryProjection,
+  GQL_countryReserves,
+} from 'queries/country'
 import settings from 'settings'
 import * as Sentry from '@sentry/nextjs'
-import {MinimalDataset, prepareProductionDataset,} from 'lib/calculate'
-import {ConversionFactorInStore} from "lib/types";
-import {useConversionHooks} from './conversionHooks'
-import {StableProduction,} from './types-legacy'
-import {DatabaseRecord} from './calculations/calculation-constants/types'
-import {PrefixRecord} from './calculations/prefix-conversion'
+import { MinimalDataset, prepareProductionDataset } from 'lib/calculate'
+import { ConversionFactorInStore } from 'lib/types'
+import { useConversionHooks } from './conversionHooks'
+import { StableProduction } from './types-legacy'
+import { DatabaseRecord } from './calculations/calculation-constants/types'
+import { PrefixRecord } from './calculations/prefix-conversion'
 
-const DEBUG = false
+const DEBUG = true
 
 type Props = {
   texts: Record<string, string>
@@ -277,12 +281,12 @@ const useCountryData = ({
     }
 
     // Check if no data
-    settings.supportedFuels.forEach((fuel) => {
-      // @ts-ignore
-      if (newLimits[fuel].firstYear === settings.year.end)
-        // @ts-ignore
-        newLimits[fuel].firstYear = 0
-    })
+    // settings.supportedFuels.forEach((fuel) => {
+    //   // @ts-ignore
+    //   if (newLimits[fuel].firstYear === settings.year.end)
+    //     // @ts-ignore
+    //     newLimits[fuel].firstYear = 0
+    // })
 
     // @ts-ignore
     setLimits((l) => ({ ...l, projection: newLimits }))
@@ -370,9 +374,9 @@ const useCountryData = ({
     reservesSourceId,
     projection,
     reserves,
-    reservesProduction,
     limits,
     grades,
+    projectionData?.countryDataPoints?.nodes,
   ])
 
   // Don't try to render a chart until all data looks good

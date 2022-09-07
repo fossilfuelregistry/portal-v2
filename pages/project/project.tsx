@@ -105,8 +105,6 @@ const ProjectPage: React.FC<Props> = (props) => {
 
   const gg = useProjectData({
     reservesSourceId: 21,
-    projectionSourceId: 21,
-    productionSourceId: 21,
     projectId: 15874,
     texts,
     gwp,
@@ -119,7 +117,7 @@ const ProjectPage: React.FC<Props> = (props) => {
     prefixes: prefixConversions,
   })
 
-  console.log('AnnualEmissions', gg)
+  console.log('AnnualEmissions-gg', gg)
 
   // useProject({projectId: 45352})
 
@@ -141,6 +139,7 @@ const ProjectPage: React.FC<Props> = (props) => {
   const projInfo = useMemo(() => {
     if (!theProject?.id) return {}
     const co2 = gg.projectCO2(theProject)
+    console.log('co2', co2)
     DEBUG && console.info('DenseProject projectCO2', { theProject, co2 })
     return co2
   }, [theProject?.id])
