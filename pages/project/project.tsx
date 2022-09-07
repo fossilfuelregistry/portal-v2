@@ -9,7 +9,7 @@ import { useRouter } from 'next/router'
 import Navbar from 'components/navigation/Navbar'
 // @ts-ignore
 import { getPageStaticProps, getProducingCountries } from 'lib/staticProps'
-import { ConversionFactorInStore } from 'lib/types-legacy'
+import { ConversionFactorInStore } from 'lib/types'
 import { PrefixRecord } from 'lib/calculations/prefix-conversion'
 import { useApolloClient, useQuery } from '@apollo/client'
 import { DatabaseRecord } from 'lib/calculations/calculation-constants/types'

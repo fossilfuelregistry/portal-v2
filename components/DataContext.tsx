@@ -6,7 +6,13 @@ type DCPProps = {
 	children: React.ReactNode
 }
 
-const DataContext = createContext<StaticData>({countries: []})
+const DataContext = createContext<StaticData>({
+	countries: [],
+	texts: {},
+	conversions: [],
+	constants: [],
+	prefixConversions: []
+})
 
 const DataContextProvider: FC<DCPProps>  = ( { children, data } ) => (
 		<DataContext.Provider value={ data }>

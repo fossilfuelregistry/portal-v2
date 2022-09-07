@@ -5,9 +5,8 @@ import { captureException } from '@sentry/nextjs'
 import Graph from 'graph-data-structure'
 
 import settings from 'settings'
-import { FossilFuelType } from './types'
+import {ConversionFactorInStore, FossilFuelType} from './types'
 import {
-  ConversionFactorInStore,
   Conversions,
   ConversionsList,
   ConvertVolume,

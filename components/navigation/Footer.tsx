@@ -15,7 +15,7 @@ interface FooterCompProps {
 
 export default function Footer({footer, texts}: FooterCompProps) {
 	const router = useRouter()
-	const {translate} = useText(texts)
+	const {translate} = useText()
 	const locales = router.locales ?? []
 	const { pathname, query } = router
 

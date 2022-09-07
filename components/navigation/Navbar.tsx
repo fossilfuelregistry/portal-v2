@@ -75,7 +75,7 @@ interface NavbarProps {
 
 export default function Navbar({menu, texts}: NavbarProps) {
 	const {isOpen, onOpen, onClose} = useDisclosure();
-	const {translate} = useText(texts)
+	const {translate} = useText()
 
 	return (
 		<Flex justifyContent="space-around">

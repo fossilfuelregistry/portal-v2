@@ -1,21 +1,17 @@
-import React, {FC, useMemo, useState} from 'react'
+import React, {FC, useContext, useMemo, useState} from 'react'
 import InfoSection from 'components/InfoSection'
 import LineChart from 'components/charts/LineChart'
-import {ConversionFactorInStore} from 'lib/types'
-import {DatabaseRecord} from 'lib/calculations/calculation-constants/types'
-import {PrefixRecord, usePrefixConversion,} from 'lib/calculations/prefix-conversion'
+import {StaticData} from 'lib/types'
+import {usePrefixConversion,} from 'lib/calculations/prefix-conversion'
 import useCountryData from 'lib/useCountryData'
 import SourceSelect from 'components/filters/SourceSelect'
 import {SimpleGrid} from '@chakra-ui/react'
+import {DataContext} from "components/DataContext"
 
 const DEBUG = false
 
 type HistoricalFuelProps = {
   country: string
-  texts: Record<string, string>
-  conversions: ConversionFactorInStore[]
-  constants: DatabaseRecord[]
-  prefixConversions: PrefixRecord[]
   sources: any
   fuel: string
   title: string
@@ -25,16 +21,15 @@ type HistoricalFuelProps = {
 
 const HistoricalFuel: FC<HistoricalFuelProps> = ({
   country,
-  texts,
-  conversions,
-  constants,
-  prefixConversions,
   sources,
   sourceType,
   fuel,
   title,
   measure,
 }) => {
+  const staticData: StaticData = useContext(DataContext)
+  const {conversions, constants, prefixConversions, texts} = staticData
+
   const [sourceId, setSourceId] = useState<number>(0)
   // @ts-ignore
   const { production, reserves } = useCountryData({

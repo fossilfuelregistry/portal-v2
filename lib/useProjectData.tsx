@@ -4,28 +4,17 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable camelcase */
-import { useCallback, useEffect, useMemo, useState } from 'react'
-import { useQuery } from '@apollo/client'
-import {
-  GQL_project,
-  GQL_projectProduction,
-  GQL_projectProjection,
-  GQL_projectReserves,
-} from 'queries/country'
+import {useEffect, useMemo, useState} from 'react'
+import {useQuery} from '@apollo/client'
+import {GQL_projectProduction, GQL_projectProjection, GQL_projectReserves,} from 'queries/country'
 import settings from 'settings'
 import * as Sentry from '@sentry/nextjs'
-import {
-  MinimalDataset,
-  RawDataset,
-} from 'lib/calculate'
-import { useConversionHooks } from './conversionHooks'
-import {
-  ConversionFactorInStore,
-  Source,
-  StableProduction,
-} from './types-legacy'
-import { DatabaseRecord } from './calculations/calculation-constants/types'
-import { PrefixRecord } from './calculations/prefix-conversion'
+import {MinimalDataset, RawDataset,} from 'lib/calculate'
+import {ConversionFactorInStore} from "lib/types"
+import {useConversionHooks} from './conversionHooks'
+import {Source, StableProduction,} from './types-legacy'
+import {DatabaseRecord} from './calculations/calculation-constants/types'
+import {PrefixRecord} from './calculations/prefix-conversion'
 
 const DEBUG = false
 

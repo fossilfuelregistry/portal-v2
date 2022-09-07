@@ -1,38 +1,32 @@
 /* eslint-disable no-continue */
 /* eslint-disable no-plusplus */
 
-import { getFullFuelType, getPreferredGrades, sumOfCO2 } from 'lib/calculate'
-import { useApolloClient } from '@apollo/client'
-import { GQL_countryCurrentProduction } from 'queries/country'
+import {getFullFuelType, getPreferredGrades, sumOfCO2} from 'lib/calculate'
+import {useApolloClient} from '@apollo/client'
+import {GQL_countryCurrentProduction} from 'queries/country'
 import settings from 'settings'
 
-import { GQL_countryCurrentProductionRecord } from 'queries/country-types'
+import {GQL_countryCurrentProductionRecord} from 'queries/country-types'
 
 import useCalculate from 'lib/calculations/use-calculate'
-import { useCalculationConstants } from 'lib/calculations/calculation-constants/use-calculation-constants'
+import {useCalculationConstants} from 'lib/calculations/calculation-constants/use-calculation-constants'
 
 import * as O from 'fp-ts/Option'
+import {generateZeroCO2EEmissions, toMillionCO2ETon, toVintageCO2ERepresentation,} from 'lib/calculations/utils'
+import {pipe} from 'fp-ts/lib/function'
 import {
-  generateZeroCO2EEmissions,
-  toMillionCO2ETon,
-  toVintageCO2ERepresentation,
-} from 'lib/calculations/utils'
-import { pipe } from 'fp-ts/lib/function'
-import {
-  ConversionFactorInStore,
   LastReservesType,
   Limits,
-  ProductionData,
   ProjectDataRecord,
   ProjectionData,
   ReservesData,
   Source,
   StableProduction,
 } from './types-legacy'
-import { DatabaseRecord } from './calculations/calculation-constants/types'
-import { PrefixRecord } from './calculations/prefix-conversion'
-import { CO2EEmissions } from './calculations/types'
-import { FossilFuelType } from './types'
+import {DatabaseRecord} from './calculations/calculation-constants/types'
+import {PrefixRecord} from './calculations/prefix-conversion'
+import {CO2EEmissions} from './calculations/types'
+import {ConversionFactorInStore, FossilFuelType} from './types'
 
 const DEBUG = true
 
