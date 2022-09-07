@@ -1,36 +1,28 @@
-import React, { useState, useEffect, FC } from 'react'
-import { SimpleGrid, Box } from '@chakra-ui/react'
+import React, {FC, useContext, useEffect, useState} from 'react'
+import {Box, SimpleGrid} from '@chakra-ui/react'
 import PieChart from 'components/charts/PieChart'
 import InfoSection from 'components/InfoSection'
-import WarmingPotentialSelect, {
-  WarmingPotential,
-} from 'components/filters/WarmingPotentialSelect'
+import WarmingPotentialSelect, {WarmingPotential,} from 'components/filters/WarmingPotentialSelect'
 import RangeChart from 'components/charts/RangeChart'
 import SourceSelect from 'components/filters/SourceSelect'
 import useCountrySources from 'lib/useCountrySources'
 import useCountryData from 'lib/useCountryData'
-import { ConversionFactorInStore } from 'lib/types-legacy'
-import { DatabaseRecord } from 'lib/calculations/calculation-constants/types'
-import { PrefixRecord } from 'lib/calculations/prefix-conversion'
-import { colors } from '../../assets/theme'
+import {StaticData} from 'lib/types'
+import useText from "lib/useText";
+import {DataContext} from "components/DataContext";
+import {colors} from '../../assets/theme'
 import useVolumes from '../../hooks/useVolumes'
 import useRangeOfCertainty from '../../hooks/useRangeOfCertainty'
 
 type AnnualEmissionsProps = {
   country: string
-  texts: Record<string, string>
-  conversions: ConversionFactorInStore[]
-  constants: DatabaseRecord[]
-  prefixConversions: PrefixRecord[]
 }
 
-const AnnualEmissions: FC<AnnualEmissionsProps> = ({
-  country,
-  texts,
-  conversions,
-  constants,
-  prefixConversions,
-}) => {
+const AnnualEmissions: FC<AnnualEmissionsProps> = ({country}) => {
+  const {translate} = useText()
+  const staticData: StaticData =  useContext(DataContext)
+  const {countries, conversions, constants, prefixConversions, texts} = staticData
+
   const { productionSources } = useCountrySources({
     country,
   })
@@ -69,7 +61,7 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({
   }, [gwp, productionSourceId, country])
 
   return (
-    <InfoSection title="Annual Emissions from Fossil Fuel Production">
+    <InfoSection title={translate('annual_emissions')}>
       <SimpleGrid mb="40px" columns={3} gridGap="20px">
         <WarmingPotentialSelect
           value={gwp}

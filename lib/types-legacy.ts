@@ -2,15 +2,16 @@
 /* eslint-disable no-unused-vars */
 // import { Dataset } from "components/CO2Forecast/calculate";
 import Graph from 'graph-data-structure'
-import { ProjectSourcesRecord } from 'queries/general-types'
-import { GQL_countrySourcesRecord } from 'queries/country-types'
+import {ProjectSourcesRecord} from 'queries/general-types'
+import {GQL_countrySourcesRecord} from 'queries/country-types'
 // import { GQL_countrySourcesRecord } from "queries/country-types";
 // import { GQL_projectSourcesRecord } from "queries/general-types";
+import {ConversionFactorInStore} from "lib/types"
 import settings from '../settings'
 // eslint-disable-next-line import/no-cycle
-import { Dataset } from './calculate'
-import { DatabaseRecord } from './calculations/calculation-constants/types'
-import { PrefixRecord } from './calculations/prefix-conversion'
+import {Dataset} from './calculate'
+import {DatabaseRecord} from './calculations/calculation-constants/types'
+import {PrefixRecord} from './calculations/prefix-conversion'
 
 export type FossilFuelType = typeof settings.supportedFuels[number]
 
@@ -86,22 +87,6 @@ export type ReservesData = {
 
 export type StableProduction = {
   [k in FossilFuelType]: ProductionData
-}
-
-export type ConversionFactorInStore = {
-  id: number
-  authority: string
-  description: null | string
-  fossilFuelType: null | FossilFuelType | ''
-  fromUnit: string
-  toUnit: string
-  high: null | number
-  factor: number
-  low: null | number
-  country: null | string
-  modifier: null | string
-  subtype: null | string
-  fullFuelType: null | string
 }
 
 type CO2CostPerTon = {

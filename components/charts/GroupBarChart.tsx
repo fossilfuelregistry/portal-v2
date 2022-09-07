@@ -16,6 +16,8 @@ export type BarGroupProps = {
   margin?: { top: number; right: number; bottom: number; left: number }
 }
 
+const DEBUG = false
+
 const oilColor = '#87BFFF'
 const gasColor = '#4C6EE6'
 const coalColor = '#52B9BF'
@@ -127,7 +129,7 @@ const GroupBarChart: FC<BarGroupProps> = ({
                     key={`bar-group-${barGroup.index}-${barGroup.x0}`}
                     left={barGroup.x0}
                     onMouseEnter={() => {
-                      console.log('barGroup.x0', barGroup)
+                      DEBUG && console.log('barGroup.x0', barGroup)
                       showTooltip({
                         // @ts-ignore
                         tooltipLeft: barGroup.x0,

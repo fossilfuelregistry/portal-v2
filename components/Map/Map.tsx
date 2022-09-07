@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useMemo, FC } from 'react'
+import React, {useRef, useEffect, useState, useMemo, FC, useContext} from 'react'
 import maplibregl from 'maplibre-gl'
 import bbox from '@turf/bbox'
 import 'maplibre-gl/dist/maplibre-gl.css'
@@ -6,16 +6,17 @@ import { Box, Flex } from '@chakra-ui/react'
 import CountrySelect from 'components/Map/CountrySelect'
 import MapFilter, { Filter } from 'components/Map/MapFilter'
 import ZoomControls from 'components/Map/ZoomControls'
-import { Country } from 'components/Map/types'
 import { GLOBAL_OPTION } from 'components/Map/constants'
 import {
   calculateEmission,
   calculateFuelEmission,
   calculateTotalEmission,
 } from 'components/Map/utils'
+import {StaticData} from "lib/types";
 import mapStyle from './style.json'
 import { colors } from '../../assets/theme'
 import updatePathname from '../../utils/updatePathname'
+import { DataContext } from "../DataContext"
 
 const MIN_ZOOM = 1.25
 const MAX_ZOOM = 24
@@ -24,12 +25,14 @@ const [lng, lat] = [-0.39417687115326316, 41.118875451562104]
 
 type MapProps = {
   country: string
-  countries: Country[]
   type: 'country' | 'project'
   onChangeCountry: (countryCode: string) => void
 }
 
-const Map: FC<MapProps> = ({ country, countries, type, onChangeCountry }) => {
+const Map: FC<MapProps> = ({ country, type, onChangeCountry }) => {
+  const staticData: StaticData =  useContext(DataContext)
+  const {countries} = staticData
+
   const [selectedCountry, setSelectedCountry] = useState<any>(() => {
     const currentCountry = countries.find((c) => c.iso3166 === country)
     if (currentCountry) {

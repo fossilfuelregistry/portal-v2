@@ -1,15 +1,14 @@
-import React, { FC, useEffect, useState, useMemo } from 'react'
+import React, {FC, useMemo, useState} from 'react'
 import InfoSection from 'components/InfoSection'
 import LineChart from 'components/charts/LineChart'
-import { ConversionFactorInStore } from 'lib/types-legacy'
-import { DatabaseRecord } from 'lib/calculations/calculation-constants/types'
-import {
-  PrefixRecord,
-  usePrefixConversion,
-} from 'lib/calculations/prefix-conversion'
+import {ConversionFactorInStore} from 'lib/types'
+import {DatabaseRecord} from 'lib/calculations/calculation-constants/types'
+import {PrefixRecord, usePrefixConversion,} from 'lib/calculations/prefix-conversion'
 import useCountryData from 'lib/useCountryData'
 import SourceSelect from 'components/filters/SourceSelect'
-import { SimpleGrid } from '@chakra-ui/react'
+import {SimpleGrid} from '@chakra-ui/react'
+
+const DEBUG = false
 
 type HistoricalFuelProps = {
   country: string
@@ -104,7 +103,7 @@ const HistoricalFuel: FC<HistoricalFuelProps> = ({
     }
   }, [production, reserves, fuel, sourceId, country])
 
-  console.log('sourceData', sourceData)
+  DEBUG && console.log('sourceData', sourceData)
 
   return (
     <InfoSection title={title}>

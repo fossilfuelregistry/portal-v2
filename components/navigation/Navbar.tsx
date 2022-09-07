@@ -17,6 +17,7 @@ import {
 import {ChevronDownIcon, CloseIcon, HamburgerIcon} from '@chakra-ui/icons';
 import {MenuItem as MenuItemType} from "lib/types";
 import Link from "next/link";
+import useText from "lib/useText";
 
 interface RenderLinkOrSubmenuProps {
 	item: MenuItemType,
@@ -74,6 +75,7 @@ interface NavbarProps {
 
 export default function Navbar({menu, texts}: NavbarProps) {
 	const {isOpen, onOpen, onClose} = useDisclosure();
+	const {translate} = useText(texts)
 
 	return (
 		<Flex justifyContent="space-around">
@@ -87,7 +89,7 @@ export default function Navbar({menu, texts}: NavbarProps) {
 						onClick={isOpen ? onClose : onOpen}
 					/>
 					<Flex alignItems="center" justifyContent="space-between" w="100%">
-						<Box>{texts.grff}</Box>
+						<Box>{translate('grff')}</Box>
 						<Flex
 							as="nav" alignItems="center"
 							display={{base: 'none', md: 'flex'}}>

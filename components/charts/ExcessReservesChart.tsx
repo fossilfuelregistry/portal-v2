@@ -9,6 +9,8 @@ import { useTooltip } from '@visx/tooltip'
 import { DashIcon, InfoIcon } from 'components/Icons'
 import { colors } from '../../assets/theme'
 
+const DEBUG = false
+
 type TooltipData = any
 
 export type ExcessReservesChartProps = {
@@ -161,7 +163,7 @@ const ExcessReservesChart: FC<ExcessReservesChartProps> = ({
             {(barStacks) =>
               barStacks.map((barStack) =>
                 barStack.bars.map((bar) => {
-                  console.log('bar', bar)
+                  DEBUG && console.log('bar', bar)
                   return (
                     <rect
                       key={`bar-stack-${barStack.index}-${bar.index}`}

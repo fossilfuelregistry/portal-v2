@@ -6,6 +6,7 @@ import {useRouter} from "next/router";
 import {RenderLinkOrSubmenu} from "components/navigation/Navbar";
 import Link from "next/link";
 import Markdown from "components/CMSContent/Markdown";
+import useText from "lib/useText";
 
 interface FooterCompProps {
 	footer: FooterProps,
@@ -14,6 +15,7 @@ interface FooterCompProps {
 
 export default function Footer({footer, texts}: FooterCompProps) {
 	const router = useRouter()
+	const {translate} = useText(texts)
 	const locales = router.locales ?? []
 	const { pathname, query } = router
 
@@ -21,7 +23,7 @@ export default function Footer({footer, texts}: FooterCompProps) {
 		<Box w="100%" bg="primary.darkBlue" py={{base: '80px'}} mt="24px">
 			<CMSBlock>
 				<Flex textStyle="inverse" direction="row" wrap="wrap">
-					<Box w={{base: '100%', lg: '40%'}}>{texts.grff}</Box>
+					<Box w={{base: '100%', lg: '40%'}}>{translate('grff')}</Box>
 					<Box w={{base: '100%', md: '30%', lg: '25%'}}>
 						{footer.Items.filter((i: MenuItem) => i.Column < 2).map((i: MenuItem) => (
 							<RenderLinkOrSubmenu key={i.id} item={i} mb="20px" color="common.white"/>))}
