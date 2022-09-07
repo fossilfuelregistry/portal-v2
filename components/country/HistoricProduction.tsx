@@ -1,32 +1,24 @@
-import React, { FC, useEffect, useState, useMemo } from 'react'
-import { SimpleGrid, Box } from '@chakra-ui/react'
+import React, {FC, useContext, useEffect, useMemo, useState} from 'react'
+import {Box, SimpleGrid} from '@chakra-ui/react'
 import InfoSection from 'components/InfoSection'
 import GroupBarChart from 'components/charts/GroupBarChart'
-import { ConversionFactorInStore } from 'lib/types-legacy'
-import { DatabaseRecord } from 'lib/calculations/calculation-constants/types'
-import { PrefixRecord } from 'lib/calculations/prefix-conversion'
+import {StaticData} from 'lib/types'
 import useCountrySources from 'lib/useCountrySources'
 import useCountryData from 'lib/useCountryData'
 import SourceSelect from 'components/filters/SourceSelect'
+import {DataContext} from "components/DataContext"
 import groupBy from '../../utils/groupBy'
 
 type HistoricProductionProps = {
   country: string
-  texts: Record<string, string>
-  conversions: ConversionFactorInStore[]
-  constants: DatabaseRecord[]
-  prefixConversions: PrefixRecord[]
 }
 
 const startYear = 2010
 
-const HistoricProduction: FC<HistoricProductionProps> = ({
-  country,
-  texts,
-  conversions,
-  constants,
-  prefixConversions,
-}) => {
+const HistoricProduction: FC<HistoricProductionProps> = ({country,}) => {
+  const staticData: StaticData =  useContext(DataContext)
+  const {conversions, constants, prefixConversions, texts} = staticData
+
   const { productionSources } = useCountrySources({
     country,
   })
@@ -62,9 +54,8 @@ const HistoricProduction: FC<HistoricProductionProps> = ({
         p.sourceId === productionSourceId
     )
     const groupedByYear = groupBy(filteredData, (d) => d.year)
-    const groupedByFuel = Object.values(groupedByYear).map((d) => {
-      return groupBy(d, (i) => i.fossilFuelType)
-    })
+    const groupedByFuel = Object.values(groupedByYear).map((d) => groupBy(d, (i) => i.fossilFuelType)
+    )
     const result = groupedByFuel.map((d) => ({
       Oil: calculateTotal(d.oil),
       Gas: calculateTotal(d.gas),

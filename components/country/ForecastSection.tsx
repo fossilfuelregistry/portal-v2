@@ -1,37 +1,26 @@
-import React, {FC, useMemo, useState} from 'react'
+import React, {FC, useContext, useMemo, useState} from 'react'
 import InfoSection from 'components/InfoSection'
 import ForecastChart from 'components/charts/ForecastChart'
 import {Box, SimpleGrid} from '@chakra-ui/react'
-import {ConversionFactorInStore} from 'lib/types'
-import {DatabaseRecord} from 'lib/calculations/calculation-constants/types'
-import {PrefixRecord} from 'lib/calculations/prefix-conversion'
-import WarmingPotentialSelect, {
-	WarmingPotential,
-} from 'components/filters/WarmingPotentialSelect'
+import {StaticData} from 'lib/types'
+import WarmingPotentialSelect, {WarmingPotential,} from 'components/filters/WarmingPotentialSelect'
 import useCountryData from 'lib/useCountryData'
 import useCountrySources from 'lib/useCountrySources'
 import groupBy from 'utils/groupBy'
 import useText from "lib/useText";
+import {DataContext} from "components/DataContext";
 import {colors} from '../../assets/theme'
 
 type ForecastSectionProps = {
 	country: string
-	texts: Record<string, string>
-	conversions: ConversionFactorInStore[]
-	constants: DatabaseRecord[]
-	prefixConversions: PrefixRecord[]
 }
 
 const startYear = 2010
 
-const ForecastSection: FC<ForecastSectionProps> = ({
-													   country,
-													   texts,
-													   conversions,
-													   constants,
-													   prefixConversions,
-												   }) => {
-	const {translate} = useText(texts)
+const ForecastSection: FC<ForecastSectionProps> = ({country,}) => {
+	const {translate} = useText()
+	const staticData: StaticData =  useContext(DataContext)
+	const {conversions, constants, prefixConversions, texts} = staticData
 	const [gwp, setGwp] = useState<string>(WarmingPotential.GWP100)
 	const {reservesSources, projectionSources} = useCountrySources({
 		country,

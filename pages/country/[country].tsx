@@ -116,13 +116,7 @@ const CountryPage: React.FC<Props> = (props) => {
 					<Container>
 						<AnnualEmissions country={country}/>
 						<EmissionsIntensity country={country}/>
-						<HistoricProduction
-							country={country}
-							constants={constants}
-							texts={texts}
-							conversions={conversions}
-							prefixConversions={prefixConversions}
-						/>
+						<HistoricProduction country={country}/>
 						<Box h="1px" background={colors.primary.grey30} mb="80px"/>
 						<Heading
 							as="h3"
@@ -132,13 +126,7 @@ const CountryPage: React.FC<Props> = (props) => {
 						>
 							{texts.future_emissions}
 						</Heading>
-						<ForecastSection
-							country={country}
-							constants={constants}
-							texts={texts}
-							conversions={conversions}
-							prefixConversions={prefixConversions}
-						/>
+						<ForecastSection country={country}/>
 						<ReservesLifeSection/>
 						<ExcessReservesSection/>
 						<Box h="1px" background={colors.primary.grey30} mb="80px"/>
