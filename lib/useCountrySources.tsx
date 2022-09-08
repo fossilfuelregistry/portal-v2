@@ -8,6 +8,7 @@ import {
 import { GQL_countrySourcesRecord } from 'queries/country-types'
 
 import { getPreferredReserveGrade } from 'lib/calculate'
+import { useMemo } from 'react'
 
 export type Props = {
   country: string
@@ -31,6 +32,7 @@ const useCountrySources = ({ country }: Props) => {
     .sort((a, b) => Math.sign((b.quality ?? 0) - (a.quality ?? 0)))
 
   const distinctSourceIds: Record<number, number> = {} // On source can appear several times if it has different quality for different data points.
+    
   const projectionSources = (
     (_countrySources?.getCountrySources?.nodes ??
       []) as GQL_countrySourcesRecord[]
@@ -40,7 +42,7 @@ const useCountrySources = ({ country }: Props) => {
       if (distinctSourceIds[s.sourceId] !== undefined) return false
       distinctSourceIds[s.sourceId] = Math.max(
         s.quality ?? 0,
-        distinctSourceIds[s.sourceId]
+        distinctSourceIds[s.sourceId] ?? 0
       )
       return true
     })
@@ -60,11 +62,20 @@ const useCountrySources = ({ country }: Props) => {
 
   const isLoading = cLoad
 
+  const preferredProductionSourceId = useMemo(() => productionSources[0]?.sourceId, [productionSources])
+  const preferredProjectionSourceId = useMemo(() => projectionSources[0]?.sourceId, [projectionSources])
+  const preferredReservesSourceId = useMemo(() => reservesSources[0]?.sourceId, [reservesSources])
+
+  DEBUG && console.info("PREFERRED SOURCES", { preferredProjectionSourceId, preferredProductionSourceId, preferredReservesSourceId })
+
   return {
     isLoading,
     productionSources,
     projectionSources,
     reservesSources,
+    preferredProductionSourceId,
+    preferredProjectionSourceId,
+    preferredReservesSourceId,
   }
 }
 

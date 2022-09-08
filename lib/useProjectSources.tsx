@@ -6,7 +6,7 @@ import { GQL_projectSources } from 'queries/general'
 import { GQL_countryBorder, GQL_project } from 'queries/country'
 import { ProjectSourcesRecord } from 'queries/general-types'
 import { useQuery } from '@apollo/client'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { getPreferredReserveGrade } from 'lib/calculate'
 
 type Props = {
@@ -65,6 +65,9 @@ const useProjectSources = ({ projectId, country }: Props) => {
 
   const isLoading = pLoad || bLoad
 
+  const preferredProductionSourceId = useMemo(() => productionSources[0]?.sourceId ?? 2, [productionSources])
+  const preferredProjectionSourceId = useMemo(() => projectionSources[0]?.sourceId ?? 102, [projectionSources])
+  const preferredReservesSourceId = useMemo(() => reservesSources[0]?.sourceId ?? 2, [reservesSources])
 
   return {
     isLoading, productionSources,
@@ -72,6 +75,9 @@ const useProjectSources = ({ projectId, country }: Props) => {
     reservesSources,
     borders,
     projectBorders,
+    preferredProductionSourceId,
+    preferredProjectionSourceId,
+    preferredReservesSourceId,
   }
 }
 
