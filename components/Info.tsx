@@ -13,8 +13,10 @@ const Info = ({ text }: Props) => {
 
   return (
     <Box>
-      <Tooltip label="Top" placement="top">
-        <InfoIcon ml="8px" />
+      <Tooltip label={text} placement="top">
+        <span>
+          <InfoIcon ml="8px" />
+        </span>
       </Tooltip>
     </Box>
   )
