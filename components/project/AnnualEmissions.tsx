@@ -1,6 +1,6 @@
-import React, { FC, useContext, useEffect, useState } from 'react'
+import React, { FC, useContext, useEffect, useMemo, useState } from 'react'
 import { Box, SimpleGrid } from '@chakra-ui/react'
-import PieChart from 'components/charts/PieChart'
+import PieChart, { PIE_CHART_COLORS } from 'components/charts/PieChart'
 import InfoSection from 'components/InfoSection'
 import WarmingPotentialSelect, {
   WarmingPotential,
@@ -15,35 +15,46 @@ import { DataContext } from 'components/DataContext'
 import { colors } from '../../assets/theme'
 import useVolumes from '../../hooks/useVolumes'
 import useRangeOfCertainty from '../../hooks/useRangeOfCertainty'
+import useProjectData from 'lib/useProjectData'
+import useProjectSources from 'lib/useProjectSources'
+import capitalizeFirstLetter from '../../utils/capitalizeFirstLetter'
 
 type AnnualEmissionsProps = {
   country: string
+  projectId: number
+  theProject: any
 }
 
-const AnnualEmissions: FC<AnnualEmissionsProps> = ({ country }) => {
+// Why reservesSources is empty
+const AnnualEmissions: FC<AnnualEmissionsProps> = ({
+  country,
+  projectId,
+  theProject,
+}) => {
   const { translate } = useText()
   const staticData: StaticData = useContext(DataContext)
   const { conversions, constants, prefixConversions, texts } = staticData
-
   const { productionSources } = useCountrySources({
     country,
   })
+  const projectSources = useProjectSources({ projectId, country })
   const [gwp, setGwp] = useState<string>(WarmingPotential.GWP100)
   const [productionSourceId, setProductionSourceId] = useState<number>(0)
-  const [emissionsData, setEmissionsData] = useState<any[]>([])
-  const { volumesData } = useVolumes(emissionsData, productionSourceId)
-  const { rangeData } = useRangeOfCertainty(emissionsData, productionSourceId)
-  const { getCurrentCO2E } = useCountryData({
+
+  console.log('projectSources', projectSources)
+
+  const gg = useProjectData({
+    reservesSourceId: 21,
+    projectId,
     texts,
     gwp,
-    productionSourceId,
-    region: '',
     country,
     conversionConstants: conversions,
-    // @ts-ignore
-    allSources: productionSources,
     constants,
-    conversionPrefixes: prefixConversions,
+    allSources: projectSources.reservesSources,
+    // @ts-ignore
+    stableProduction: {},
+    prefixes: prefixConversions,
   })
 
   useEffect(() => {
@@ -52,17 +63,135 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ country }) => {
     }
   }, [productionSources])
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => {
-    const calculateData = async () => {
-      const data = await getCurrentCO2E()
-      setEmissionsData(data as any[])
+  const projInfo = useMemo(() => {
+    if (!theProject?.id) return null
+    return gg.projectCO2(theProject)
+  }, [theProject?.id])
+
+  const volumesData = useMemo(() => {
+    if (!projInfo) {
+      return {
+        data: [],
+        total: 0,
+      }
+    }
+    const total = projInfo?.totalCO2
+    const calculatePercentage = (value: number) => (value * 100) / total
+
+    const projectData = projInfo?.fuels
+      .map((fuel) => {
+        const fuelData = projInfo[fuel]
+        return [
+          {
+            label: `${capitalizeFirstLetter(fuel)}, combustion`,
+            fossilFuelType: fuel,
+            // @ts-ignore
+            fillColor: PIE_CHART_COLORS[fuel].scope3,
+            // @ts-ignore
+            quantity: fuelData?.scope3.co2.wa.toFixed(2),
+            percentage: calculatePercentage(
+              // @ts-ignore
+              fuelData.scope3.total.wa as number
+            ),
+            // @ts-ignore
+            year: fuelData.year,
+          },
+          {
+            label: `${capitalizeFirstLetter(fuel)}, pre-combustion`,
+            fossilFuelType: fuel,
+            // @ts-ignore
+            fillColor: PIE_CHART_COLORS[fuel].scope1,
+            // @ts-ignore
+            quantity: fuelData?.scope1.co2.wa.toFixed(2),
+            percentage: calculatePercentage(
+              // @ts-ignore
+              fuelData.scope1.total.wa as number
+            ),
+            // @ts-ignore
+            year: fuelData.year,
+          },
+        ]
+      })
+      .flat(1)
+
+    return {
+      data: projectData,
+      total: total?.toFixed(2),
+    }
+  }, [projInfo])
+
+  const rangeData = useMemo(() => {
+    if (!projInfo) {
+      return []
     }
 
-    calculateData()
-  }, [gwp, productionSourceId, country])
+    return projInfo?.fuels.reduce((prev: any, curr: any) => {
+      // @ts-ignore
+      const fuelData = projInfo[curr]
 
-  console.log('AnnualEmissions', emissionsData)
+      if (fuelData) {
+        // @ts-ignore
+        // eslint-disable-next-line no-unsafe-optional-chaining
+        const { p5: p5S1, wa: waS1, p95: p95S1 } = fuelData.scope1?.total
+        // @ts-ignore
+        // eslint-disable-next-line no-unsafe-optional-chaining
+        const { p5: p5S3, wa: waS3, p95: p95S3 } = fuelData.scope3?.total
+        const totalP5 = p5S1 + p5S3
+        const totalWa = waS1 + waS3
+        const totalP95 = p95S1 + p95S3
+
+        if (!prev.length) {
+          return [
+            {
+              value: [p5S1, waS1, p95S1],
+              label: 'Pre-combustion',
+            },
+            {
+              value: [p5S3, waS3, p95S3],
+              label: 'Combustion',
+            },
+            {
+              value: [totalP5, totalWa, totalP95],
+              label: 'Total',
+            },
+          ]
+        }
+
+        return [
+          {
+            value: [
+              p5S1 + prev[1].value[0],
+              waS1 + prev[1].value[1],
+              p95S1 + prev[1].value[2],
+            ],
+            label: 'Pre-combustion',
+          },
+          {
+            value: [
+              p5S3 + prev[0].value[0],
+              waS3 + prev[0].value[1],
+              p95S3 + prev[0].value[2],
+            ],
+            label: 'Combustion',
+          },
+          {
+            value: [
+              totalP5 + prev[2].value[0],
+              totalWa + prev[2].value[1],
+              totalP95 + prev[2].value[2],
+            ],
+            label: 'Total',
+          },
+        ]
+      }
+
+      return prev
+    }, [])
+  }, [projInfo])
+
+  console.log('rangeData', rangeData)
+
+  console.log('my', projInfo)
 
   return (
     <InfoSection title={translate('annual_emissions')}>
@@ -99,7 +228,7 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ country }) => {
           parentHeight={320}
           title="Total volumes"
           header="Total Mt CO₂e"
-          total={volumesData.total}
+          total={volumesData.total as string}
         />
         <Box ml="40px">
           <RangeChart

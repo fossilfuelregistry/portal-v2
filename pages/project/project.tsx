@@ -139,7 +139,6 @@ const ProjectPage: React.FC<Props> = (props) => {
   const projInfo = useMemo(() => {
     if (!theProject?.id) return {}
     const co2 = gg.projectCO2(theProject)
-    console.log('co2', co2)
     DEBUG && console.info('DenseProject projectCO2', { theProject, co2 })
     return co2
   }, [theProject?.id])
@@ -158,7 +157,11 @@ const ProjectPage: React.FC<Props> = (props) => {
         <PageHead page={page} />
         <Map country={country} type="country" onChangeCountry={setCountry} />
         <Container>
-          <AnnualEmissions country={country} />
+          <AnnualEmissions
+            country={country}
+            projectId={projectId}
+            theProject={theProject}
+          />
         </Container>
         <Footer footer={footer} texts={texts} />
       </div>

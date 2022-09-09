@@ -44,7 +44,7 @@ const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
       data
         ? data.reduce((prev, current) => prev + current.co2e.total.total.wa, 0)
         : 0
-    console.log('forecast-projectedProduction', projectedProduction)
+    // console.log('forecast-projectedProduction', projectedProduction)
 
     const filteredProductionData = production.filter((p) => p.year >= startYear)
     const groupedProductionByYear = groupBy(

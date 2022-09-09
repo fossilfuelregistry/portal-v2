@@ -47,6 +47,8 @@ const Piechart: FC<PieChartProps> = ({
     showTooltip,
   } = useTooltip<any>()
 
+  console.log('data', data)
+
   const minimumSize = Math.min(parentWidth, parentHeight)
   const radius = minimumSize / 2
   const whiteSpace = 3

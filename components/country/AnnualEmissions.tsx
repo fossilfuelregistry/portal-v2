@@ -46,6 +46,8 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ country }) => {
     conversionPrefixes: prefixConversions,
   })
 
+  console.log('emissionsData', emissionsData)
+
   useEffect(() => {
     if (productionSources.length && !productionSourceId) {
       setProductionSourceId(productionSources[0].sourceId)
