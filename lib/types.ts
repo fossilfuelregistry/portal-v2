@@ -1,84 +1,90 @@
 import { Country } from 'components/Map/types'
-import {DatabaseRecord} from "lib/calculations/calculation-constants/types";
-import {PrefixRecord} from "lib/calculations/prefix-conversion";
+import { DatabaseRecord } from 'lib/calculations/calculation-constants/types'
+import { PrefixRecord } from 'lib/calculations/prefix-conversion'
 
 export type FossilFuelType = 'oil' | 'gas' | 'coal'
-export type FuelSubType = 'Subbituminous' | 'Anthracite' | 'Bituminous' | 'Lignite' | 'Coking Coal'
+export type FuelSubType =
+  | 'Subbituminous'
+  | 'Anthracite'
+  | 'Bituminous'
+  | 'Lignite'
+  | 'Coking Coal'
 
 export type ConversionFactorInStore = {
-	id: number
-	authority: string
-	description: null | string
-	fossilFuelType: null | FossilFuelType | ''
-	fromUnit: string
-	toUnit: string
-	high: null | number
-	factor: number
-	low: null | number
-	country: null | string
-	modifier: null | string
-	subtype: null | string
-	fullFuelType: null | string
+  id: number
+  authority: string
+  description: null | string
+  fossilFuelType: null | FossilFuelType | ''
+  fromUnit: string
+  toUnit: string
+  high: null | number
+  factor: number
+  low: null | number
+  country: null | string
+  modifier: null | string
+  subtype: null | string
+  fullFuelType: null | string
 }
 
 export interface ICMSImage {
-	data: {
-		attributes: {
-			url: string
-		}
-	}
+  data: {
+    attributes: {
+      url: string
+    }
+  }
 }
 
 export interface Page {
-	slug: string | string[],
-	Content: Array<any>,
-	Title: string
+  slug: string | string[]
+  Content: Array<any>
+  Title: string
 }
 
 export interface ICMSPage {
-	id: string,
-	attributes: Page
+  id: string
+  attributes: Page
 }
 
 export interface Article {
-	id: number,
-	Headline: string,
-	Category: string,
-	slug: string,
-	Content: Array<any>,
-	Image: ICMSImage,
-	Inverted_headline_color: boolean
+  id: number
+  Headline: string
+  Category: string
+  slug: string
+  Content: Array<any>
+  Image: ICMSImage
+  Inverted_headline_color: boolean
 }
 
 export interface ICMSArticle {
-	id: string,
-	attributes: Article
+  id: string
+  attributes: Article
 }
 
 export interface Datapoint {
-	fossilFuelType: string,
-	subtype: string
+  fossilFuelType: string
+  subtype: string
 }
 
 export type MenuItem = {
-	id: string,
-	URL: string,
-	Text: string
-	Page: { data: ICMSPage },
-	Article: { data: ICMSArticle },
-	Submenu: Array<any>,
-	Column: number
+  id: string
+  URL: string
+  Text: string
+  Page: { data: ICMSPage }
+  Article: { data: ICMSArticle }
+  Submenu: Array<any>
+  Column: number
 }
 
 export interface FooterProps {
-	Items: MenuItem[],
-	Copyright: string
+  Items: MenuItem[]
+  Copyright: string
 }
 
 export interface StaticData {
-	countries: Country[],
-	texts: Record<string, string>
-	conversions: ConversionFactorInStore[]
-	constants: DatabaseRecord[]
-	prefixConversions: PrefixRecord[]
+  countryName?: string
+  countries: Country[]
+  texts: Record<string, string>
+  conversions: ConversionFactorInStore[]
+  constants: DatabaseRecord[]
+  prefixConversions: PrefixRecord[]
 }

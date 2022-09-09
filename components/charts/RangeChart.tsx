@@ -5,7 +5,8 @@ import { Group } from '@visx/group'
 import { scaleBand, scaleLinear } from '@visx/scale'
 import { AxisBottom, AxisLeft } from '@visx/axis'
 import { GridRows } from '@visx/grid'
-import { InfoIcon, LineIcon } from 'components/Icons'
+import { LineIcon } from 'components/Icons'
+import Info from 'components/Info'
 import { Tooltip, useTooltip } from '@visx/tooltip'
 import { colors } from '../../assets/theme'
 
@@ -225,7 +226,7 @@ const RangeChart: FC<BarsProps> = ({
             mr="8px"
           />
           P5-P95 range
-          <InfoIcon ml="8px" />
+          <Info />
         </Flex>
         <Flex
           alignItems="center"
@@ -236,7 +237,7 @@ const RangeChart: FC<BarsProps> = ({
         >
           <LineIcon mr="8px" />
           Weighted average
-          <InfoIcon ml="8px" />
+          <Info />
         </Flex>
       </Flex>
     </Box>

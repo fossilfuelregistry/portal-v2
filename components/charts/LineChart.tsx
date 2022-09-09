@@ -7,7 +7,7 @@ import { scaleLinear } from '@visx/scale'
 import { max, min } from 'd3-array'
 import { AxisBottom, AxisLeft } from '@visx/axis'
 import { GridRows } from '@visx/grid'
-import { InfoIcon } from 'components/Icons'
+import Info from 'components/Info'
 import { colors } from '../../assets/theme'
 
 type LineChartProps = {
@@ -139,7 +139,7 @@ const LineChart: FC<LineChartProps> = ({
                 mr="8px"
               />
               {s.name}
-              <InfoIcon ml="8px" />
+              <Info />
             </Flex>
           ))}
       </Flex>

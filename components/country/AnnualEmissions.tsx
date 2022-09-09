@@ -23,7 +23,8 @@ type AnnualEmissionsProps = {
 const AnnualEmissions: FC<AnnualEmissionsProps> = ({ country }) => {
   const { translate } = useText()
   const staticData: StaticData = useContext(DataContext)
-  const { conversions, constants, prefixConversions, texts } = staticData
+  const { countryName, conversions, constants, prefixConversions, texts } =
+    staticData
 
   const { productionSources } = useCountrySources({
     country,
@@ -65,7 +66,7 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ country }) => {
   }, [gwp, productionSourceId, country])
 
   return (
-    <InfoSection title={translate('annual_emissions')}>
+    <InfoSection title={`${countryName} ${translate('annual_emissions')}`}>
       <SimpleGrid mb="40px" columns={3} gridGap="20px">
         <WarmingPotentialSelect
           value={gwp}

@@ -4,8 +4,9 @@ import {
   OptionBase,
   SingleValue,
 } from 'chakra-react-select'
-import { Box } from '@chakra-ui/react'
+import { Box, Flex } from '@chakra-ui/react'
 import type { CSSObject } from '@chakra-ui/system'
+import Info from 'components/Info'
 import { colors } from '../assets/theme'
 
 export interface SelectOption extends OptionBase {
@@ -16,6 +17,7 @@ export interface SelectOption extends OptionBase {
 type SelectProps = {
   label?: string
   height?: string
+  tooltip?: string
   value: string | number | null
   options: SelectOption[]
   onChange: (newValue: SingleValue<SelectOption>) => void
@@ -23,6 +25,7 @@ type SelectProps = {
 
 const Select: FC<SelectProps> = ({
   label,
+  tooltip,
   value,
   height = '40px',
   options,
@@ -113,9 +116,9 @@ const Select: FC<SelectProps> = ({
   return (
     <Box w="100%">
       {label && (
-        <Box fontSize="16px" mb="4px" color={colors.primary.richBlack}>
-          {label}
-        </Box>
+        <Flex fontSize="16px" mb="4px" color={colors.primary.richBlack}>
+          {label} {tooltip && <Info text={tooltip} />}
+        </Flex>
       )}
       <ChakraSelect
         size="md"

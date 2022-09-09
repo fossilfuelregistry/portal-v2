@@ -1,23 +1,24 @@
-import React, {FC, useContext, useEffect, useMemo, useState} from 'react'
-import {Box, SimpleGrid} from '@chakra-ui/react'
+import React, { FC, useContext, useEffect, useMemo, useState } from 'react'
+import { Box, SimpleGrid } from '@chakra-ui/react'
 import InfoSection from 'components/InfoSection'
 import GroupBarChart from 'components/charts/GroupBarChart'
-import {StaticData} from 'lib/types'
+import { StaticData } from 'lib/types'
 import useCountrySources from 'lib/useCountrySources'
 import useCountryData from 'lib/useCountryData'
 import SourceSelect from 'components/filters/SourceSelect'
-import {DataContext} from "components/DataContext"
+import { DataContext } from 'components/DataContext'
 import groupBy from '../../utils/groupBy'
 
 type HistoricProductionProps = {
   country: string
 }
 
-const startYear = 2010
+const startYear = 2015
 
-const HistoricProduction: FC<HistoricProductionProps> = ({country,}) => {
-  const staticData: StaticData =  useContext(DataContext)
-  const {conversions, constants, prefixConversions, texts} = staticData
+const HistoricProduction: FC<HistoricProductionProps> = ({ country }) => {
+  const staticData: StaticData = useContext(DataContext)
+  const { countryName, conversions, constants, prefixConversions, texts } =
+    staticData
 
   const { productionSources } = useCountrySources({
     country,
@@ -48,13 +49,11 @@ const HistoricProduction: FC<HistoricProductionProps> = ({country,}) => {
         : 0
 
     const filteredData = production.filter(
-      (p) =>
-        p.year >= startYear &&
-        p.year % 2 === 0 &&
-        p.sourceId === productionSourceId
+      (p) => p.year >= startYear && p.sourceId === productionSourceId
     )
     const groupedByYear = groupBy(filteredData, (d) => d.year)
-    const groupedByFuel = Object.values(groupedByYear).map((d) => groupBy(d, (i) => i.fossilFuelType)
+    const groupedByFuel = Object.values(groupedByYear).map((d) =>
+      groupBy(d, (i) => i.fossilFuelType)
     )
     const result = groupedByFuel.map((d) => ({
       Oil: calculateTotal(d.oil),
@@ -67,7 +66,7 @@ const HistoricProduction: FC<HistoricProductionProps> = ({country,}) => {
   }, [production])
 
   return (
-    <InfoSection title="Historic production">
+    <InfoSection title={`${countryName} Historic Emissions`}>
       <SimpleGrid mb="40px" columns={3} gridGap="20px">
         <SourceSelect
           label="Production estimates source"

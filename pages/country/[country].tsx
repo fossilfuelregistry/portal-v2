@@ -1,7 +1,7 @@
 /* eslint-disable no-shadow */
 /* eslint-disable camelcase */
 /* eslint-disable react/no-unused-prop-types */
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { GetStaticPaths } from 'next'
 import { useRouter } from 'next/router'
 import Navbar from 'components/navigation/Navbar'
@@ -28,6 +28,7 @@ import Container from 'components/Container'
 import useText from 'lib/useText'
 import { DataContextProvider } from 'components/DataContext'
 import { colors } from '../../assets/theme'
+import Info from 'components/Info'
 
 export type Props = {
   sources: any
@@ -70,6 +71,12 @@ const CountryPage: React.FC<Props> = (props) => {
   const [gwp, setGwp] = useState('GWP100')
   const [country, setCountry] = useState<string>(router.query.country as string)
 
+  console.log('countries', countries)
+
+  const countryName = useMemo(() => {
+    return countries.find((c) => c.iso3166 === country)?.en || ''
+  }, [country])
+
   /**
    * Loads sources
    */
@@ -108,12 +115,20 @@ const CountryPage: React.FC<Props> = (props) => {
 
   return (
     <DataContextProvider
-      data={{ countries, constants, texts, conversions, prefixConversions }}
+      data={{
+        countryName,
+        countries,
+        constants,
+        texts,
+        conversions,
+        prefixConversions,
+      }}
     >
       <div id="page_main">
         <Navbar menu={menu} texts={texts} />
         <PageHead page={page} />
         <Map country={country} type="country" onChangeCountry={setCountry} />
+        <Info />
         {country !== 'global' && (
           <Container>
             <AnnualEmissions country={country} />
@@ -129,8 +144,8 @@ const CountryPage: React.FC<Props> = (props) => {
               {texts.future_emissions}
             </Heading>
             <ForecastSection country={country} />
-            <ReservesLifeSection />
-            <ExcessReservesSection />
+            {/*<ReservesLifeSection />*/}
+            {/*<ExcessReservesSection />*/}
             <Box h="1px" background={colors.primary.grey30} mb="80px" />
             <Heading
               as="h3"

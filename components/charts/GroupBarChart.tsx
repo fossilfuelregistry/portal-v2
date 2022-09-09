@@ -5,7 +5,7 @@ import { AxisBottom, AxisLeft } from '@visx/axis'
 import { scaleBand, scaleLinear, scaleOrdinal } from '@visx/scale'
 import { Heading, Box, Flex } from '@chakra-ui/react'
 import { GridRows } from '@visx/grid'
-import { InfoIcon } from 'components/Icons'
+import Info from 'components/Info'
 import { Tooltip, useTooltip } from '@visx/tooltip'
 import { colors } from '../../assets/theme'
 
@@ -245,7 +245,7 @@ const GroupBarChart: FC<BarGroupProps> = ({
             mr="8px"
           />
           Oil
-          <InfoIcon ml="8px" />
+          <Info />
         </Flex>
         <Flex
           alignItems="center"
@@ -262,7 +262,7 @@ const GroupBarChart: FC<BarGroupProps> = ({
             mr="8px"
           />
           Gas
-          <InfoIcon ml="8px" />
+          <Info />
         </Flex>
         <Flex
           alignItems="center"
@@ -279,7 +279,7 @@ const GroupBarChart: FC<BarGroupProps> = ({
             mr="8px"
           />
           Coal
-          <InfoIcon ml="8px" />
+          <Info />
         </Flex>
       </Flex>
     </Box>

@@ -6,7 +6,8 @@ import { GridRows } from '@visx/grid'
 import { AxisBottom, AxisRight } from '@visx/axis'
 import { scaleBand, scaleLinear, scaleOrdinal } from '@visx/scale'
 import { useTooltip } from '@visx/tooltip'
-import { DashIcon, InfoIcon } from 'components/Icons'
+import { DashIcon } from 'components/Icons'
+import Info from 'components/Info'
 import { colors } from '../../assets/theme'
 
 const DEBUG = false
@@ -250,7 +251,7 @@ const ExcessReservesChart: FC<ExcessReservesChartProps> = ({
         >
           <DashIcon mr="8px" />
           Forecast reserves
-          <InfoIcon ml="8px" />
+          <Info />
         </Flex>
       </Flex>
     </Box>

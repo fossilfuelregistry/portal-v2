@@ -3,7 +3,7 @@ import { Box, Flex, Heading } from '@chakra-ui/react'
 import { Pie } from '@visx/shape'
 import { Group } from '@visx/group'
 import { Tooltip, useTooltip } from '@visx/tooltip'
-import { InfoIcon } from 'components/Icons'
+import Info from 'components/Info'
 import { colors } from '../../assets/theme'
 
 export const PIE_CHART_COLORS = {
@@ -198,7 +198,7 @@ const Piechart: FC<PieChartProps> = ({
               mr="8px"
             />
             {d.label}
-            <InfoIcon ml="8px" />
+            <Info />
           </Flex>
         ))}
       </Flex>

@@ -39,7 +39,8 @@ const InfoSection: FC<InfoSectionProps> = ({
       <Box color={colors.primary.richBlack} fontSize="16px" fontWeight="400">
         Source:{' '}
         <Link
-          href="/"
+          href="https://drive.google.com/drive/folders/1gjiEXR0Ar19FZodhbrkG1EG7qIgu_Uxl"
+          target="_blank"
           color={colors.primary.brandingBlue}
           fontSize="16px"
           fontWeight="400"
@@ -47,18 +48,18 @@ const InfoSection: FC<InfoSectionProps> = ({
           Country Production and Reserves Dataset
         </Link>
       </Box>
-      <CsvDownloader datas={csvData} filename={filename}>
-        <Button
-          bg={colors.primary.brandingBlue}
-          color={colors.common.white}
-          borderRadius="4px"
-          padding="12px 58px"
-          leftIcon={<DownloadIcon />}
-          _hover={{ opacity: '0.5' }}
-        >
-          Download
-        </Button>
-      </CsvDownloader>
+      {/*<CsvDownloader datas={csvData} filename={filename}>*/}
+      {/*  <Button*/}
+      {/*    bg={colors.primary.brandingBlue}*/}
+      {/*    color={colors.common.white}*/}
+      {/*    borderRadius="4px"*/}
+      {/*    padding="12px 58px"*/}
+      {/*    leftIcon={<DownloadIcon />}*/}
+      {/*    _hover={{ opacity: '0.5' }}*/}
+      {/*  >*/}
+      {/*    Download*/}
+      {/*  </Button>*/}
+      {/*</CsvDownloader>*/}
     </Flex>
   </Box>
 )

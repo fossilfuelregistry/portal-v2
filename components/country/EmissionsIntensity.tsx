@@ -1,7 +1,7 @@
 import React, { FC, useContext, useEffect, useMemo, useState } from 'react'
 import { Box, Flex, SimpleGrid } from '@chakra-ui/react'
 import InfoSection from 'components/InfoSection'
-import { InfoIcon } from 'components/Icons'
+import Info from 'components/Info'
 import { StaticData } from 'lib/types'
 import useCountryData from 'lib/useCountryData'
 import useCountrySources from 'lib/useCountrySources'
@@ -20,7 +20,8 @@ const EmissionsIntensity: FC<EmissionsIntensityProps> = ({ country }) => {
   const [gwp, setGwp] = useState<string>(WarmingPotential.GWP100)
   const [countryData, setCountryData] = useState<any[]>([])
   const staticData: StaticData = useContext(DataContext)
-  const { conversions, constants, prefixConversions, texts } = staticData
+  const { countryName, conversions, constants, prefixConversions, texts } =
+    staticData
   const { productionSources } = useCountrySources({ country })
 
   const { getCurrentCO2E } = useCountryData({
@@ -69,6 +70,8 @@ const EmissionsIntensity: FC<EmissionsIntensityProps> = ({ country }) => {
     ]
   }, [countryData])
 
+  console.log('totalEmissionsData', totalEmissionsData)
+
   const methaneData = useMemo(() => {
     const oilData = getFuelData(2, 'oil')
     const gasData = getFuelData(2, 'gas')
@@ -82,7 +85,9 @@ const EmissionsIntensity: FC<EmissionsIntensityProps> = ({ country }) => {
   }, [countryData])
 
   return (
-    <InfoSection title="Emissions Intensity of Fossil Fuel Production">
+    <InfoSection
+      title={`${countryName} Emissions Intensity of Fossil Fuel Production`}
+    >
       <Box mb="40px" maxW="377px">
         <WarmingPotentialSelect
           value={gwp}
@@ -133,7 +138,7 @@ const EmissionsIntensity: FC<EmissionsIntensityProps> = ({ country }) => {
             mr="8px"
           />
           Pre-combustion
-          <InfoIcon ml="8px" />
+          <Info />
         </Flex>
         <Flex
           alignItems="center"
@@ -150,7 +155,7 @@ const EmissionsIntensity: FC<EmissionsIntensityProps> = ({ country }) => {
             mr="8px"
           />
           Combustion
-          <InfoIcon ml="8px" />
+          <Info />
         </Flex>
       </Flex>
     </InfoSection>
