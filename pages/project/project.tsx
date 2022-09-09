@@ -84,12 +84,11 @@ const ProjectPage: React.FC<Props> = (props) => {
   console.info({ allProjectsInACountry })
 
   const { production, projection, reserves, getCurrentCO2E } = useCountryData({
-    texts,
     // @ts-ignore
     projectionSources,
     gwp,
     reservesSourceId: 2,
-    projectionSourceId: 2,
+    projectionSourceId: 102,
     productionSourceId: 2,
     country,
     conversionConstants: conversions,

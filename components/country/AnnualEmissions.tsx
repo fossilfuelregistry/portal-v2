@@ -35,10 +35,8 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ country }) => {
   const { volumesData } = useVolumes(emissionsData, productionSourceId)
   const { rangeData } = useRangeOfCertainty(emissionsData, productionSourceId)
   const { getCurrentCO2E } = useCountryData({
-    texts,
     gwp,
     productionSourceId,
-    region: '',
     country,
     conversionConstants: conversions,
     // @ts-ignore

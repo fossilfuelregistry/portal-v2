@@ -27,14 +27,13 @@ const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
   const { generateCsvTranslation } = useCsvDataTranslator()
   const { conversions, constants, prefixConversions, texts } = staticData
   const [gwp, setGwp] = useState<string>(WarmingPotential.GWP100)
-  const { reservesSources, projectionSources } = useCountrySources({
+  const { preferredProductionSourceId, preferredProjectionSourceId, preferredReservesSourceId } = useCountrySources({
     country,
   })
   const { production, projectedProduction, projection } = useCountryData({
-    texts,
-    productionSourceId: 2,
-    reservesSourceId: 2,
-    projectionSourceId: 2,
+    productionSourceId: preferredProductionSourceId,
+    reservesSourceId: preferredReservesSourceId,
+    projectionSourceId: preferredProjectionSourceId,
     gwp,
     country,
     conversionConstants: conversions,

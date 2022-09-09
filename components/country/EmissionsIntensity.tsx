@@ -25,7 +25,6 @@ const EmissionsIntensity: FC<EmissionsIntensityProps> = ({ country }) => {
   const { productionSources } = useCountrySources({ country })
 
   const { getCurrentCO2E } = useCountryData({
-    texts,
     gwp,
     region: '',
     country,

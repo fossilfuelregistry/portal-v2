@@ -34,7 +34,6 @@ const HistoricalFuel: FC<HistoricalFuelProps> = ({
   const [sourceId, setSourceId] = useState<number>(0)
   // @ts-ignore
   const { production, reserves } = useCountryData({
-    texts,
     region: '',
     country,
     conversionConstants: conversions,

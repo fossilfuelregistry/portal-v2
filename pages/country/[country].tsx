@@ -27,8 +27,8 @@ import HistoricalSection from 'components/country/HistoricalSection'
 import Container from 'components/Container'
 import useText from 'lib/useText'
 import { DataContextProvider } from 'components/DataContext'
-import { colors } from '../../assets/theme'
 import Info from 'components/Info'
+import { colors } from '../../assets/theme'
 
 export type Props = {
   sources: any
@@ -73,15 +73,14 @@ const CountryPage: React.FC<Props> = (props) => {
 
   console.log('countries', countries)
 
-  const countryName = useMemo(() => {
-    return countries.find((c) => c.iso3166 === country)?.en || ''
-  }, [country])
+  const countryName = useMemo(() => countries.find((c) => c.iso3166 === country)?.en || '', [country])
 
   /**
    * Loads sources
    */
-  const { productionSources, projectionSources, reservesSources } =
-    useCountrySources({ country })
+  const { preferredProductionSourceId, preferredProjectionSourceId, preferredReservesSourceId, productionSources } = useCountrySources({
+    country,
+  })
 
   DEBUG && console.log('productionSources', productionSources)
 
@@ -90,15 +89,11 @@ const CountryPage: React.FC<Props> = (props) => {
    */
   const { isLoading, production, projection, reserves, getCurrentCO2E } =
     useCountryData({
-      texts,
-      // @ts-ignore
-      projectionSources,
       gwp,
-      reservesSourceId: 2,
-      projectionSourceId: 2,
-      productionSourceId: 2,
-      region: '',
-      country: '',
+      reservesSourceId: preferredReservesSourceId,
+      projectionSourceId: preferredProjectionSourceId,
+      productionSourceId: preferredProductionSourceId,
+      country,
       conversionConstants: conversions,
       // @ts-ignore
       allSources: productionSources,
@@ -144,8 +139,8 @@ const CountryPage: React.FC<Props> = (props) => {
               {texts.future_emissions}
             </Heading>
             <ForecastSection country={country} />
-            {/*<ReservesLifeSection />*/}
-            {/*<ExcessReservesSection />*/}
+            {/* <ReservesLifeSection /> */}
+            {/* <ExcessReservesSection /> */}
             <Box h="1px" background={colors.primary.grey30} mb="80px" />
             <Heading
               as="h3"

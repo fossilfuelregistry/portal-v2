@@ -12,11 +12,11 @@ import useCountryData from 'lib/useCountryData'
 import { StaticData } from 'lib/types'
 import useText from 'lib/useText'
 import { DataContext } from 'components/DataContext'
+import useProjectData from 'lib/useProjectData'
+import useProjectSources from 'lib/useProjectSources'
 import { colors } from '../../assets/theme'
 import useVolumes from '../../hooks/useVolumes'
 import useRangeOfCertainty from '../../hooks/useRangeOfCertainty'
-import useProjectData from 'lib/useProjectData'
-import useProjectSources from 'lib/useProjectSources'
 import capitalizeFirstLetter from '../../utils/capitalizeFirstLetter'
 
 type AnnualEmissionsProps = {
@@ -34,19 +34,19 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({
   const { translate } = useText()
   const staticData: StaticData = useContext(DataContext)
   const { conversions, constants, prefixConversions, texts } = staticData
-  const { productionSources } = useCountrySources({
+
+  const { productionSources, preferredProductionSourceId } = useCountrySources({
     country,
   })
   const projectSources = useProjectSources({ projectId, country })
   const [gwp, setGwp] = useState<string>(WarmingPotential.GWP100)
-  const [productionSourceId, setProductionSourceId] = useState<number>(0)
+  const [productionSourceId, setProductionSourceId] = useState<number>(preferredProductionSourceId)
 
   console.log('projectSources', projectSources)
 
   const gg = useProjectData({
     reservesSourceId: 21,
     projectId,
-    texts,
     gwp,
     country,
     conversionConstants: conversions,

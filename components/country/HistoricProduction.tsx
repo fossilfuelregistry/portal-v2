@@ -20,12 +20,11 @@ const HistoricProduction: FC<HistoricProductionProps> = ({ country }) => {
   const { countryName, conversions, constants, prefixConversions, texts } =
     staticData
 
-  const { productionSources } = useCountrySources({
+  const { productionSources, preferredProductionSourceId } = useCountrySources({
     country,
   })
-  const [productionSourceId, setProductionSourceId] = useState<number>(0)
+  const [productionSourceId, setProductionSourceId] = useState<number>(preferredProductionSourceId)
   const { production } = useCountryData({
-    texts,
     productionSourceId,
     gwp: 'GWP100',
     country,
