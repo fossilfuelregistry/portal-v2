@@ -1,14 +1,22 @@
 import React, { FC } from 'react'
 import { Box, Flex, Heading, Link, Button } from '@chakra-ui/react'
 import { DownloadIcon } from 'components/Icons'
+import CsvDownloader from 'react-csv-downloader'
 import { colors } from '../assets/theme'
 
 type InfoSectionProps = {
   title: string
   children: React.ReactNode
+  csvData?: any
+  filename?: string
 }
 
-const InfoSection: FC<InfoSectionProps> = ({ title, children }) => (
+const InfoSection: FC<InfoSectionProps> = ({
+  title,
+  children,
+  csvData = [],
+  filename = 'file.csv',
+}) => (
   <Box
     bg={colors.primary.grey2}
     margin="0 auto"
@@ -39,16 +47,18 @@ const InfoSection: FC<InfoSectionProps> = ({ title, children }) => (
           Country Production and Reserves Dataset
         </Link>
       </Box>
-      <Button
-        bg={colors.primary.brandingBlue}
-        color={colors.common.white}
-        borderRadius="4px"
-        padding="12px 58px"
-        leftIcon={<DownloadIcon />}
-        _hover={{ opacity: '0.5' }}
-      >
-        Download
-      </Button>
+      <CsvDownloader datas={csvData} filename={filename}>
+        <Button
+          bg={colors.primary.brandingBlue}
+          color={colors.common.white}
+          borderRadius="4px"
+          padding="12px 58px"
+          leftIcon={<DownloadIcon />}
+          _hover={{ opacity: '0.5' }}
+        >
+          Download
+        </Button>
+      </CsvDownloader>
     </Flex>
   </Box>
 )

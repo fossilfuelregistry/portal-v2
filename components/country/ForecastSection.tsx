@@ -10,6 +10,8 @@ import useCountryData from 'lib/useCountryData'
 import useCountrySources from 'lib/useCountrySources'
 import groupBy from 'utils/groupBy'
 import useText from 'lib/useText'
+import useCsvDataTranslator from 'lib/useCsvDataTranslator'
+import formatCsvNumber from 'utils/formatCsvNumbers'
 import { DataContext } from 'components/DataContext'
 import { colors } from '../../assets/theme'
 
@@ -22,6 +24,7 @@ const startYear = 2010
 const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
   const { translate } = useText()
   const staticData: StaticData = useContext(DataContext)
+  const { generateCsvTranslation } = useCsvDataTranslator()
   const { conversions, constants, prefixConversions, texts } = staticData
   const [gwp, setGwp] = useState<string>(WarmingPotential.GWP100)
   const { reservesSources, projectionSources } = useCountrySources({
@@ -100,8 +103,61 @@ const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
     }
   }, [country, gwp, production, projection])
 
+  const translatedCsvData = useMemo(() => {
+    const { productionData, projectionData, projProdData } = forecastData
+    const csvData = productionData.map((p) => ({
+      year: p.year,
+      oil: formatCsvNumber(p.oil),
+      gas: formatCsvNumber(p.gas),
+      coal: formatCsvNumber(p.coal),
+    }))
+
+    projectionData.forEach((d) => {
+      const y = csvData.find((dp) => dp.year === d.year)
+      // @ts-ignore
+      if (y) y.co2 = formatCsvNumber(d.co2)
+      // @ts-ignore
+      else csvData.push({ year: d.year, co2: formatCsvNumber(d.co2) })
+    })
+    projProdData.forEach((d) => {
+      const y = csvData.find((dp) => dp.year === d.year)
+      if (y) {
+        // @ts-ignore
+        y.oil_p = formatCsvNumber(d.oil_p)
+        // @ts-ignore
+        y.oil_c = formatCsvNumber(d.oil_c)
+        // @ts-ignore
+        y.gas_p = formatCsvNumber(d.gas_p)
+        // @ts-ignore
+        y.gas_c = formatCsvNumber(d.gas_c)
+        // @ts-ignore
+        y.coal_p = formatCsvNumber(d.coal_p)
+        // @ts-ignore
+        y.coal_c = formatCsvNumber(d.coal_c)
+      } else
+        csvData.push({
+          // @ts-ignore
+          year: formatCsvNumber(d.year),
+          oil_p: formatCsvNumber(d.oil_p),
+          oil_c: formatCsvNumber(d.oil_c),
+          gas_p: formatCsvNumber(d.gas_p),
+          gas_c: formatCsvNumber(d.gas_c),
+          coal_p: formatCsvNumber(d.coal_p),
+          coal_c: formatCsvNumber(d.coal_c),
+        })
+    })
+
+    return csvData.map(generateCsvTranslation)
+  }, [forecastData])
+
+  console.log('translatedCsvData', translatedCsvData)
+
   return (
-    <InfoSection title={translate('explanation_emissions_headline')}>
+    <InfoSection
+      title={translate('explanation_emissions_headline')}
+      csvData={translatedCsvData}
+      filename="_emissions_forecast.csv"
+    >
       <Box as="p" fontSize="16" mb="24px" color={colors.primary.richBlack}>
         {translate('explanation_emissions')}
       </Box>

@@ -54,6 +54,7 @@
     "next": "12.2.3",
     "node-cache": "^5.1.2",
     "react": "18.2.0",
+    "react-csv-downloader": "^2.8.0",
     "react-dom": "18.2.0",
     "react-markdown": "^8.0.3",
     "react-redux": "^8.0.2"
