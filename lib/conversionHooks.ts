@@ -28,7 +28,7 @@ import {PrefixRecord} from './calculations/prefix-conversion'
 import {CO2EEmissions} from './calculations/types'
 import {ConversionFactorInStore, FossilFuelType} from './types'
 
-const DEBUG = true
+const DEBUG = false
 
 type Props = {
   conversionConstants: ConversionFactorInStore[]
@@ -36,7 +36,6 @@ type Props = {
   gwp: 'GWP100' | 'GWP20' | string
   country: string
   stableProduction: StableProduction
-  texts: Record<string, string>
   constants: DatabaseRecord[]
   prefixes: PrefixRecord[]
 }
@@ -47,23 +46,14 @@ export const useConversionHooks = (props: Props) => {
     gwp,
     country,
     stableProduction,
-    texts,
     constants,
     prefixes,
   } = props
   const apolloClient = useApolloClient()
 
-  const getText = (t: string) => texts[t]
   const calculate = useCalculate(prefixes)
 
   const getCalculationConstants = useCalculationConstants(constants)
-
-  /* const sourceNameFromId = (sourceId: number): string => {
-    const source = allSources.find((s) => s.sourceId === sourceId)
-    if (!source) return `[sourceId ${sourceId} not found]`
-    if (source.name.startsWith('name_')) return getText(source.name)
-    return source.name
-  } */
 
   const calculationConstants = getCalculationConstants({
     country,
@@ -133,7 +123,6 @@ export const useConversionHooks = (props: Props) => {
     limits: Limits | undefined,
     grades: { xp: boolean }
   ) => {
-    const DEBUG = false
     DEBUG &&
       console.info('reservesProduction', {
         projection,
@@ -150,7 +139,7 @@ export const useConversionHooks = (props: Props) => {
 
     // Find most recent preferred reserve
 
-    const useGrades = getPreferredGrades(reserves, reservesSourceId)
+    const useGrades = getPreferredGrades(reserves, reservesSourceId)    
 
     const _lastReserves: { [s: string]: Object } = {}
     settings.supportedFuels.forEach(
@@ -172,7 +161,7 @@ export const useConversionHooks = (props: Props) => {
       // @ts-ignore
       if (r.year < lastReserves[r.fossilFuelType][grade].year) continue
       // @ts-ignore
-      DEBUG && console.info('reservesProduction', { reserve: r })
+      DEBUG && console.info('reservesProduction with reserves', { reserve: r })
       // @ts-ignore
       lastReserves[r.fossilFuelType][grade].year = r.year
       // @ts-ignore
@@ -196,9 +185,10 @@ export const useConversionHooks = (props: Props) => {
       limits.projection.gas.firstYear,
       limits.projection.coal.firstYear,
       gapStart
-    )
+    ) 
+
     DEBUG &&
-      console.info('reservesProduction', {
+      console.info('reservesProductionWithStartAndEnd', {
         reservesSourceId,
         useGrades,
         lastReserves,
@@ -300,7 +290,7 @@ export const useConversionHooks = (props: Props) => {
       prod.push(_dp)
     })
 
-    DEBUG && console.info({ gapStart, gapEnd, prod, lastReserves })
+    DEBUG && console.info("ReservesProductionFinalStep",{ gapStart, gapEnd, prod, lastReserves })
 
     return prod
   }
@@ -468,18 +458,14 @@ export const useConversionHooks = (props: Props) => {
   }
 
   return {
-    // sourceNameFromId,
     co2FromVolume,
     co2eFromVolume,
-    // convertVolume,
-    // __co2FromVolume,
     reservesProduction,
     calculate,
     calculationConstants,
     calculateCountryProductionCO2,
     getCountryCurrentCO2,
     projectCO2,
-    // conversionPathLoggerReset,
   }
 }
 

@@ -20,10 +20,9 @@ import { StableProduction } from './types-legacy'
 import { DatabaseRecord } from './calculations/calculation-constants/types'
 import { PrefixRecord } from './calculations/prefix-conversion'
 
-const DEBUG = true
+const DEBUG = false
 
 type Props = {
-  texts: Record<string, string>
   gwp: string
   reservesSourceId: number
   projectionSourceId: number
@@ -37,7 +36,6 @@ type Props = {
 }
 
 const useCountryData = ({
-  texts,
   gwp,
   reservesSourceId,
   projectionSourceId,
@@ -53,7 +51,7 @@ const useCountryData = ({
 
   const [stableProduction, setStableProduction] = useState<
     Partial<StableProduction> | undefined
-  >(undefined)
+  >(undefined)  
 
   const {
     co2FromVolume,
@@ -66,7 +64,6 @@ const useCountryData = ({
     country,
     // @ts-ignore
     stableProduction,
-    texts,
     constants,
     prefixes: conversionPrefixes,
   })
@@ -83,9 +80,7 @@ const useCountryData = ({
       }))
     } catch (e) {
       Sentry.captureException(e)
-
       // TODO: Add error notification
-
       return dataset
     }
   }
@@ -130,7 +125,6 @@ const useCountryData = ({
 
   const projection = useMemo(() => {
     try {
-      // console.info({ stableProduction })
       // Synthesize stable projection data points if selected
       if (projectionSourceId === settings.stableProductionSourceId) {
         if (!stableProduction?.oil) return []
@@ -246,51 +240,44 @@ const useCountryData = ({
     DEBUG && console.info('useEffect Production', { newLimits })
   }, [production?.length, productionSourceId])
 
-  useEffect(() => {
-    DEBUG && console.info('useEffect projection', { projection, limits })
-    // @ts-ignore
-    if (!projection?.length > 0) return
+  useEffect( () => {
+		DEBUG && console.info( 'useEffect projection', { projection, limits } )
+		if( projection?.length === 0 ) return
 
+    // @ts-ignore 
+		let newLimits
+		const reduced = {}
     // @ts-ignore
-    let newLimits
-    const reduced = {}
-    settings.supportedFuels.forEach(
+		settings.supportedFuels.forEach( fuel => reduced[ fuel ] = { firstYear: settings.year.end, lastYear: 0 } )
+
+		if( projectionSourceId === settings.stableProductionSourceId ) {
+			newLimits = {}
       // @ts-ignore
-      (fuel) => (reduced[fuel] = { firstYear: settings.year.end, lastYear: 0 })
-    )
-
-    if (projectionSourceId === settings.stableProductionSourceId) {
-      newLimits = {}
-      settings.supportedFuels.forEach(
-        (fuel) =>
-          // @ts-ignore
-          (newLimits[fuel] = {
-            firstYear: new Date().getFullYear() - 1,
-            lastYear: settings.year.end,
-          })
-      )
-    } else {
+			settings.supportedFuels.forEach( fuel => newLimits[ fuel ] = {
+				firstYear: new Date().getFullYear() - 1,
+				lastYear: settings.year.end
+			} )
+		} else {
       // @ts-ignore
-      newLimits = projection.reduce((_limits, datapoint) => {
-        if (datapoint.sourceId !== projectionSourceId) return _limits
-        const l = _limits[datapoint.fossilFuelType]
-        l.firstYear = Math.min(l.firstYear, datapoint.year)
-        l.lastYear = Math.max(l.lastYear, datapoint.year)
-        return _limits
-      }, reduced)
-    }
+			newLimits = projection.reduce( ( _limits, datapoint ) => {
+				if( datapoint.sourceId !== projectionSourceId ) return _limits
+				const l = _limits[ datapoint.fossilFuelType ]
+				l.firstYear = Math.min( l.firstYear, datapoint.year )
+				l.lastYear = Math.max( l.lastYear, datapoint.year )
+				return _limits
+			}, reduced )
+		}
 
-    // Check if no data
-    // settings.supportedFuels.forEach((fuel) => {
-    //   // @ts-ignore
-    //   if (newLimits[fuel].firstYear === settings.year.end)
-    //     // @ts-ignore
-    //     newLimits[fuel].firstYear = 0
-    // })
+		// Check if no data
+		settings.supportedFuels.forEach( fuel => {
+      // @ts-ignore
+			if( newLimits[ fuel ].firstYear === settings.year.end ) newLimits[ fuel ].firstYear = 0
+		} )
 
     // @ts-ignore
-    setLimits((l) => ({ ...l, projection: newLimits }))
-  }, [projection, projectionSourceId])
+		setLimits( l => ( { ...l, projection: newLimits } ) )
+	}, [ projection, projectionSourceId ] )
+
 
   useEffect(() => {
     DEBUG && console.info('useEffect reserves', { limits, reserves })
@@ -347,7 +334,12 @@ const useCountryData = ({
     if (!projectionSourceId) return []
     if (!reservesSourceId) return []
     DEBUG &&
-      console.info('useMemo projectedProduction', { projection, reserves })
+      console.info('useMemo projectedProduction', { projection,
+        reserves,
+        projectionSourceId,
+        reservesSourceId,
+        limits,
+        grades})
     try {
       return reservesProduction(
         // @ts-ignore
