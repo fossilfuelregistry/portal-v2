@@ -37,6 +37,10 @@ const DynamicZone = ({ content }: Props) => {
         rendered.push(<ArticleSelector key={`AS${block.id}`} block={block} />)
         break
 
+      case 'shared.i-frame':
+        rendered.push(<CMSBlock><iframe key={`AS${block.id}`} src={block.URL} height={block.Height} width="100%" title={block.id}/></CMSBlock>)
+        break
+
       default:
         rendered.push(
           <CMSBlock key={`A${block.id}`}>
