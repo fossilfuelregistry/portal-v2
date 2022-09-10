@@ -6,6 +6,8 @@ import { Tooltip, useTooltip } from '@visx/tooltip'
 import Info from 'components/Info'
 import { colors } from '../../assets/theme'
 
+const DEBUG = false
+
 export const PIE_CHART_COLORS = {
   oil: {
     scope1: '#87BFFF',
@@ -47,7 +49,7 @@ const Piechart: FC<PieChartProps> = ({
     showTooltip,
   } = useTooltip<any>()
 
-  console.log('data', data)
+  DEBUG && console.log('data', data)
 
   const minimumSize = Math.min(parentWidth, parentHeight)
   const radius = minimumSize / 2

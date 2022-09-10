@@ -10,6 +10,8 @@ import { Heading, Box, Flex } from '@chakra-ui/react'
 import { colors } from '../../assets/theme'
 import formatCsvNumber from '../../utils/numberFormatter'
 
+const DEBUG = false
+
 const COLORS = {
   oil: {
     past: '#87BFFF',
@@ -561,7 +563,7 @@ const ForecastChart = ({
 }: ForecastChartProps) => {
   const { productionData, projectionData, projProdData } = data
 
-  console.log('projProdData', projProdData)
+  DEBUG && console.log('projProdData', projProdData)
 
   const yearScale = scaleLinear({
     range: [0, width - margin.left],
@@ -615,8 +617,7 @@ const ForecastChart = ({
             y1={(d) => productionScale(getY1(d))}
           >
             {({ stacks, path }) =>
-              stacks.map((stack) => {
-                return (
+              stacks.map((stack) => (
                   <path
                     key={`stack-${stack.key}`}
                     d={path(stack) || ''}
@@ -632,8 +633,7 @@ const ForecastChart = ({
                       }[stack.key]
                     }
                   />
-                )
-              })
+                ))
             }
           </AreaStack>
 
@@ -646,8 +646,7 @@ const ForecastChart = ({
             y1={(d) => productionScale(getY1(d))}
           >
             {({ stacks, path }) =>
-              stacks.map((stack) => {
-                return (
+              stacks.map((stack) => (
                   <path
                     key={`stack-${stack.key}`}
                     d={path(stack) || ''}
@@ -660,8 +659,7 @@ const ForecastChart = ({
                       }[stack.key]
                     }
                   />
-                )
-              })
+                ))
             }
           </AreaStack>
 
@@ -683,15 +681,13 @@ const ForecastChart = ({
             numTicks={width > 520 ? 8 : 4}
             tickStroke="transparent"
             tickFormat={(x: any) => formatCsvNumber(x) as any}
-            tickLabelProps={(label, pos) => {
-              return {
+            tickLabelProps={(label, pos) => ({
                 dx: '0.25em',
                 dy: pos === 0 ? -12 : 2,
                 fill: colors.primary.grey70,
                 fontSize: 14,
                 textAnchor: 'start',
-              }
-            }}
+              })}
           />
 
           <AxisBottom

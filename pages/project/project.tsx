@@ -29,6 +29,8 @@ import { Country } from 'components/Map/types'
 import Container from 'components/Container'
 import AnnualEmissions from 'components/project/AnnualEmissions'
 
+const DEBUG = false
+
 export type Props = {
   page: Page
   menu: Array<any>
@@ -49,8 +51,6 @@ export type Props = {
   locale: string
   prefixConversions: PrefixRecord[]
 }
-
-const DEBUG = false
 
 const ProjectPage: React.FC<Props> = (props) => {
   // @ts-ignore
@@ -77,11 +77,11 @@ const ProjectPage: React.FC<Props> = (props) => {
 
   const projectSources = useProjectSources({ projectId, country })
 
-  console.log({ projectSources })
+  DEBUG && console.log({ projectSources })
 
   const allProjectsInACountry = useCountryProjects({ country })
 
-  console.info({ allProjectsInACountry })
+  DEBUG && console.info({ allProjectsInACountry })
 
   const { production, projection, reserves, getCurrentCO2E } = useCountryData({
     // @ts-ignore
@@ -116,7 +116,7 @@ const ProjectPage: React.FC<Props> = (props) => {
     prefixes: prefixConversions,
   })
 
-  console.log('AnnualEmissions-gg', gg)
+  DEBUG && console.log('AnnualEmissions-gg', gg)
 
   // useProject({projectId: 45352})
 
@@ -142,10 +142,10 @@ const ProjectPage: React.FC<Props> = (props) => {
     return co2
   }, [theProject?.id])
 
-  console.log({ projInfo })
+  DEBUG && console.log({ projInfo })
 
-  console.log('theProject', theProject)
-  console.log('projInfo', projInfo)
+  DEBUG && console.log('theProject', theProject)
+  DEBUG && console.log('projInfo', projInfo)
 
   return (
     <DataContextProvider

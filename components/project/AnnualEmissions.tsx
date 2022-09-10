@@ -19,6 +19,8 @@ import useVolumes from '../../hooks/useVolumes'
 import useRangeOfCertainty from '../../hooks/useRangeOfCertainty'
 import capitalizeFirstLetter from '../../utils/capitalizeFirstLetter'
 
+const DEBUG = false
+
 type AnnualEmissionsProps = {
   country: string
   projectId: number
@@ -42,7 +44,7 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({
   const [gwp, setGwp] = useState<string>(WarmingPotential.GWP100)
   const [productionSourceId, setProductionSourceId] = useState<number>(preferredProductionSourceId)
 
-  console.log('projectSources', projectSources)
+  DEBUG && console.log('projectSources', projectSources)
 
   const gg = useProjectData({
     reservesSourceId: 21,

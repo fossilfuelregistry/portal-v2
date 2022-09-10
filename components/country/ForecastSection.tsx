@@ -20,6 +20,7 @@ type ForecastSectionProps = {
 }
 
 const startYear = 2010
+const DEBUG = false
 
 const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
   const { translate } = useText()
@@ -163,7 +164,7 @@ const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
     return csvData.map(generateCsvTranslation)
   }, [forecastData])
 
-  console.log('translatedCsvData', translatedCsvData)
+  DEBUG && console.log('translatedCsvData', translatedCsvData)
 
   return (
     <InfoSection

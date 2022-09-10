@@ -18,6 +18,8 @@ import { colors } from '../../assets/theme'
 import useVolumes from '../../hooks/useVolumes'
 import useRangeOfCertainty from '../../hooks/useRangeOfCertainty'
 
+const DEBUG = false
+
 type AnnualEmissionsProps = {
   country: string
 }
@@ -48,7 +50,7 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ country }) => {
     conversionPrefixes: prefixConversions,
   })
 
-  console.log('emissionsData', emissionsData)
+  DEBUG && console.log('emissionsData', emissionsData)
 
   useEffect(() => {
     if (productionSources.length && !productionSourceId) {

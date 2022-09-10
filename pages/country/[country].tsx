@@ -71,7 +71,7 @@ const CountryPage: React.FC<Props> = (props) => {
   const [gwp, setGwp] = useState('GWP100')
   const [country, setCountry] = useState<string>(router.query.country as string)
 
-  console.log('countries', countries)
+  DEBUG && console.log('countries', countries)
 
   const countryName = useMemo(() => countries.find((c) => c.iso3166 === country)?.en || '', [country])
 

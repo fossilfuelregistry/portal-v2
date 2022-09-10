@@ -13,6 +13,8 @@ import WarmingPotentialSelect, {
 import { colors } from '../../assets/theme'
 import formatCsvNumber from '../../utils/formatCsvNumbers'
 
+const DEBUG = false
+
 type EmissionsIntensityProps = {
   country: string
 }
@@ -51,7 +53,7 @@ const EmissionsIntensity: FC<EmissionsIntensityProps> = ({ country }) => {
     )
   }
 
-  console.log('countryData--', countryData)
+  DEBUG && console.log('countryData--', countryData)
 
   const generateFuelData = (data: any, fuel: string, type: 'co2' | 'ch4') => ({
     Combustion: data?.co2e.scope3[type].wa,
@@ -83,8 +85,7 @@ const EmissionsIntensity: FC<EmissionsIntensityProps> = ({ country }) => {
     ]
   }, [countryData])
 
-  const translatedCsvData = useMemo(() => {
-    return [
+  const translatedCsvData = useMemo(() => [
       {
         Fuel: totalEmissionsData[0].fuel,
         Scope1: formatCsvNumber(totalEmissionsData[0]['Pre-combustion']),
@@ -100,8 +101,7 @@ const EmissionsIntensity: FC<EmissionsIntensityProps> = ({ country }) => {
         Scope1: formatCsvNumber(totalEmissionsData[2]['Pre-combustion']),
         Scope3: formatCsvNumber(totalEmissionsData[2].Combustion),
       },
-    ]
-  }, [totalEmissionsData])
+    ], [totalEmissionsData])
 
   return (
     <InfoSection
