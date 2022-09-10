@@ -51,6 +51,8 @@ const EmissionsIntensity: FC<EmissionsIntensityProps> = ({ country }) => {
     )
   }
 
+  console.log('countryData--', countryData)
+
   const generateFuelData = (data: any, fuel: string, type: 'co2' | 'ch4') => ({
     Combustion: data?.co2e.scope3[type].wa,
     'Pre-combustion': data?.co2e.scope1[type].wa,
@@ -60,7 +62,7 @@ const EmissionsIntensity: FC<EmissionsIntensityProps> = ({ country }) => {
   const totalEmissionsData = useMemo(() => {
     const oilData = getFuelData(2, 'oil')
     const gasData = getFuelData(2, 'gas')
-    const coalData = getFuelData(1, 'gas')
+    const coalData = getFuelData(1, 'coal')
 
     return [
       generateFuelData(oilData, 'Oil', 'co2'),
@@ -69,12 +71,10 @@ const EmissionsIntensity: FC<EmissionsIntensityProps> = ({ country }) => {
     ]
   }, [countryData])
 
-  console.log('totalEmissionsData', totalEmissionsData)
-
   const methaneData = useMemo(() => {
     const oilData = getFuelData(2, 'oil')
     const gasData = getFuelData(2, 'gas')
-    const coalData = getFuelData(1, 'gas')
+    const coalData = getFuelData(1, 'coal')
 
     return [
       generateFuelData(oilData, 'Oil', 'ch4'),

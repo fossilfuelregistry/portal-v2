@@ -198,7 +198,7 @@ const Piechart: FC<PieChartProps> = ({
               mr="8px"
             />
             {d.label}
-            <Info />
+            <Info text="sdsdasdasdsadasassa" />
           </Flex>
         ))}
       </Flex>

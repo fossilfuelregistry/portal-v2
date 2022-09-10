@@ -27,7 +27,11 @@ const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
   const { generateCsvTranslation } = useCsvDataTranslator()
   const { conversions, constants, prefixConversions, texts } = staticData
   const [gwp, setGwp] = useState<string>(WarmingPotential.GWP100)
-  const { preferredProductionSourceId, preferredProjectionSourceId, preferredReservesSourceId } = useCountrySources({
+  const {
+    preferredProductionSourceId,
+    preferredProjectionSourceId,
+    preferredReservesSourceId,
+  } = useCountrySources({
     country,
   })
   const { production, projectedProduction, projection } = useCountryData({
@@ -46,9 +50,10 @@ const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
       data
         ? data.reduce((prev, current) => prev + current.co2e.total.total.wa, 0)
         : 0
-    // console.log('forecast-projectedProduction', projectedProduction)
 
-    const filteredProductionData = production.filter((p) => p.year >= startYear)
+    const filteredProductionData = production.filter(
+      (p) => p.year >= startYear && p.sourceId === preferredProductionSourceId
+    )
     const groupedProductionByYear = groupBy(
       filteredProductionData,
       (d) => d.year
@@ -64,14 +69,23 @@ const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
     }))
 
     // @ts-ignore
-    const groupedProjectionByYear = groupBy(projection, (d) => d.year)
+    const filteredProjectionData = projection.filter(
+      (p: any) =>
+        p.year >= startYear && p.sourceId === preferredProjectionSourceId
+    )
+    const groupedProjectionByYear = groupBy(
+      filteredProjectionData,
+      (d: any) => d.year
+    )
     const groupedProjectionByFuel = Object.values(groupedProjectionByYear).map(
+      // @ts-ignore
       (d) => groupBy(d, (i) => i.fossilFuelType)
     )
 
     const projectionData = groupedProjectionByFuel.map((d) => ({
       co2:
         calculateTotal(d.oil) + calculateTotal(d.gas) + calculateTotal(d.coal),
+      // @ts-ignore
       year: d.oil[0]?.year || d.gas[0]?.year || d.coal[0].year,
     }))
 
@@ -101,6 +115,8 @@ const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
       projProdData,
     }
   }, [country, gwp, production, projection])
+
+  console.log('forecast-productionData', forecastData)
 
   const translatedCsvData = useMemo(() => {
     const { productionData, projectionData, projProdData } = forecastData

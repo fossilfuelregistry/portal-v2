@@ -93,7 +93,7 @@ const BarStackChart: FC<BarStackProps> = ({
         textTransform="uppercase"
         letterSpacing="1px"
       >
-        Intensity
+        MT CO₂E
       </Heading>
       <svg width={width} height={height}>
         <Group top={margin.top} left={margin.left}>
