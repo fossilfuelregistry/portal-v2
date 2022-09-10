@@ -120,8 +120,8 @@ const CountryPage: React.FC<Props> = (props) => {
       }}
     >
       <div id="page_main">
-        <Navbar menu={menu} texts={texts} />
-        <PageHead page={page} />
+        <Navbar menu={menu}/>
+        <PageHead page={page}/>
         <Map country={country} type="country" onChangeCountry={setCountry} />
         <Info />
         {country !== 'global' && (
@@ -153,7 +153,7 @@ const CountryPage: React.FC<Props> = (props) => {
             <HistoricalSection country={country} />
           </Container>
         )}
-        <Footer footer={footer} texts={texts} />
+        <Footer footer={footer}/>
       </div>
     </DataContextProvider>
   )

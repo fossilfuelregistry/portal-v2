@@ -9,11 +9,10 @@ import Markdown from "components/CMSContent/Markdown";
 import useText from "lib/useText";
 
 interface FooterCompProps {
-	footer: FooterProps,
-	texts: any
+	footer: FooterProps
 }
 
-export default function Footer({footer, texts}: FooterCompProps) {
+export default function Footer({footer}: FooterCompProps) {
 	const router = useRouter()
 	const {translate} = useText()
 	const locales = router.locales ?? []

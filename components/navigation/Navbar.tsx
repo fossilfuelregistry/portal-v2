@@ -70,10 +70,9 @@ const RenderLinkOrSubmenu = ({item, marginInlineStart, marginInlineEnd, mb, colo
 
 interface NavbarProps {
 	menu: MenuItemType[],
-	texts: any
 }
 
-export default function Navbar({menu, texts}: NavbarProps) {
+export default function Navbar({menu}: NavbarProps) {
 	const {isOpen, onOpen, onClose} = useDisclosure();
 	const {translate} = useText()
 
@@ -89,7 +88,10 @@ export default function Navbar({menu, texts}: NavbarProps) {
 						onClick={isOpen ? onClose : onOpen}
 					/>
 					<Flex alignItems="center" justifyContent="space-between" w="100%">
-						<Box>{translate('grff')}</Box>
+						<Flex alignItems="center">
+							<Box mr="12px"><img src="/logo2.svg" height="40px" width="40px" alt=""/></Box>
+							<Box>{translate('grff')}</Box>
+						</Flex>
 						<Flex
 							as="nav" alignItems="center"
 							display={{base: 'none', md: 'flex'}}>

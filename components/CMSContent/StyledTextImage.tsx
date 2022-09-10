@@ -32,7 +32,8 @@ const StyledTextImage = ({block}: Props) => {
 								h="100%"
 								justifyContent="space-between"
 								pl={{base: '24px', md: '100px'}} py={{base: '24px', md: '160px'}}
-								maxWidth="750px">
+								maxWidth="750px"
+							>
 								<Heading as="h1" textStyle="inverse">{block.Headline}</Heading>
 								{block.Buttons?.map((b: any) => (
 									<Link href={b.URL}>
@@ -50,10 +51,32 @@ const StyledTextImage = ({block}: Props) => {
 
 		case 'Centered':
 			return (
-				<CMSBlock>
-					<CMSImage image={block.Image}
-							  height={{base: '250px', sm: '350px', md: '450px', lg: '680px'}}/>
-				</CMSBlock>
+				<Box w={{base: '100%'}} position="relative">
+						<CMSImage image={block.Image}
+								  height={{base: '250px', sm: '300px', md: '400px', lg: '500px'}}/>
+						<Box position="absolute" top={0} left={0} h="100%" w="100%">
+							<Box maxWidth="1440px" mx="auto" h="100%">
+								<Flex
+									direction="column"
+									h="100%"
+									py={{base: '24px', md: '160px'}}
+									mx="auto"
+									maxWidth="750px"
+									alignItems="center"
+								>
+									<Heading as="h1" textStyle="inverse" textAlign="center" mb="36px">{block.Headline}</Heading>
+									{block.Buttons?.map((b: any) => (
+										<Link href={b.URL}>
+											{/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+											<a>
+												<Button variant="inverse">{b.Text}</Button>
+											</a>
+										</Link>
+									))}
+								</Flex>
+							</Box>
+						</Box>
+				</Box>
 			)
 
 		case 'Text only':
