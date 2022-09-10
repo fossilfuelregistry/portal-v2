@@ -46,7 +46,6 @@ export default extendTheme({
 				},
 			},
 			h2: {
-				fontSize: ['44px'],
 				marginBottom: '20px',
 			},
 			h5: {

@@ -29,7 +29,7 @@ export default function TextWithQuery({block}: Props) {
 	return (
 		<CMSBlock>
 			<Box w="100%" maxWidth="710px" my={{base: '24px', md: '72px', lg: '120px'}}>
-				<Heading as="h2" size="2xl" mb="32px">{Headline}</Heading>
+				<Heading as="h1" size="2xl" mb="32px">{Headline}</Heading>
 				<Markdown>
 					{result}
 				</Markdown>

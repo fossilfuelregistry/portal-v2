@@ -66,3 +66,10 @@
 path.history-curve {
   stroke-width: 2 !important;
 }
+
+.markdown h2 {
+  font-family: 'sommet-rounded', sans-serif;
+  font-size: 44px;
+  margin-top: 50px;
+  margin-bottom: 32px;
+}

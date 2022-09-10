@@ -17,6 +17,7 @@ const Markdown = ({children}: Props) => (
 			transformImageUri={(uri: string) =>
 				uri.startsWith("http") ? uri : `${process.env.NEXT_PUBLIC_CMS_URL}${uri}`
 			}
+			className="markdown"
 		>
 			{children}
 		</ReactMarkdown>
