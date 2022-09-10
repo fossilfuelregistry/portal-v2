@@ -152,7 +152,7 @@ const ProjectPage: React.FC<Props> = (props) => {
       data={{ countries, constants, texts, conversions, prefixConversions }}
     >
       <div id="page_main">
-        <Navbar menu={menu} texts={texts} />
+        <Navbar menu={menu}/>
         <PageHead page={page} />
         <Map country={country} type="country" onChangeCountry={setCountry} />
         <Container>
@@ -162,7 +162,7 @@ const ProjectPage: React.FC<Props> = (props) => {
             theProject={theProject}
           />
         </Container>
-        <Footer footer={footer} texts={texts} />
+        <Footer footer={footer}/>
       </div>
     </DataContextProvider>
   )
