@@ -7,6 +7,9 @@ import useCountryData from 'lib/useCountryData'
 import SourceSelect from 'components/filters/SourceSelect'
 import { SimpleGrid } from '@chakra-ui/react'
 import { DataContext } from 'components/DataContext'
+import useCsvDataTranslator from 'lib/useCsvDataTranslator'
+import { sumOfCO2 } from 'lib/calculate'
+import formatCsvNumber from '../../utils/formatCsvNumbers'
 
 const DEBUG = false
 
@@ -46,6 +49,7 @@ const HistoricalFuel: FC<HistoricalFuelProps> = ({
   })
 
   const conversion = usePrefixConversion(prefixConversions)
+  const { generateCsvTranslation } = useCsvDataTranslator()
 
   const sourceData = useMemo(() => {
     const data = sourceType === 'production' ? production : reserves
@@ -100,8 +104,40 @@ const HistoricalFuel: FC<HistoricalFuelProps> = ({
 
   DEBUG && console.log('sourceData', sourceData)
 
+  const translatedCsvData = useMemo(() => {
+    const data = sourceType === 'production' ? production : reserves
+    const datas = data
+      .filter((d: any) => d.fossilFuelType === fuel)
+      .map((d: any) => {
+        // @ts-ignore
+        const _d = { ...d }
+        delete _d.id
+        delete _d.__typename
+        delete _d.sourceId
+        _d.source = sources.find((s: any) => s.sourceId === d.sourceId)?.name
+        if (d.co2?.scope1 || d.co2?.scope3) {
+          _d.co2 = sumOfCO2(d.co2, 1)
+        }
+        return _d
+      })
+
+    const csvData = datas
+      // @ts-ignore
+      .map((d) => ({
+        ...d,
+        co2: formatCsvNumber(d.co2),
+        volume: formatCsvNumber(d.volume),
+      }))
+      .map(generateCsvTranslation)
+    return csvData
+  }, [production, reserves, fuel, sourceId, country])
+
   return (
-    <InfoSection title={`${countryName} ${title}`}>
+    <InfoSection
+      title={`${countryName} ${title}`}
+      csvData={translatedCsvData}
+      filename={`${countryName}_${title}.csv`}
+    >
       <SimpleGrid mb="40px" columns={3} gridGap="20px">
         <SourceSelect
           showAll

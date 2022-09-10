@@ -23,7 +23,9 @@ const HistoricProduction: FC<HistoricProductionProps> = ({ country }) => {
   const { productionSources, preferredProductionSourceId } = useCountrySources({
     country,
   })
-  const [productionSourceId, setProductionSourceId] = useState<number>(preferredProductionSourceId)
+  const [productionSourceId, setProductionSourceId] = useState<number>(
+    preferredProductionSourceId
+  )
   const { production } = useCountryData({
     productionSourceId,
     gwp: 'GWP100',
@@ -64,8 +66,21 @@ const HistoricProduction: FC<HistoricProductionProps> = ({ country }) => {
     return result
   }, [production])
 
+  const translatedCsvData = useMemo(() => {
+    return historicData.map((d) => ({
+      Year: d.date,
+      Oil: d.Oil,
+      Gas: d.Gas,
+      Coal: d.Coal,
+    }))
+  }, [historicData])
+
   return (
-    <InfoSection title={`${countryName} Historic Emissions`}>
+    <InfoSection
+      title={`${countryName} Historic Emissions`}
+      csvData={translatedCsvData}
+      filename={`${country}_production_estimates.csv`}
+    >
       <SimpleGrid mb="40px" columns={3} gridGap="20px">
         <SourceSelect
           label="Production estimates source"

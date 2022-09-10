@@ -11,6 +11,7 @@ import WarmingPotentialSelect, {
   WarmingPotential,
 } from '../filters/WarmingPotentialSelect'
 import { colors } from '../../assets/theme'
+import formatCsvNumber from '../../utils/formatCsvNumbers'
 
 type EmissionsIntensityProps = {
   country: string
@@ -20,8 +21,7 @@ const EmissionsIntensity: FC<EmissionsIntensityProps> = ({ country }) => {
   const [gwp, setGwp] = useState<string>(WarmingPotential.GWP100)
   const [countryData, setCountryData] = useState<any[]>([])
   const staticData: StaticData = useContext(DataContext)
-  const { countryName, conversions, constants, prefixConversions, texts } =
-    staticData
+  const { countryName, conversions, constants, prefixConversions } = staticData
   const { productionSources } = useCountrySources({ country })
 
   const { getCurrentCO2E } = useCountryData({
@@ -83,9 +83,31 @@ const EmissionsIntensity: FC<EmissionsIntensityProps> = ({ country }) => {
     ]
   }, [countryData])
 
+  const translatedCsvData = useMemo(() => {
+    return [
+      {
+        Fuel: totalEmissionsData[0].fuel,
+        Scope1: formatCsvNumber(totalEmissionsData[0]['Pre-combustion']),
+        Scope3: formatCsvNumber(totalEmissionsData[0].Combustion),
+      },
+      {
+        Fuel: totalEmissionsData[1].fuel,
+        Scope1: formatCsvNumber(totalEmissionsData[1]['Pre-combustion']),
+        Scope3: formatCsvNumber(totalEmissionsData[1].Combustion),
+      },
+      {
+        Fuel: totalEmissionsData[2].fuel,
+        Scope1: formatCsvNumber(totalEmissionsData[2]['Pre-combustion']),
+        Scope3: formatCsvNumber(totalEmissionsData[2].Combustion),
+      },
+    ]
+  }, [totalEmissionsData])
+
   return (
     <InfoSection
       title={`${countryName} Emissions Intensity of Fossil Fuel Production`}
+      filename={`${country}_fuel_total_emissions.csv`}
+      csvData={translatedCsvData}
     >
       <Box mb="40px" maxW="377px">
         <WarmingPotentialSelect

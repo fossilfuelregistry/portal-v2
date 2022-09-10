@@ -25,7 +25,7 @@ const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
   const { translate } = useText()
   const staticData: StaticData = useContext(DataContext)
   const { generateCsvTranslation } = useCsvDataTranslator()
-  const { conversions, constants, prefixConversions, texts } = staticData
+  const { conversions, constants, prefixConversions } = staticData
   const [gwp, setGwp] = useState<string>(WarmingPotential.GWP100)
   const {
     preferredProductionSourceId,
@@ -116,8 +116,6 @@ const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
     }
   }, [country, gwp, production, projection])
 
-  console.log('forecast-productionData', forecastData)
-
   const translatedCsvData = useMemo(() => {
     const { productionData, projectionData, projProdData } = forecastData
     const csvData = productionData.map((p) => ({
@@ -171,7 +169,7 @@ const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
     <InfoSection
       title={translate('explanation_emissions_headline')}
       csvData={translatedCsvData}
-      filename="_emissions_forecast.csv"
+      filename={`${country}_emissions_forecast.csv`}
     >
       <Box as="p" fontSize="16" mb="24px" color={colors.primary.richBlack}>
         {translate('explanation_emissions')}

@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect, useState } from 'react'
+import React, { FC, useContext, useEffect, useMemo, useState } from 'react'
 import { Box, SimpleGrid } from '@chakra-ui/react'
 import PieChart from 'components/charts/PieChart'
 import InfoSection from 'components/InfoSection'
@@ -12,6 +12,8 @@ import useCountryData from 'lib/useCountryData'
 import { StaticData } from 'lib/types'
 import useText from 'lib/useText'
 import { DataContext } from 'components/DataContext'
+import useCsvDataTranslator from 'lib/useCsvDataTranslator'
+import formatCsvNumber from 'utils/formatCsvNumbers'
 import { colors } from '../../assets/theme'
 import useVolumes from '../../hooks/useVolumes'
 import useRangeOfCertainty from '../../hooks/useRangeOfCertainty'
@@ -34,6 +36,7 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ country }) => {
   const [emissionsData, setEmissionsData] = useState<any[]>([])
   const { volumesData } = useVolumes(emissionsData, productionSourceId)
   const { rangeData } = useRangeOfCertainty(emissionsData, productionSourceId)
+  const { generateCsvTranslation } = useCsvDataTranslator()
   const { getCurrentCO2E } = useCountryData({
     gwp,
     productionSourceId,
@@ -63,8 +66,26 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ country }) => {
     calculateData()
   }, [gwp, productionSourceId, country])
 
+  const translatedCsvData = useMemo(() => {
+    const csvData = [
+      {
+        scope1_low: formatCsvNumber(rangeData[0]?.value[0]),
+        scope1_mid: formatCsvNumber(rangeData[0]?.value[1]),
+        scope1_high: formatCsvNumber(rangeData[0]?.value[2]),
+        scope3_low: formatCsvNumber(rangeData[1]?.value[0]),
+        scope3_mid: formatCsvNumber(rangeData[1]?.value[1]),
+        scope3_high: formatCsvNumber(rangeData[1]?.value[2]),
+      },
+    ]
+    return csvData.map(generateCsvTranslation)
+  }, [rangeData])
+
   return (
-    <InfoSection title={`${countryName} ${translate('annual_emissions')}`}>
+    <InfoSection
+      title={`${countryName} ${translate('annual_emissions')}`}
+      filename={`${country}_year_emissions.csv`}
+      csvData={translatedCsvData}
+    >
       <SimpleGrid mb="40px" columns={3} gridGap="20px">
         <WarmingPotentialSelect
           value={gwp}
