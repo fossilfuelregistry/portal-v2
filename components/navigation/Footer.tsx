@@ -22,7 +22,14 @@ export default function Footer({footer}: FooterCompProps) {
 		<Box w="100%" bg="primary.darkBlue" py={{base: '80px'}} mt="24px">
 			<CMSBlock>
 				<Flex textStyle="inverse" direction="row" wrap="wrap">
-					<Box w={{base: '100%', lg: '40%'}}>{translate('grff')}</Box>
+
+					<Box w={{base: '100%', lg: '40%'}}>
+						<Flex alignItems="center">
+							<Box mr="12px"><img src="/logo2.svg" height="40px" width="40px" alt=""/></Box>
+							<Box>{translate('grff')}</Box>
+						</Flex>
+					</Box>
+
 					<Box w={{base: '100%', md: '30%', lg: '25%'}}>
 						{footer.Items.filter((i: MenuItem) => i.Column < 2).map((i: MenuItem) => (
 							<RenderLinkOrSubmenu key={i.id} item={i} mb="20px" color="common.white"/>))}

@@ -10,7 +10,7 @@ const PageHead = ({page}: Props) => (
 		<Head>
 			<title>{page?.Title ?? 'Global Fossil Fuel Registry'}</title>
 			<meta name="description" content="TBSL"/>
-			<link rel="icon" href="/favicon.ico"/>
+			<link rel="icon" href="/logo2.svg"/>
 		</Head>
 	)
 
