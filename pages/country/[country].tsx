@@ -28,6 +28,7 @@ import Container from 'components/Container'
 import useText from 'lib/useText'
 import { DataContextProvider } from 'components/DataContext'
 import Info from 'components/Info'
+import CountrySnapshot from 'components/country/CountrySnapshot'
 import { colors } from '../../assets/theme'
 
 export type Props = {
@@ -78,11 +79,21 @@ const CountryPage: React.FC<Props> = (props) => {
   /**
    * Loads sources
    */
-  const { preferredProductionSourceId, preferredProjectionSourceId, preferredReservesSourceId, productionSources } = useCountrySources({
-    country,
-  })
+  const {
+    productionSources,
+    projectionSources,
+    reservesSources,
+    preferredProductionSourceId,
+    preferredReservesSourceId,
+    preferredProjectionSourceId,
+  } = useCountrySources({ country })
 
-  DEBUG && console.log('productionSources', productionSources)
+  DEBUG &&
+    console.log('ALL SOURCES FOR COUNTRIES', {
+      productionSources,
+      projectionSources,
+      reservesSources,
+    })
 
   /**
    * Downloads and populates arrays with volume, co2e etc
@@ -95,8 +106,6 @@ const CountryPage: React.FC<Props> = (props) => {
       productionSourceId: preferredProductionSourceId,
       country,
       conversionConstants: conversions,
-      // @ts-ignore
-      allSources: productionSources,
       constants,
       conversionPrefixes: prefixConversions,
     })
@@ -126,6 +135,7 @@ const CountryPage: React.FC<Props> = (props) => {
         <Info />
         {country !== 'global' && (
           <Container>
+            <CountrySnapshot country={country} />
             <AnnualEmissions country={country} />
             <EmissionsIntensity country={country} />
             <HistoricProduction country={country} />
