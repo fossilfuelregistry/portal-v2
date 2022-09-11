@@ -8,6 +8,7 @@ import { GridRows } from '@visx/grid'
 import { LineIcon } from 'components/Icons'
 import Info from 'components/Info'
 import { Tooltip, useTooltip } from '@visx/tooltip'
+import useText from 'lib/useText'
 import { colors } from '../../assets/theme'
 
 const verticalMargin = 60
@@ -41,6 +42,8 @@ const RangeChart: FC<BarsProps> = ({
     hideTooltip,
     showTooltip,
   } = useTooltip<any>()
+
+  const { translate } = useText()
 
   // scales, memoize for performance
   const xScale = useMemo(
@@ -226,7 +229,7 @@ const RangeChart: FC<BarsProps> = ({
             mr="8px"
           />
           P5-P95 range
-          <Info />
+          <Info text={translate('p5p95')} />
         </Flex>
         <Flex
           alignItems="center"

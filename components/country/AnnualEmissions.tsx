@@ -44,8 +44,6 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ country }) => {
     productionSourceId,
     country,
     conversionConstants: conversions,
-    // @ts-ignore
-    allSources: productionSources,
     constants,
     conversionPrefixes: prefixConversions,
   })
