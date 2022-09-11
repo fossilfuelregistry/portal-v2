@@ -24,9 +24,9 @@ const DEBUG = false
 
 type Props = {
   gwp: string
-  reservesSourceId: number
-  projectionSourceId: number
-  productionSourceId: number
+  reservesSourceId?: number
+  projectionSourceId?: number
+  productionSourceId?: number
   region?: string
   country: string
 
@@ -124,6 +124,7 @@ const useCountryData = ({
   })
 
   const projection = useMemo(() => {
+    if(!projectionSourceId) return []
     try {
       // Synthesize stable projection data points if selected
       if (projectionSourceId === settings.stableProductionSourceId) {
@@ -188,6 +189,7 @@ const useCountryData = ({
 
   // Find stable production
   useEffect(() => {
+    if(!productionSourceId) return
     const reverse = [...production].reverse()
     const oil = reverse.find(
       (d) => d.fossilFuelType === 'oil' && d.sourceId === productionSourceId
@@ -204,7 +206,7 @@ const useCountryData = ({
 
   // Figure out available years when data loaded.
   useEffect(() => {
-    if (!(production?.length > 0)) return
+    if (!productionSourceId || !(production?.length > 0)) return
 
     const reduced = {}
     settings.supportedFuels.forEach(
@@ -242,7 +244,7 @@ const useCountryData = ({
 
   useEffect( () => {
 		DEBUG && console.info( 'useEffect projection', { projection, limits } )
-		if( projection?.length === 0 ) return
+		if( projection?.length === 0 || !projectionSourceId ) return
 
     // @ts-ignore 
 		let newLimits
@@ -325,7 +327,7 @@ const useCountryData = ({
       }, {})
     // console.info( _grades )
     setGrades(_grades)
-  }, [reserves?.length, reservesSourceId])
+  }, [reserves, reservesSourceId])
 
   // Match projected production with reserves.
 
