@@ -1,11 +1,12 @@
 import React, { FC } from 'react'
-import { Box, Heading } from '@chakra-ui/react'
+import { Box, Flex, Heading } from '@chakra-ui/react'
 import { BarStack } from '@visx/shape'
 import { Group } from '@visx/group'
 import { GridRows } from '@visx/grid'
 import { AxisBottom, AxisLeft } from '@visx/axis'
 import { scaleBand, scaleLinear, scaleOrdinal } from '@visx/scale'
 import { useTooltip } from '@visx/tooltip'
+import Info from 'components/Info'
 import { colors } from '../../assets/theme'
 
 type TooltipData = any
@@ -15,6 +16,7 @@ export type BarStackProps = {
   height: number
   margin?: { top: number; right: number; bottom: number; left: number }
   title: string
+  titleInfo?: string
   data: any[]
 }
 
@@ -26,6 +28,7 @@ const BarStackChart: FC<BarStackProps> = ({
   margin = defaultMargin,
   title,
   data,
+  titleInfo,
 }) => {
   const {
     tooltipOpen,
@@ -82,7 +85,9 @@ const BarStackChart: FC<BarStackProps> = ({
         color={colors.primary.richBlack}
         mb="32px"
       >
-        {title}
+        <Flex>
+          {title} <Info text={titleInfo} />
+        </Flex>
       </Heading>
       <Heading
         as="h6"

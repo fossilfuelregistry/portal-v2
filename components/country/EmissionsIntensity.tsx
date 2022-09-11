@@ -6,6 +6,7 @@ import { StaticData } from 'lib/types'
 import useCountryData from 'lib/useCountryData'
 import useCountrySources from 'lib/useCountrySources'
 import { DataContext } from 'components/DataContext'
+import useText from 'lib/useText'
 import BarStackChart from '../charts/BarStackChart'
 import WarmingPotentialSelect, {
   WarmingPotential,
@@ -23,16 +24,14 @@ const EmissionsIntensity: FC<EmissionsIntensityProps> = ({ country }) => {
   const [gwp, setGwp] = useState<string>(WarmingPotential.GWP100)
   const [countryData, setCountryData] = useState<any[]>([])
   const staticData: StaticData = useContext(DataContext)
+  const { translate } = useText()
   const { countryName, conversions, constants, prefixConversions } = staticData
   const { productionSources } = useCountrySources({ country })
 
   const { getCurrentCO2E } = useCountryData({
     gwp,
-    region: '',
     country,
     conversionConstants: conversions,
-    // @ts-ignore
-    allSources: productionSources,
     constants,
     conversionPrefixes: prefixConversions,
   })
@@ -138,6 +137,7 @@ const EmissionsIntensity: FC<EmissionsIntensityProps> = ({ country }) => {
         />
         <BarStackChart
           title="Methane"
+          titleInfo={translate("explanation_methanefactor")}
           width={550}
           height={300}
           data={methaneData}
