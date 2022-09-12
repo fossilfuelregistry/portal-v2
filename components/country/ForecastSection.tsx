@@ -1,4 +1,4 @@
-import React, { FC, useContext, useMemo, useState } from 'react'
+import React, { FC, useContext, useEffect, useMemo, useState } from 'react'
 import InfoSection from 'components/InfoSection'
 import ForecastChart from 'components/charts/ForecastChart'
 import { Box, SimpleGrid } from '@chakra-ui/react'
@@ -13,6 +13,7 @@ import useText from 'lib/useText'
 import useCsvDataTranslator from 'lib/useCsvDataTranslator'
 import formatCsvNumber from 'utils/formatCsvNumbers'
 import { DataContext } from 'components/DataContext'
+import SourceSelect from 'components/filters/SourceSelect'
 import { colors } from '../../assets/theme'
 
 type ForecastSectionProps = {
@@ -20,7 +21,7 @@ type ForecastSectionProps = {
 }
 
 const startYear = 2010
-const DEBUG = false
+const DEBUG = true
 
 const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
   const { translate } = useText()
@@ -28,23 +29,31 @@ const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
   const { generateCsvTranslation } = useCsvDataTranslator()
   const { conversions, constants, prefixConversions } = staticData
   const [gwp, setGwp] = useState<string>(WarmingPotential.GWP100)
+  const [projectionSourceId, setProjectionSourceId] = useState<number>(0)
   const {
     preferredProductionSourceId,
     preferredProjectionSourceId,
     preferredReservesSourceId,
+    projectionSources,
   } = useCountrySources({
     country,
   })
   const { production, projectedProduction, projection } = useCountryData({
     productionSourceId: preferredProductionSourceId,
     reservesSourceId: preferredReservesSourceId,
-    projectionSourceId: preferredProjectionSourceId,
+    projectionSourceId,
     gwp,
     country,
     conversionConstants: conversions,
     constants,
     conversionPrefixes: prefixConversions,
   })
+
+  useEffect(() => {
+    if (projectionSources.length && !projectionSourceId) {
+      setProjectionSourceId(projectionSources[0].sourceId)
+    }
+  }, [projectionSources])
 
   const forecastData = useMemo(() => {
     const calculateTotal = (data: any[]) =>
@@ -164,7 +173,7 @@ const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
     return csvData.map(generateCsvTranslation)
   }, [forecastData])
 
-  DEBUG && console.log('translatedCsvData', translatedCsvData)
+  DEBUG && console.log('projectionSources', projectionSources)
 
   return (
     <InfoSection
@@ -179,6 +188,12 @@ const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
         <WarmingPotentialSelect
           value={gwp}
           onChange={(option) => setGwp(option?.value as string)}
+        />
+        <SourceSelect
+          label="Projection"
+          sources={projectionSources}
+          value={projectionSourceId}
+          onChange={(option) => setProjectionSourceId(option?.value as any)}
         />
       </SimpleGrid>
       <ForecastChart width={1176} height={500} data={forecastData} />
