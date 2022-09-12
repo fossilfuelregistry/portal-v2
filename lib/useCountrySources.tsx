@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 /* eslint-disable no-unused-vars */
 import { useQuery } from '@apollo/client'
 import {
@@ -6,9 +5,8 @@ import {
   GQL_countrySources,
 } from 'queries/country'
 import { GQL_countrySourcesRecord } from 'queries/country-types'
-
 import { getPreferredReserveGrade } from 'lib/calculate'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 export type Props = {
   country: string
@@ -68,6 +66,12 @@ const useCountrySources = ({ country }: Props) => {
 
   DEBUG && console.info("PREFERRED SOURCES", { preferredProjectionSourceId, preferredProductionSourceId, preferredReservesSourceId })
 
+  const getSourceName = useCallback(
+    (sourceId: number | undefined) => 
+      productionSources.find(s=>s.sourceId === sourceId)?.namePretty ?? '',
+    [productionSources],
+  )
+
   return {
     isLoading,
     productionSources,
@@ -76,6 +80,7 @@ const useCountrySources = ({ country }: Props) => {
     preferredProductionSourceId,
     preferredProjectionSourceId,
     preferredReservesSourceId,
+    getSourceName
   }
 }
 

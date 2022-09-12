@@ -1,24 +1,26 @@
 import React, { FC } from 'react'
-import { SimpleGrid, Box, Grid, GridItem, Heading, Spinner } from '@chakra-ui/react'
+import { SimpleGrid, Box, Grid, GridItem, Heading, Spinner, Spacer, Flex } from '@chakra-ui/react'
 import { colors } from '../assets/theme'
 
 
 type InfoBoxProps = {
-  title: string
   icon?: React.ReactNode
-  subtitle?: string
   label?: string
+  source?: string
+  subtitle?: string
+  title: string
   value: number | undefined
   year?: string
 }
 
 const InfoBox: FC<InfoBoxProps> = ({
-    title, 
     icon, 
-    subtitle, 
     label, 
+    source = '',
+    subtitle, 
+    title, 
     value, 
-    year, 
+    year,
 }) => (
     <Box w="100%" bgColor={colors.primary.grey5}  padding="20px">
         <Grid gap={10}>
@@ -30,7 +32,7 @@ const InfoBox: FC<InfoBoxProps> = ({
         </Grid>
         <Box>{label}</Box>
         <Heading as="h3">{value!==undefined ? value?.toFixed(2): <Spinner />}</Heading>
-        <Box>{year}</Box>
+        <Box>{year}{!!source && ` (${source})`}</Box>
     </Box>
   )
 
