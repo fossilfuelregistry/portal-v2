@@ -202,8 +202,6 @@ export const getPageStaticProps: GetPageStaticProps = async (context, staticSlug
 
 	let pages: ICMSPage[] | undefined = backendCache.get(`pages-${locale}`)
 
-	console.log('getPageStaticProps', process.env.NEXT_PHASE, '===', PHASE_PRODUCTION_BUILD)
-
 	if (!pages || process.env.NEXT_PHASE !== PHASE_PRODUCTION_BUILD) {
 		console.log('getPageStaticProps', 'FETCH', context?.params?.slug, staticSlug )
 		api = await fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/${endpoint}?locale=${context.locale}`, {headers})
@@ -220,14 +218,20 @@ export const getPageStaticProps: GetPageStaticProps = async (context, staticSlug
 	api = await fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/${endpoint}/${p.id}?locale=${context.locale}&populate=deep`, {headers})
 
 	if (!api.ok) {
-		if (api.status === 404) return {notFound: true}
+		if (api.status === 404) {
+			console.log(`! getPageStaticProps 404 due to API 404: /api/${endpoint}/${p.id}?locale=${context.locale}&populate=deep` )
+			return {notFound: true, revalidate}
+		}
 		throw new Error(`Page fetch failed: ${api.status} ${api.statusText}`)
 	}
 
 	const response = await api.json()
 	const page = response.data
 
-	if (!page) return{notFound: true, revalidate}
+	if (!page) {
+		console.log(`! getPageStaticProps 404 due to no page` )
+		return {notFound: true, revalidate}
+	}
 
 	let menu = backendCache.get('menu')
 	if (!menu) {

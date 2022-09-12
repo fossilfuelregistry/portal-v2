@@ -191,9 +191,9 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({
     }, [])
   }, [projInfo])
 
-  console.log('rangeData', rangeData)
+  DEBUG && console.log('rangeData', rangeData)
 
-  console.log('my', projInfo)
+  DEBUG && console.log('my', projInfo)
 
   return (
     <InfoSection title={translate('annual_emissions')}>
