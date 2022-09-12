@@ -5,7 +5,7 @@ export default function handler( req, res ) {
     return
   }
 
-  res.setPreviewData( { hello: "World" }, { maxAge: 600 } )
+  res.setPreviewData( { hello: "World" }, { maxAge: 24*3600 } )
 
   if( req.query.slug )
     res.redirect( req.query.slug )

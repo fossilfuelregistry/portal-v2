@@ -203,7 +203,7 @@ export const getPageStaticProps: GetPageStaticProps = async (context, staticSlug
 	let pages: ICMSPage[] | undefined = backendCache.get(`pages-${locale}`)
 
 	if (!pages || process.env.NEXT_PHASE !== PHASE_PRODUCTION_BUILD) {
-		console.log('getPageStaticProps', 'FETCH', context?.params?.slug, staticSlug )
+		console.log('getPageStaticProps Phase:', process.env.NEXT_PHASE, 'FETCH', context?.params?.slug, staticSlug )
 		api = await fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/${endpoint}?locale=${context.locale}`, {headers})
 		if (!api.ok) throw new Error(`Page fetch failed: ${api.status} ${api.statusText}`)
 		pages = (await api.json()).data
