@@ -1,9 +1,11 @@
 import React, { FC, useMemo } from 'react'
-import { Box } from '@chakra-ui/react'
+import { SimpleGrid } from '@chakra-ui/react'
 import Select, { SelectOption } from 'components/Select'
 import { GLOBAL_OPTION } from 'components/Map/constants'
 import { Country } from 'components/Map/types'
 import { SingleValue } from 'chakra-react-select'
+import useCountryProjects from 'lib/useCountryProjects'
+import { useRouter } from 'next/router'
 
 type CountrySelectProps = {
   selectedCountry: SelectOption | undefined
@@ -16,6 +18,11 @@ const CountrySelect: FC<CountrySelectProps> = ({
   countriesData,
   onChange,
 }) => {
+  const { projects } = useCountryProjects({
+    country: selectedCountry?.value || '',
+  })
+  const router = useRouter()
+
   const countries = useMemo(() => {
     const cs = (countriesData ?? [])
       .map((c) => ({ ...c, value: c.iso3166, label: c.en }))
@@ -24,15 +31,34 @@ const CountrySelect: FC<CountrySelectProps> = ({
     return [GLOBAL_OPTION, ...cs]
   }, [countriesData])
 
+  const countryProjects = useMemo(() => {
+    return (projects ?? [])
+      .map((p: any) => ({ value: p.id, label: p.projectIdentifier }))
+      .sort((a, b) => a.label.localeCompare(b.label))
+  }, [projects])
+
   return (
-    <Box w="256px">
+    <SimpleGrid w="600px" columns={2} gridGap="20px">
       <Select
         height="44px"
         value={selectedCountry?.value as string}
         options={countries}
         onChange={onChange}
       />
-    </Box>
+      {selectedCountry?.value && (
+        <Select
+          height="44px"
+          placeholder="Country Projects"
+          value={selectedCountry?.value as string}
+          options={countryProjects}
+          onChange={(option) => {
+            router.push(
+              `/project?projectId=${option?.value}&country=${selectedCountry?.value}`
+            )
+          }}
+        />
+      )}
+    </SimpleGrid>
   )
 }
 

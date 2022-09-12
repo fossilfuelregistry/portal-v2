@@ -1,6 +1,7 @@
 import React, { FC, useMemo } from 'react'
 import Select, { SelectOption } from 'components/Select'
 import { SingleValue } from 'chakra-react-select'
+import useText from 'lib/useText'
 
 type ProductionSourceSelectProps = {
   sources: any[]
@@ -8,6 +9,7 @@ type ProductionSourceSelectProps = {
   onChange: (option: SingleValue<SelectOption>) => void
   label: string
   showAll?: boolean
+  translateName?: boolean
 }
 
 const SourceSelect: FC<ProductionSourceSelectProps> = ({
@@ -16,10 +18,13 @@ const SourceSelect: FC<ProductionSourceSelectProps> = ({
   onChange,
   label,
   showAll = false,
+  translateName = false,
 }) => {
+  const { translate } = useText()
+
   const options = useMemo(() => {
     const sourcesList = sources.map((s) => ({
-      label: s.name,
+      label: translateName ? translate(s.name) : s.name,
       value: s.sourceId,
     }))
     if (showAll) {

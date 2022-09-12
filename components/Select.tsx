@@ -19,6 +19,7 @@ type SelectProps = {
   height?: string
   tooltip?: string
   value: string | number | null
+  placeholder?: string
   options: SelectOption[]
   onChange: (newValue: SingleValue<SelectOption>) => void
 }
@@ -30,6 +31,7 @@ const Select: FC<SelectProps> = ({
   height = '40px',
   options,
   onChange,
+  placeholder = '',
 }) => {
   const chakraStyles = {
     container: (provided: CSSObject, state: any) => ({
@@ -124,6 +126,7 @@ const Select: FC<SelectProps> = ({
         size="md"
         chakraStyles={chakraStyles}
         isSearchable
+        placeholder={placeholder}
         value={selectedValue}
         options={options}
         onChange={onChange}

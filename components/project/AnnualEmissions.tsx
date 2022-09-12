@@ -35,16 +35,13 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({
 }) => {
   const { translate } = useText()
   const staticData: StaticData = useContext(DataContext)
-  const { conversions, constants, prefixConversions, texts } = staticData
+  const { conversions, constants, prefixConversions } = staticData
 
-  const { productionSources, preferredProductionSourceId } = useCountrySources({
-    country,
-  })
-  const projectSources = useProjectSources({ projectId, country })
+  const { reservesSources } = useProjectSources({ projectId, country })
   const [gwp, setGwp] = useState<string>(WarmingPotential.GWP100)
-  const [productionSourceId, setProductionSourceId] = useState<number>(preferredProductionSourceId)
+  const [reservesSourceId, setReservesSourceId] = useState<number>(0)
 
-  DEBUG && console.log('projectSources', projectSources)
+  DEBUG && console.log('reservesSources', reservesSources)
 
   const gg = useProjectData({
     reservesSourceId: 21,
@@ -53,17 +50,17 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({
     country,
     conversionConstants: conversions,
     constants,
-    allSources: projectSources.reservesSources,
+    allSources: reservesSources,
     // @ts-ignore
     stableProduction: {},
     prefixes: prefixConversions,
   })
 
   useEffect(() => {
-    if (productionSources.length && !productionSourceId) {
-      setProductionSourceId(productionSources[0].sourceId)
+    if (reservesSources.length && !reservesSourceId) {
+      setReservesSourceId(reservesSources[0].sourceId)
     }
-  }, [productionSources])
+  }, [reservesSources])
 
   const projInfo = useMemo(() => {
     if (!theProject?.id) return null
@@ -193,7 +190,7 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({
 
   DEBUG && console.log('rangeData', rangeData)
 
-  DEBUG && console.log('my', projInfo)
+  DEBUG && console.log('theProject-mm', theProject)
 
   return (
     <InfoSection title={translate('annual_emissions')}>
@@ -203,10 +200,10 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({
           onChange={(option) => setGwp(option?.value as string)}
         />
         <SourceSelect
-          label="Production estimates source"
-          sources={productionSources}
-          value={productionSourceId}
-          onChange={(option) => setProductionSourceId(option?.value as any)}
+          label="Reserves estimates source"
+          sources={reservesSources}
+          value={reservesSourceId}
+          onChange={(option) => setReservesSourceId(option?.value as any)}
         />
       </SimpleGrid>
       <SimpleGrid

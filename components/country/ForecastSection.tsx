@@ -21,13 +21,13 @@ type ForecastSectionProps = {
 }
 
 const startYear = 2010
-const DEBUG = true
+const DEBUG = false
 
 const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
   const { translate } = useText()
   const staticData: StaticData = useContext(DataContext)
   const { generateCsvTranslation } = useCsvDataTranslator()
-  const { conversions, constants, prefixConversions } = staticData
+  const { conversions, constants, prefixConversions, countryName } = staticData
   const [gwp, setGwp] = useState<string>(WarmingPotential.GWP100)
   const [projectionSourceId, setProjectionSourceId] = useState<number>(0)
   const {
@@ -177,7 +177,7 @@ const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
 
   return (
     <InfoSection
-      title={translate('explanation_emissions_headline')}
+      title={`${countryName} ${translate('explanation_emissions_headline')}`}
       csvData={translatedCsvData}
       filename={`${country}_emissions_forecast.csv`}
     >
@@ -191,6 +191,7 @@ const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
         />
         <SourceSelect
           label="Projection"
+          translateName
           sources={projectionSources}
           value={projectionSourceId}
           onChange={(option) => setProjectionSourceId(option?.value as any)}

@@ -66,20 +66,26 @@ const ProjectPage: React.FC<Props> = (props) => {
   } = props
   const apolloClient = useApolloClient()
   const router = useRouter()
+  const { projectId, country } = router.query
+
+  console.log('projectId', projectId)
+  console.log('projectId', country)
 
   const [gwp, setGwp] = useState('GWP100')
-  const [country, setCountry] = useState('au')
-
-  const projectId = 15874
 
   const { productionSources, projectionSources, reservesSources } =
-    useCountrySources({ country })
+    useCountrySources({ country: country as string })
 
-  const projectSources = useProjectSources({ projectId, country })
+  const projectSources = useProjectSources({
+    projectId: Number(projectId),
+    country: country as string,
+  })
 
   DEBUG && console.log({ projectSources })
 
-  const allProjectsInACountry = useCountryProjects({ country })
+  const allProjectsInACountry = useCountryProjects({
+    country: country as string,
+  })
 
   DEBUG && console.info({ allProjectsInACountry })
 
@@ -90,7 +96,7 @@ const ProjectPage: React.FC<Props> = (props) => {
     reservesSourceId: 2,
     projectionSourceId: 102,
     productionSourceId: 2,
-    country,
+    country: country as string,
     conversionConstants: conversions,
     // @ts-ignore
     allSources: projectSources,
@@ -107,7 +113,7 @@ const ProjectPage: React.FC<Props> = (props) => {
     projectId: 15874,
     texts,
     gwp,
-    country,
+    country: country as string,
     conversionConstants: conversions,
     constants,
     allSources: projectSources.productionSources,
@@ -127,9 +133,11 @@ const ProjectPage: React.FC<Props> = (props) => {
     loading,
     error,
   } = useQuery(GQL_project, {
-    variables: { id: projectId },
+    variables: { id: Number(projectId) },
     skip: !projectId,
   })
+
+  console.log('projectData', projectData, projectId)
 
   const theProject = projectData?.project ?? {}
 
@@ -152,32 +160,25 @@ const ProjectPage: React.FC<Props> = (props) => {
       data={{ countries, constants, texts, conversions, prefixConversions }}
     >
       <div id="page_main">
-        <Navbar menu={menu}/>
+        <Navbar menu={menu} />
         <PageHead page={page} />
-        <Map country={country} type="country" onChangeCountry={setCountry} />
         <Container>
           <AnnualEmissions
-            country={country}
-            projectId={projectId}
+            country={country as string}
+            projectId={Number(projectId)}
             theProject={theProject}
           />
         </Container>
-        <Footer footer={footer}/>
+        <Footer footer={footer} />
       </div>
     </DataContextProvider>
   )
 }
 
-// export const getStaticPaths: GetStaticPaths = async () => {
-//   const countries = await getProducingCountries()
-//   countries.push({ iso3166: '-' })
+// export const getStaticPaths: GetStaticPaths = () => {
 //   return {
 //     // @ts-ignore
-//     paths: countries.flatMap((c) => [
-//       { params: { country: c.iso3166 } },
-//       { params: { country: c.iso3166 }, locale: 'fr' },
-//       { params: { country: c.iso3166 }, locale: 'es' },
-//     ]),
+//     paths: [{ params: { projectId: '15891' } }],
 //     fallback: false,
 //   }
 // }

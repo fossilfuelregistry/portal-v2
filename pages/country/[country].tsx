@@ -74,7 +74,10 @@ const CountryPage: React.FC<Props> = (props) => {
 
   DEBUG && console.log('countries', countries)
 
-  const countryName = useMemo(() => countries.find((c) => c.iso3166 === country)?.en || '', [country])
+  const countryName = useMemo(
+    () => countries.find((c) => c.iso3166 === country)?.en || '',
+    [country]
+  )
 
   /**
    * Loads sources
@@ -129,8 +132,8 @@ const CountryPage: React.FC<Props> = (props) => {
       }}
     >
       <div id="page_main">
-        <Navbar menu={menu}/>
-        <PageHead page={page}/>
+        <Navbar menu={menu} />
+        <PageHead page={page} />
         <Map country={country} type="country" onChangeCountry={setCountry} />
         <Info />
         {country !== 'global' && (
@@ -150,7 +153,7 @@ const CountryPage: React.FC<Props> = (props) => {
             </Heading>
             <ForecastSection country={country} />
             {/* <ReservesLifeSection /> */}
-            {/* <ExcessReservesSection /> */}
+            <ExcessReservesSection />
             <Box h="1px" background={colors.primary.grey30} mb="80px" />
             <Heading
               as="h3"
@@ -163,7 +166,7 @@ const CountryPage: React.FC<Props> = (props) => {
             <HistoricalSection country={country} />
           </Container>
         )}
-        <Footer footer={footer}/>
+        <Footer footer={footer} />
       </div>
     </DataContextProvider>
   )
@@ -172,13 +175,15 @@ const CountryPage: React.FC<Props> = (props) => {
 export const getStaticPaths: GetStaticPaths = async () => {
   const countries = await getProducingCountries()
   countries.push({ iso3166: '-' })
+  const countriesPaths = countries.flatMap((c: any) => [
+    { params: { country: c.iso3166 } },
+    { params: { country: c.iso3166 }, locale: 'fr' },
+    { params: { country: c.iso3166 }, locale: 'es' },
+  ])
+
   return {
     // @ts-ignore
-    paths: countries.flatMap((c) => [
-      { params: { country: c.iso3166 } },
-      { params: { country: c.iso3166 }, locale: 'fr' },
-      { params: { country: c.iso3166 }, locale: 'es' },
-    ]),
+    paths: [...countriesPaths, { params: { country: 'global' } }],
     fallback: false,
   }
 }

@@ -60,7 +60,7 @@ const HistoricProduction: FC<HistoricProductionProps> = ({ country }) => {
       Oil: calculateTotal(d.oil),
       Gas: calculateTotal(d.gas),
       Coal: calculateTotal(d.coal),
-      date: d.oil[0].year,
+      date: d?.oil[0].year || d?.gas[0].year || d?.coal[0].year,
     }))
 
     return result
