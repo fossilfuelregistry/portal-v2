@@ -85,15 +85,14 @@ export const getStaticPaths: GetStaticPaths = async () => {
 		const api = await fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/Articles`, {headers})
 		if (!api.ok) throw new Error(`Pages fetch failed: ${api.status} ${api.statusText}`)
 		const pages = await api.json()
-		const result = {
+		return {
 			paths: pages?.data
 				.filter((p: any) => p.attributes?.slug?.length > 0)
 				.map((p: any) => ({params: {slug: p.attributes?.slug.split('/')}})) ?? [],
-			fallback: true
+			fallback: 'blocking'
 		}
-		return result
 	} catch (error) {
 		console.log(error)
-		return {paths: [], fallback: false}
+		return { paths: [], fallback: 'blocking'}
 	}
 }

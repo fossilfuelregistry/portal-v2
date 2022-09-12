@@ -16,8 +16,7 @@ const InfoSection: FC<InfoSectionProps> = ({
   children,
   csvData = [],
   filename = 'file.csv',
-}) => {
-  return (
+}) => (
     <Box
       bg={colors.primary.grey2}
       margin="0 auto"
@@ -64,6 +63,5 @@ const InfoSection: FC<InfoSectionProps> = ({
       </Flex>
     </Box>
   )
-}
 
 export default InfoSection

@@ -56,7 +56,7 @@ export default function Footer({footer}: FooterCompProps) {
 						<Flex>
 							{locales.map(l => (
 								<Box key={l} ml="20px">
-									<Link href={{ pathname, query }} locale={l}>
+									<Link href={{ pathname, query }} locale={l} prefetch={false}>
 										<chakra.span color="common.white">{l.toUpperCase()}</chakra.span>
 									</Link>
 								</Box>

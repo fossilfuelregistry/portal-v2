@@ -60,7 +60,7 @@ export default function ArticleSelector({block}: Props) {
 			</Box>
 			<SimpleGrid columns={{base: 1, xl: 2}} spacing="20px">
 				{articles.map((article: Article) => (
-					<Link href={`/article/${article.slug}`} key={article.slug}>
+					<Link href={`/article/${article.slug}`} key={article.slug} prefetch={false}>
 						{/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
 						<a>
 							<Flex minHeight="200px" background="primary.grey2">

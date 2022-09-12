@@ -33,15 +33,19 @@ interface RenderLinkOrSubmenuProps {
 
 const RenderLinkOrSubmenu = ({item, marginInlineStart, marginInlineEnd, mb, color}: RenderLinkOrSubmenuProps) => {
 	let href = item.URL ?? '#'
-	if (item.Page?.data)
-		href = `/${item.Page.data.attributes?.slug}`
+	if (item.Page?.data) {
+		if (item.Page.data.attributes?.slug === '/')
+			href = '/'
+		else
+			href = `/${item.Page.data.attributes?.slug}`
+	}
 	if (item.Article?.data)
 		href = `/article/ ${item.Article.data.attributes?.slug}`
 
 	if (!(item.Submenu?.length > 0)) {
 		return (
 			<Box key={item.id} marginInlineStart={marginInlineStart} marginInlineEnd={marginInlineEnd} mb={mb}>
-				<Link href={href} passHref>
+				<Link href={href} passHref prefetch={false}>
 					{/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
 					<a><Text textStyle="menu" color={color}>{item.Text}</Text></a>
 				</Link>
@@ -61,7 +65,7 @@ const RenderLinkOrSubmenu = ({item, marginInlineStart, marginInlineEnd, mb, colo
 						hr = `/${i.Page.data.attributes?.slug}`
 					if (i.Article?.data)
 						hr = `/article/${i.Article.data.attributes?.slug}`
-					return <Link key={i.id} href={hr}><MenuItem>{i.Text}</MenuItem></Link>
+					return <Link key={i.id} href={hr} prefetch={false}><MenuItem>{i.Text}</MenuItem></Link>
 				})}
 			</MenuList>
 		</Menu>

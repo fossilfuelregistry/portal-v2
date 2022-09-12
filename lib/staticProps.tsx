@@ -199,11 +199,16 @@ export const getPageStaticProps: GetPageStaticProps = async (context, staticSlug
 
 	let pages: ICMSPage[] | undefined = backendCache.get(`pages-${locale}`)
 
+	console.log('getPageStaticProps', process.env.NEXT_PHASE, '===', PHASE_PRODUCTION_BUILD)
+
 	if (!pages || process.env.NEXT_PHASE !== PHASE_PRODUCTION_BUILD) {
+		console.log('getPageStaticProps', 'FETCH', context?.params?.slug, staticSlug )
 		api = await fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/${endpoint}?locale=${context.locale}`, {headers})
 		if (!api.ok) throw new Error(`Page fetch failed: ${api.status} ${api.statusText}`)
 		pages = (await api.json()).data
-		backendCache.set(`pages-${locale}`, pages, 300)
+		backendCache.set(`pages-${locale}`, pages, 30)
+	} else {
+		console.log('getPageStaticProps', 'CACHED' )
 	}
 
 	const p = pages?.find(pg => pg.attributes?.slug === slug)
@@ -230,7 +235,7 @@ export const getPageStaticProps: GetPageStaticProps = async (context, staticSlug
 		}
 		const items = await api.json()
 		menu = items?.data?.attributes?.Items
-		backendCache.set('menu', menu, 300)
+		backendCache.set('menu', menu, 30)
 	}
 
 	let footer = backendCache.get('footer')
@@ -242,7 +247,7 @@ export const getPageStaticProps: GetPageStaticProps = async (context, staticSlug
 		}
 		const items = await api.json()
 		footer = items?.data?.attributes
-		backendCache.set('footer', footer, 300)
+		backendCache.set('footer', footer, 30)
 	}
 
 	const common = await getCommonStaticProps(context)
