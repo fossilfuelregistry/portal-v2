@@ -8,15 +8,24 @@ import {colors} from '../../assets/theme'
 type Block = {
 	Headline: string
 	Intro: string
+	Countries: string
+	Projects: string
+	Oil: string
+	Gas: string
+	Coal: string
+	ManualData: any
 }
 
-interface PercentageProps {children: React.ReactNode}
+interface PercentageProps {
+	children: React.ReactNode
+}
+
 const Percentage = ({children}: PercentageProps) => (
 	<Box
 		w={{base: '100%', md: '33%', xl: '18%'}}
 		position="relative"
 		mb={{base: "42px", md: "24px"}}
-		 maxW="250px" mx="auto">
+		maxW="250px" mx="auto">
 		{children}
 	</Box>
 )
@@ -26,7 +35,7 @@ type CoverageSummaryProps = {
 }
 
 const CoverageSummary: FC<CoverageSummaryProps> = ({block}) => {
-	const {Headline, Intro} = block
+	const {Headline, Intro, Countries, Projects, Oil, Gas, Coal, ManualData} = block
 	console.log(block)
 
 	return (
@@ -58,62 +67,63 @@ const CoverageSummary: FC<CoverageSummaryProps> = ({block}) => {
 					alignItems="center"
 				>
 
-					<Box w={{base: '100%', xl: '23%'}} mb="24px" maxW="250px" mx="auto">
-						<Heading as="h2">89</Heading>
+					<Box w={{base: '100%', xl: '17%'}} mb="24px" maxW="250px" mx="auto">
+						<Heading as="h2">{ManualData.countries}</Heading>
 						<Text fontSize={{base: '16px', md: '18px'}} opacity="0.8">
-							Countries
+							{Countries}
 							<br/><br/>
 						</Text>
 					</Box>
 
-					<Box w={{base: '100%', xl: '23%'}} mb="24px" maxW="250px" ml="auto" mr={{base: 'auto', xl: '50px'}} borderRight={{xl: '1px solid'}}>
-						<Heading as="h2">73161</Heading>
+					<Box w={{base: '100%', xl: '17%'}} mb="24px" maxW="250px" ml="auto" mr={{base: 'auto', xl: '50px'}}
+						 borderRight={{xl: '1px solid'}}>
+						<Heading as="h2">{ManualData.projects}</Heading>
 						<Text
 							maxW={{base: '100%', xl: '133px'}}
 							fontSize={{base: '16px', md: '18px'}}
 							opacity="0.8"
 						>
-							Extraction fields and projects
+							{Projects}
 						</Text>
 					</Box>
 
 					<Percentage>
 						<OilIcon height="40px" width="40px" position="absolute" top={5}/>
 						<Heading as="h2" pl={{base: "60px"}}>
-							70%
+							{ManualData.oil}
 						</Heading>
 						<Text
 							width="100%"
 							fontSize={{base: '16px', md: '18px'}}
 							opacity="0.8" pl={{base: "60px"}}
 						>
-							Oil projects by production
+							{Oil}
 						</Text>
 					</Percentage>
 
 					<Percentage>
 						<GasIcon position="absolute" top={5}/>
 						<Heading as="h2" pl={{base: "60px"}}>
-							91%
+							{ManualData.gas}
 						</Heading>
 						<Text
 							fontSize={{base: '16px', md: '18px'}}
 							opacity="0.8" pl={{base: "60px"}}
 						>
-							Gas projects by production
+							{Gas}
 						</Text>
 					</Percentage>
 
 					<Percentage>
 						<CoalIcon position="absolute" top={5}/>
 						<Heading as="h2" pl={{base: "60px"}}>
-							50%
+							{ManualData.coal}
 						</Heading>
 						<Text
 							fontSize={{base: '16px', md: '18px'}}
 							opacity="0.8" pl={{base: "60px"}}
 						>
-							Coal projects by production
+							{Coal}
 						</Text>
 					</Percentage>
 				</Flex>
