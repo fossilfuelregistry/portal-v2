@@ -1,24 +1,28 @@
 import React from 'react'
-import {chakra} from "@chakra-ui/react";
-import {Article} from "lib/types";
+import {Box, chakra} from "@chakra-ui/react";
+import {ArticleCategory} from "lib/types";
 
 interface Props {
-	article: Article
+	category: ArticleCategory
 }
 
-const ArticleTag = ({article}: Props) => (
-	<chakra.div
-		display="block"
-		background={`category.${article.Category}`}
-		py={1} px={3} mb="20px"
-		color="common.white"
-		fontWeight={700}
-		whiteSpace="nowrap"
+const ArticleTag = ({category}: Props) => (
+	<Box
+		display="inline-flex"
+		background={category.attributes.Color ?? '#777777'}
+		px="24px" mb="20px"
 		height="40px"
-		margin="0 auto"
+		alignItems="center"
+		mr="20px"
 	>
-		{article.Category}
-	</chakra.div>
+		<chakra.div
+			color="common.white"
+			fontWeight={700}
+			whiteSpace="nowrap"
+		>
+			{category.attributes.Category}
+		</chakra.div>
+	</Box>
 )
 
 export default ArticleTag

@@ -2,16 +2,17 @@ import React, {useEffect, useState} from 'react'
 import {Box, chakra, Flex, Heading, SimpleGrid} from "@chakra-ui/react"
 import {headers} from "lib/staticProps";
 import {useRouter} from "next/router";
-import {Article} from "lib/types";
+import {Article, ArticleCategory} from "lib/types";
 import Link from "next/link";
 import ResponsiveImage from "components/ResponsiveImage";
 import Markdown from "components/CMSContent/Markdown";
+import ArticleTag from "components/CMSContent/ArticleTag";
 import CMSBlock from "./CMSBlock"
 
 interface Block {
 	Headline: string,
 	Intro: string,
-	Categories: string,
+	IncludeCategories: any,
 	MaxCount: number
 }
 
@@ -20,7 +21,7 @@ interface Props {
 }
 
 export default function ArticleSelector({block}: Props) {
-	const {Intro, Headline, Categories, MaxCount} = block
+	const {Intro, Headline, IncludeCategories, MaxCount} = block
 	const [articles, set_articles] = useState<Article[]>([])
 	const router = useRouter()
 
@@ -29,14 +30,16 @@ export default function ArticleSelector({block}: Props) {
 				const api = await fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/articles?locale=${router.locale}&sort[0]=createdAt&populate=deep`, {headers})
 				if (!api.ok) throw new Error(`Article fetch failed: ${api.status} ${api.statusText}`)
 				const art = (await api.json()).data ?? []
-				const cats = (Categories ?? '').split(',').map(c => c.trim()).filter(c => c.length > 0)
+				const cats = (IncludeCategories.data)?.map((c: any) => c.attributes?.Category) ?? []
 
 				const counter = 0
 				const filteredArticles: Array<Article> = []
 
 				art.forEach((a: any) => {
 					if (cats.length > 0) {
-						if (!cats.includes(a.Category)) return
+						const aCats = (a.attributes.article_categories?.data)?.map((c: any) => c.attributes?.Category) ?? []
+						const intersection = aCats.filter((x: any) => cats.includes(x))
+						if (intersection.length === 0) return
 					}
 					if (counter >= MaxCount) return
 					filteredArticles.push(a.attributes)
@@ -44,9 +47,10 @@ export default function ArticleSelector({block}: Props) {
 
 				set_articles(filteredArticles)
 			}
+
 			asyncEffect()
 		},
-		[Categories, MaxCount])
+		[IncludeCategories, MaxCount])
 
 	return (
 		<CMSBlock>
@@ -54,22 +58,16 @@ export default function ArticleSelector({block}: Props) {
 				<Heading as="h2" size="2xl">{Headline}</Heading>
 				<Markdown>{Intro}</Markdown>
 			</Box>
-			<SimpleGrid columns={{base: 1, md: 2}} spacing="20px">
+			<SimpleGrid columns={{base: 1, xl: 2}} spacing="20px">
 				{articles.map((article: Article) => (
 					<Link href={`/article/${article.slug}`} key={article.slug}>
 						{/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
 						<a>
 							<Flex minHeight="200px" background="primary.grey2">
 								<Box p="32px" flex="1 1 auto">
-									<chakra.div
-										display="inline-block"
-										background={`category.${article.Category}`}
-										py={1} px={3} mb="20px"
-										color="common.white"
-										fontWeight={700}
-									>
-										{article.Category}
-									</chakra.div>
+									<Flex direction="row">
+										{article?.article_categories?.data?.map((cat: ArticleCategory) => (<ArticleTag key={cat.id} category={cat}/>))}
+									</Flex>
 									<h5>{article.Headline}</h5>
 								</Box>
 								{article.Image?.data &&

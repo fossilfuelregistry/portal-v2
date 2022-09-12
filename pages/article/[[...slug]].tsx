@@ -1,17 +1,17 @@
 import React from 'react'
 import {Box, Flex, Heading} from "@chakra-ui/react"
-import {ConversionFactorInStore, FooterProps} from "lib/types"
+import {ArticleCategory, ConversionFactorInStore, FooterProps} from "lib/types"
 import {GetStaticPaths, GetStaticProps, NextPage} from "next"
 import {getPageStaticProps} from "lib/staticProps";
 import {DatabaseRecord} from "lib/calculations/calculation-constants/types";
 import {Country} from "components/Map/types";
 import {PrefixRecord} from "lib/calculations/prefix-conversion";
 import {DataContextProvider} from "components/DataContext";
-import DynamicZone from "../../components/CMSContent/DynamicZone"
-import CMSImage from "../../components/CMSContent/CMSImage"
-import ArticleTag from "../../components/CMSContent/ArticleTag"
-import Navbar from "../../components/navigation/Navbar"
-import Footer from "../../components/navigation/Footer"
+import DynamicZone from "components/CMSContent/DynamicZone"
+import CMSImage from "components/CMSContent/CMSImage"
+import ArticleTag from "components/CMSContent/ArticleTag"
+import Navbar from "components/navigation/Navbar"
+import Footer from "components/navigation/Footer"
 
 const headers = {
 	Authorization: `Bearer ${process.env.NEXT_PUBLIC_CMS_TOKEN}`
@@ -35,6 +35,8 @@ const Article: NextPage<Props> = (props) => {
 	if (!page) return null
 	const article = page
 
+	const categories = article.article_categories?.data
+
 	return (
 		<DataContextProvider data={props}>
 			<div id="page_main">
@@ -51,7 +53,9 @@ const Article: NextPage<Props> = (props) => {
 								maxWidth="750px"
 								direction="column"
 							>
-								<ArticleTag article={article}/>
+								<Flex direction="row" justifyContent="center">
+									{categories.map((cat: ArticleCategory) => (<ArticleTag key={cat.id} category={cat}/>))}
+								</Flex>
 								<Heading as="h1" textStyle="inverse">{article.Headline}</Heading>
 							</Flex>
 						</Box>
