@@ -15,6 +15,9 @@ import {PHASE_PRODUCTION_BUILD} from 'next/constants';
 
 const backendCache = new NodeCache()
 
+const revalidate = 60
+const cacheTTL = 300
+
 export const headers = {
 	Authorization: `Bearer ${process.env.NEXT_PUBLIC_CMS_TOKEN}`
 }
@@ -206,13 +209,13 @@ export const getPageStaticProps: GetPageStaticProps = async (context, staticSlug
 		api = await fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/${endpoint}?locale=${context.locale}`, {headers})
 		if (!api.ok) throw new Error(`Page fetch failed: ${api.status} ${api.statusText}`)
 		pages = (await api.json()).data
-		backendCache.set(`pages-${locale}`, pages, 30)
+		backendCache.set(`pages-${locale}`, pages, cacheTTL)
 	} else {
 		console.log('getPageStaticProps', 'CACHED' )
 	}
 
 	const p = pages?.find(pg => pg.attributes?.slug === slug)
-	if (!p) return {notFound: true}
+	if (!p) return {notFound: true, revalidate}
 
 	api = await fetch(`${process.env.NEXT_PUBLIC_CMS_URL}/api/${endpoint}/${p.id}?locale=${context.locale}&populate=deep`, {headers})
 
@@ -224,7 +227,7 @@ export const getPageStaticProps: GetPageStaticProps = async (context, staticSlug
 	const response = await api.json()
 	const page = response.data
 
-	if (!page) return {notFound: true}
+	if (!page) return{notFound: true, revalidate}
 
 	let menu = backendCache.get('menu')
 	if (!menu) {
@@ -235,7 +238,7 @@ export const getPageStaticProps: GetPageStaticProps = async (context, staticSlug
 		}
 		const items = await api.json()
 		menu = items?.data?.attributes?.Items
-		backendCache.set('menu', menu, 30)
+		backendCache.set('menu', menu, cacheTTL)
 	}
 
 	let footer = backendCache.get('footer')
@@ -247,7 +250,7 @@ export const getPageStaticProps: GetPageStaticProps = async (context, staticSlug
 		}
 		const items = await api.json()
 		footer = items?.data?.attributes
-		backendCache.set('footer', footer, 30)
+		backendCache.set('footer', footer, cacheTTL)
 	}
 
 	const common = await getCommonStaticProps(context)
@@ -257,6 +260,6 @@ export const getPageStaticProps: GetPageStaticProps = async (context, staticSlug
 
 	return {
 		...common,
-		revalidate: 60
+		revalidate
 	}
 }
