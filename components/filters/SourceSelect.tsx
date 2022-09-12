@@ -19,7 +19,7 @@ const SourceSelect: FC<ProductionSourceSelectProps> = ({
 }) => {
   const options = useMemo(() => {
     const sourcesList = sources.map((s) => ({
-      label: s.name,
+      label: s.namePretty,
       value: s.sourceId,
     }))
     if (showAll) {
