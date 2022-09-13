@@ -1,8 +1,7 @@
 import React, { FC } from 'react'
-import { Box, Heading } from '@chakra-ui/react'
+import { Box, Flex, Heading } from '@chakra-ui/react'
 import { BarStackHorizontal } from '@visx/shape'
 import { Group } from '@visx/group'
-import { GridRows } from '@visx/grid'
 import { AxisBottom, AxisLeft } from '@visx/axis'
 import { scaleBand, scaleLinear, scaleOrdinal } from '@visx/scale'
 import { useTooltip } from '@visx/tooltip'
@@ -16,36 +15,35 @@ export type BarStackProps = {
   margin?: { top: number; right: number; bottom: number; left: number }
 }
 
-const defaultMargin = { top: 40, right: 0, bottom: 0, left: 64 }
+const COLORS = {
+  'Oil-proven': '#87BFFF',
+  'Oil-reserves': 'rgba(135, 191, 255, .5)',
+  'Gas-proven': '#4C6EE6',
+  'Gas-reserves': 'rgba(76, 110, 230, .5)',
+  'Coal-proven': '#52B9BF',
+  'Coal-reserves': 'rgba(82, 185, 191, .5)',
+}
+
+const defaultMargin = { top: 40, right: 0, bottom: 0, left: 0 }
 
 const data = [
   {
-    proven: 2035,
-    reserves: 2040,
-    fuel: 'Oil',
+    proven: 2028,
+    reserves: 2,
+    fuel: 'Coal',
   },
   {
-    proven: 2030,
-    reserves: 2034,
+    proven: 2031,
+    reserves: 4,
     fuel: 'Gas',
   },
   {
-    proven: 2025,
-    reserves: 2040,
-    fuel: 'Coal',
+    proven: 2035,
+    reserves: 2,
+    fuel: 'Oil',
   },
 ]
 const keys = Object.keys(data[0]).filter((d) => d !== 'fuel')
-
-const totals = data.reduce((allTotals, current: any) => {
-  const totalTemperature = keys.reduce((t: any, k) => {
-    // eslint-disable-next-line no-param-reassign
-    t += Number(current[k])
-    return t
-  }, 0)
-  allTotals.push(totalTemperature)
-  return allTotals
-}, [] as number[])
 
 // accessors
 const getFuel = (d: any) => d.fuel
@@ -55,10 +53,12 @@ const fuelScale = scaleBand<string>({
   domain: data.map(getFuel),
   padding: 0.6,
 })
-const combustionScale = scaleLinear<number>({
-  domain: [0, Math.max(...totals)],
+
+const yearsScale = scaleLinear<number>({
+  domain: [2022, 2040],
   nice: true,
 })
+
 const colorScale = scaleOrdinal<any, string>({
   domain: keys,
   range: ['#4C6EE6', '#87BFFF'],
@@ -83,87 +83,198 @@ const HorizontalBarStackChart: FC<BarStackProps> = ({
   const xMax = width - margin.left
   const yMax = height - margin.top - 30
 
-  fuelScale.rangeRound([0, xMax])
-  combustionScale.range([yMax, 0])
+  yearsScale.rangeRound([0, xMax])
+
+  console.log('xMax', xMax)
+  fuelScale.range([yMax, 0])
 
   return width < 10 ? null : (
     <Box>
-      <Heading
-        as="h6"
-        fontFamily="Roboto"
-        fontSize="12px"
-        color={colors.primary.richBlack}
-        mb="24px"
-        textTransform="uppercase"
-        letterSpacing="1px"
-      >
-        Intensity
-      </Heading>
-      <svg width={width} height={height}>
-        <Group top={margin.top} left={margin.left}>
-          <GridRows
-            scale={combustionScale}
-            width={xMax}
-            height={yMax}
-            numTicks={5}
-            stroke={colors.primary.grey10}
-          />
-          <AxisLeft
-            top={4}
-            left={-16}
-            hideAxisLine
-            scale={combustionScale}
+      <Box ml="80px" position="relative">
+        <svg width={width} height={height}>
+          <Group top={margin.top} left={0}>
+            <BarStackHorizontal
+              data={data}
+              keys={keys}
+              y={getFuel}
+              xScale={yearsScale}
+              yScale={fuelScale}
+              color={colorScale}
+            >
+              {(barStacks) =>
+                barStacks.map((barStack) =>
+                  barStack.bars.map((bar, index) => {
+                    console.log('bar', bar)
+
+                    return (
+                      <>
+                        <rect
+                          key={`bar-stack-${barStack.index}-${bar.index}`}
+                          x={bar.x}
+                          y={bar.y}
+                          height={40}
+                          width={bar.width}
+                          // @ts-ignore
+                          fill={COLORS[`${bar.bar.data.fuel}-${bar.key}`]}
+                        />
+                        {bar.key === 'reserves' && (
+                          <text
+                            x={bar.x + bar.width + 28}
+                            y={bar.y + 28}
+                            fill={colors.primary.richBlack}
+                            fontSize={18}
+                            fontFamily="Roboto"
+                            textAnchor="middle"
+                            fontWeight="700"
+                          >
+                            {bar.bar[1]}
+                          </text>
+                        )}
+                      </>
+                    )
+                  })
+                )
+              }
+            </BarStackHorizontal>
+          </Group>
+          <g fill="none" strokeWidth="2">
+            <path
+              stroke="rgba(4, 4, 4, .7)"
+              d={`M0 ${height - 30} l${width} 0`}
+            />
+          </g>
+          <AxisBottom
+            top={yMax + margin.top}
+            scale={yearsScale}
             tickStroke="transparent"
-            numTicks={5}
-            tickLabelProps={() => ({
-              fill: colors.primary.grey70,
-              fontSize: 14,
-              textAnchor: 'middle',
-            })}
+            numTicks={width > 520 ? 8 : 4}
+            hideAxisLine
+            tickFormat={(x: any) => `${x?.toFixed(0)}`}
+            tickLabelProps={(label, pos, ticks) => {
+              let dx = 0
+              if (pos === 0) dx = 15
+              // eslint-disable-next-line no-unsafe-optional-chaining
+              if (pos === ticks?.length - 1) dx = -15
+              return {
+                dx,
+                dy: '0.25em',
+                fill: colors.primary.richBlack,
+                fontSize: 14,
+                textAnchor: 'middle',
+              }
+            }}
           />
-          <BarStackHorizontal
-            data={data}
-            keys={keys}
-            y={getFuel}
-            xScale={fuelScale}
-            yScale={combustionScale}
-            color={colorScale}
-          >
-            {(barStacks) =>
-              barStacks.map((barStack) =>
-                barStack.bars.map((bar) => (
-                  <rect
-                    key={`bar-stack-${barStack.index}-${bar.index}`}
-                    x={bar.x}
-                    y={bar.y}
-                    height={bar.height}
-                    width={40}
-                    fill={bar.color}
-                  />
-                ))
-              )
-            }
-          </BarStackHorizontal>
-        </Group>
-        <g fill="none" strokeWidth="2">
-          <path
-            stroke="rgba(4, 4, 4, .7)"
-            d={`M64 ${height - 30} l${width - 64} 0`}
+        </svg>
+        <Box position="absolute" left="-48px" top="108px" textAlign="right">
+          <Box color={colors.primary.grey70} fontSize={14}>
+            Oil
+          </Box>
+          <Box color={colors.primary.grey70} fontSize={14} mt="100px">
+            Gas
+          </Box>
+          <Box color={colors.primary.grey70} fontSize={14} mt="100px">
+            Coal
+          </Box>
+        </Box>
+      </Box>
+      <Flex alignItems="flex-start" flexWrap="wrap" mt="40px">
+        <Flex
+          alignItems="center"
+          mt="16px"
+          mr="24px"
+          fontSize="14px"
+          color={colors.primary.richBlack}
+        >
+          <Box
+            w="12px"
+            h="12px"
+            backgroundColor={COLORS['Oil-proven']}
+            borderRadius="100%"
+            mr="8px"
           />
-        </g>
-        <AxisBottom
-          top={yMax + margin.top}
-          left={54}
-          scale={fuelScale}
-          tickStroke="transparent"
-          hideAxisLine
-          tickLabelProps={() => ({
-            fill: colors.primary.richBlack,
-            fontSize: 14,
-            textAnchor: 'middle',
-          })}
-        />
-      </svg>
+          Oil proven reserves
+        </Flex>
+        <Flex
+          alignItems="center"
+          mt="16px"
+          mr="24px"
+          fontSize="14px"
+          color={colors.primary.richBlack}
+        >
+          <Box
+            w="12px"
+            h="12px"
+            backgroundColor={COLORS['Oil-reserves']}
+            borderRadius="100%"
+            mr="8px"
+          />
+          Oil contingent resources
+        </Flex>
+        <Flex
+          alignItems="center"
+          mt="16px"
+          mr="24px"
+          fontSize="14px"
+          color={colors.primary.richBlack}
+        >
+          <Box
+            w="12px"
+            h="12px"
+            backgroundColor={COLORS['Gas-proven']}
+            borderRadius="100%"
+            mr="8px"
+          />
+          Gas proven reserves
+        </Flex>
+        <Flex
+          alignItems="center"
+          mt="16px"
+          mr="24px"
+          fontSize="14px"
+          color={colors.primary.richBlack}
+        >
+          <Box
+            w="12px"
+            h="12px"
+            backgroundColor={COLORS['Gas-reserves']}
+            borderRadius="100%"
+            mr="8px"
+          />
+          Gas contingent resources
+        </Flex>
+        <Flex
+          alignItems="center"
+          mt="16px"
+          mr="24px"
+          fontSize="14px"
+          color={colors.primary.richBlack}
+        >
+          <Box
+            w="12px"
+            h="12px"
+            backgroundColor={COLORS['Coal-proven']}
+            borderRadius="100%"
+            mr="8px"
+          />
+          Coal proven resources
+        </Flex>
+        <Flex
+          alignItems="center"
+          mt="16px"
+          mr="24px"
+          fontSize="14px"
+          color={colors.primary.richBlack}
+        >
+          <Box
+            w="12px"
+            h="12px"
+            backgroundColor={COLORS['Coal-reserves']}
+            borderRadius="100%"
+            mr="8px"
+          />
+          Coal contingent resources
+        </Flex>
+      </Flex>
     </Box>
   )
 }
