@@ -52,9 +52,7 @@ const CountrySelect: FC<CountrySelectProps> = ({
           value={selectedCountry?.value as string}
           options={countryProjects}
           onChange={(option) => {
-            router.push(
-              `/project?projectId=${option?.value}&country=${selectedCountry?.value}`
-            )
+            router.push(`/project/${option?.value}`)
           }}
         />
       )}

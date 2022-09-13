@@ -7,32 +7,25 @@ import WarmingPotentialSelect, {
 } from 'components/filters/WarmingPotentialSelect'
 import RangeChart from 'components/charts/RangeChart'
 import SourceSelect from 'components/filters/SourceSelect'
-import useCountrySources from 'lib/useCountrySources'
-import useCountryData from 'lib/useCountryData'
 import { StaticData } from 'lib/types'
 import useText from 'lib/useText'
 import { DataContext } from 'components/DataContext'
 import useProjectData from 'lib/useProjectData'
 import useProjectSources from 'lib/useProjectSources'
+import useCsvDataTranslator from 'lib/useCsvDataTranslator'
 import { colors } from '../../assets/theme'
-import useVolumes from '../../hooks/useVolumes'
-import useRangeOfCertainty from '../../hooks/useRangeOfCertainty'
 import capitalizeFirstLetter from '../../utils/capitalizeFirstLetter'
+import formatCsvNumber from '../../utils/formatCsvNumbers'
 
 const DEBUG = false
 
 type AnnualEmissionsProps = {
-  country: string
-  projectId: number
   theProject: any
 }
 
 // Why reservesSources is empty
-const AnnualEmissions: FC<AnnualEmissionsProps> = ({
-  country,
-  projectId,
-  theProject,
-}) => {
+const AnnualEmissions: FC<AnnualEmissionsProps> = ({ theProject }) => {
+  const { id: projectId, iso3166: country } = theProject
   const { translate } = useText()
   const staticData: StaticData = useContext(DataContext)
   const { conversions, constants, prefixConversions } = staticData
@@ -40,7 +33,7 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({
   const { reservesSources } = useProjectSources({ projectId, country })
   const [gwp, setGwp] = useState<string>(WarmingPotential.GWP100)
   const [reservesSourceId, setReservesSourceId] = useState<number>(0)
-
+  const { generateCsvTranslation } = useCsvDataTranslator()
   DEBUG && console.log('reservesSources', reservesSources)
 
   const gg = useProjectData({
@@ -188,12 +181,30 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({
     }, [])
   }, [projInfo])
 
+  const translatedCsvData = useMemo(() => {
+    const csvData = [
+      {
+        scope1_low: formatCsvNumber(rangeData[0]?.value[0]),
+        scope1_mid: formatCsvNumber(rangeData[0]?.value[1]),
+        scope1_high: formatCsvNumber(rangeData[0]?.value[2]),
+        scope3_low: formatCsvNumber(rangeData[1]?.value[0]),
+        scope3_mid: formatCsvNumber(rangeData[1]?.value[1]),
+        scope3_high: formatCsvNumber(rangeData[1]?.value[2]),
+      },
+    ]
+    return csvData.map(generateCsvTranslation)
+  }, [rangeData])
+
   DEBUG && console.log('rangeData', rangeData)
 
   DEBUG && console.log('theProject-mm', theProject)
 
   return (
-    <InfoSection title={translate('annual_emissions')}>
+    <InfoSection
+      title={`${theProject.projectIdentifier} ${translate('annual_emissions')}`}
+      filename={`${theProject.projectIdentifier}_year_emissions.csv`}
+      csvData={translatedCsvData}
+    >
       <SimpleGrid mb="40px" columns={3} gridGap="20px">
         <WarmingPotentialSelect
           value={gwp}

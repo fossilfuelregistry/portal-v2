@@ -19,12 +19,9 @@ import useCountryProjects from 'lib/useCountryProjects'
 import useProjectSources from 'lib/useProjectSources'
 import { DataContextProvider } from 'components/DataContext'
 // eslint-disable-next-line import/no-named-as-default
-import useConversionHooks from 'lib/conversionHooks'
-import useProjectData from 'lib/useProjectData'
 import { GQL_project } from 'queries/country'
 import PageHead from 'components/CMSContent/PageHead'
 import Footer from 'components/navigation/Footer'
-import Map from 'components/Map/Map'
 import { Country } from 'components/Map/types'
 import Container from 'components/Container'
 import AnnualEmissions from 'components/project/AnnualEmissions'
@@ -64,69 +61,10 @@ const ProjectPage: React.FC<Props> = (props) => {
     footer,
     countries,
   } = props
-  const apolloClient = useApolloClient()
   const router = useRouter()
-  const { projectId, country } = router.query
+  const projectId = router.query.projectId as string
 
   console.log('projectId', projectId)
-  console.log('projectId', country)
-
-  const [gwp, setGwp] = useState('GWP100')
-
-  const { productionSources, projectionSources, reservesSources } =
-    useCountrySources({ country: country as string })
-
-  const projectSources = useProjectSources({
-    projectId: Number(projectId),
-    country: country as string,
-  })
-
-  DEBUG && console.log({ projectSources })
-
-  const allProjectsInACountry = useCountryProjects({
-    country: country as string,
-  })
-
-  DEBUG && console.info({ allProjectsInACountry })
-
-  const { production, projection, reserves, getCurrentCO2E } = useCountryData({
-    // @ts-ignore
-    projectionSources,
-    gwp,
-    reservesSourceId: 2,
-    projectionSourceId: 102,
-    productionSourceId: 2,
-    country: country as string,
-    conversionConstants: conversions,
-    // @ts-ignore
-    allSources: projectSources,
-    constants,
-    conversionPrefixes: prefixConversions,
-  })
-
-  // console.log(getCurrentCO2E())
-
-  // console.log({ production })
-
-  const gg = useProjectData({
-    reservesSourceId: 21,
-    projectId: 15874,
-    texts,
-    gwp,
-    country: country as string,
-    conversionConstants: conversions,
-    constants,
-    allSources: projectSources.productionSources,
-    // @ts-ignore
-    stableProduction: {},
-    prefixes: prefixConversions,
-  })
-
-  DEBUG && console.log('AnnualEmissions-gg', gg)
-
-  // useProject({projectId: 45352})
-
-  // console.log({gg})
 
   const {
     data: projectData,
@@ -137,23 +75,9 @@ const ProjectPage: React.FC<Props> = (props) => {
     skip: !projectId,
   })
 
-  console.log('projectData', projectData, projectId)
-
   const theProject = projectData?.project ?? {}
 
-  DEBUG && console.log({ theProject })
-
-  const projInfo = useMemo(() => {
-    if (!theProject?.id) return {}
-    const co2 = gg.projectCO2(theProject)
-    DEBUG && console.info('DenseProject projectCO2', { theProject, co2 })
-    return co2
-  }, [theProject?.id])
-
-  DEBUG && console.log({ projInfo })
-
-  DEBUG && console.log('theProject', theProject)
-  DEBUG && console.log('projInfo', projInfo)
+  console.log('projectData', projectData)
 
   return (
     <DataContextProvider
@@ -162,28 +86,27 @@ const ProjectPage: React.FC<Props> = (props) => {
       <div id="page_main">
         <Navbar menu={menu} />
         <PageHead page={page} />
-        <Container>
-          <AnnualEmissions
-            country={country as string}
-            projectId={Number(projectId)}
-            theProject={theProject}
-          />
-        </Container>
+        {theProject && (
+          <Container>
+            <AnnualEmissions theProject={theProject} />
+          </Container>
+        )}
         <Footer footer={footer} />
       </div>
     </DataContextProvider>
   )
 }
 
-// export const getStaticPaths: GetStaticPaths = () => {
-//   return {
-//     // @ts-ignore
-//     paths: [{ params: { projectId: '15891' } }],
-//     fallback: false,
-//   }
-// }
+export const getStaticPaths: GetStaticPaths = () => {
+  return {
+    // @ts-ignore
+    paths: [],
+    fallback: 'blocking',
+  }
+}
 
 // @ts-ignore
-export const getStaticProps = (context) => getPageStaticProps(context, `/project`)
+export const getStaticProps = (context) =>
+  getPageStaticProps(context, `/project`)
 
 export default ProjectPage
