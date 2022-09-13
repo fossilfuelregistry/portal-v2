@@ -30,6 +30,7 @@ import { DataContextProvider } from 'components/DataContext'
 import Info from 'components/Info'
 import CountrySnapshot from 'components/country/CountrySnapshot'
 import { colors } from '../../assets/theme'
+import LargestProjects from 'components/country/LargestProjects'
 
 export type Props = {
   sources: any
@@ -154,6 +155,7 @@ const CountryPage: React.FC<Props> = (props) => {
             <ForecastSection country={country} />
             {/* <ReservesLifeSection /> */}
             <ExcessReservesSection />
+            <LargestProjects country={country} />
             <Box h="1px" background={colors.primary.grey30} mb="80px" />
             <Heading
               as="h3"

@@ -27,8 +27,7 @@ type AnnualEmissionsProps = {
 const AnnualEmissions: FC<AnnualEmissionsProps> = ({ country }) => {
   const { translate } = useText()
   const staticData: StaticData = useContext(DataContext)
-  const { countryName, conversions, constants, prefixConversions, texts } =
-    staticData
+  const { countryName, conversions, constants, prefixConversions } = staticData
 
   const { productionSources } = useCountrySources({
     country,
