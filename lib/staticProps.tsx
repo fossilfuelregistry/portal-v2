@@ -218,7 +218,7 @@ export const getPageStaticProps: GetPageStaticProps = async (
 	if(slug) {
 		let pages: ICMSPage[] | undefined
 		if (process.env.NEXT_PHASE === PHASE_PRODUCTION_BUILD)
-			pages = backendCache.get(`pages-${locale}`)
+			pages = backendCache.get(`${endpoint}-${locale}`)
 
 		if (!pages) {
 			console.log('getPageStaticProps Phase:', process.env.NEXT_PHASE, 'FETCH', context?.params?.slug, staticSlug)
@@ -232,7 +232,7 @@ export const getPageStaticProps: GetPageStaticProps = async (
 			}
 
 			pages = (await api.json()).data
-			backendCache.set(`pages-${locale}`, pages, cacheTTL)
+			backendCache.set(`${endpoint}-${locale}`, pages, cacheTTL)
 		} else {
 			console.log('getPageStaticProps', 'CACHED')
 		}
