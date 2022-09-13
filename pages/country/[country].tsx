@@ -29,8 +29,9 @@ import useText from 'lib/useText'
 import { DataContextProvider } from 'components/DataContext'
 import Info from 'components/Info'
 import CountrySnapshot from 'components/country/CountrySnapshot'
-import { colors } from '../../assets/theme'
+import SnapShotStatistic from 'components/SnapShotStatistic'
 import LargestProjects from 'components/country/LargestProjects'
+import { colors } from '../../assets/theme'
 
 export type Props = {
   sources: any

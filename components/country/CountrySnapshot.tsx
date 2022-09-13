@@ -1,9 +1,17 @@
-import React, { useState, useEffect, FC, useContext, useCallback, useMemo } from 'react'
+import React, {
+  useState,
+  useEffect,
+  FC,
+  useContext,
+  useCallback,
+  useMemo,
+} from 'react'
 import { SimpleGrid, Box, Heading } from '@chakra-ui/react'
 import { WarmingPotential } from 'components/filters/WarmingPotentialSelect'
 import useCountrySources from 'lib/useCountrySources'
 import useCountryData from 'lib/useCountryData'
 import { DataContext } from 'components/DataContext'
+import { SmokeIcon, OilIcon, GasIcon, CoalIcon } from 'components/Icons'
 import { usePrefixConversion } from 'lib/calculations/prefix-conversion'
 import InfoBox from 'components/InfoBox'
 import { CO2EEmissions } from 'lib/calculations/types'
@@ -27,21 +35,20 @@ type EmissionsDataType =
   | null
   | undefined
 
-  type CountrySnapshotProps = {
-    country: string
-  }
-  
+type CountrySnapshotProps = {
+  country: string
+}
 
 const getFuelData =
   (fossilFuelType: FossilFuelType) => (emissionsData: EmissionsDataType) =>
     emissionsData?.production.find((a) => a.fossilFuelType === fossilFuelType)
 
-const getYear = (fossilFuelType: FossilFuelType) => (emissionsData: EmissionsDataType) =>
+const getYear =
+  (fossilFuelType: FossilFuelType) => (emissionsData: EmissionsDataType) =>
     getFuelData(fossilFuelType)(emissionsData)?.year
-const getOilYear  = getYear("oil")
-const getGasYear  = getYear("gas")
-const getCoalYear = getYear("coal")
-    
+const getOilYear = getYear('oil')
+const getGasYear = getYear('gas')
+const getCoalYear = getYear('coal')
 
 const getVolume =
   (fossilFuelType: FossilFuelType) => (emissionsData: EmissionsDataType) =>
@@ -51,24 +58,24 @@ const getUnit =
   (fossilFuelType: FossilFuelType) => (emissionsData: EmissionsDataType) =>
     getFuelData(fossilFuelType)(emissionsData)?.unit
 
-const getSourceId  = (fossilFuelType: FossilFuelType) => (emissionsData: EmissionsDataType) =>
-  getFuelData(fossilFuelType)(emissionsData)?.sourceId
+const getSourceId =
+  (fossilFuelType: FossilFuelType) => (emissionsData: EmissionsDataType) =>
+    getFuelData(fossilFuelType)(emissionsData)?.sourceId
 
-const getOilSourceId = getSourceId("oil")
-const getGasSourceId = getSourceId("gas")
-const getCoalSourceId = getSourceId("coal")
-
+const getOilSourceId = getSourceId('oil')
+const getGasSourceId = getSourceId('gas')
+const getCoalSourceId = getSourceId('coal')
 
 const getToUnit = (fossilFuelType: FossilFuelType) => {
   switch (fossilFuelType) {
-    case "oil":
-      return 'e6bbl';
-    case "gas":
-      return 'e9m3';
-    case "coal":
-      return 'e6ton';
+    case 'oil':
+      return 'e6bbl'
+    case 'gas':
+      return 'e9m3'
+    case 'coal':
+      return 'e6ton'
     default:
-      throw new Error("Fossil Fuel Type case is not defined");
+      throw new Error('Fossil Fuel Type case is not defined')
   }
 }
 
@@ -77,12 +84,12 @@ const CountrySnapshot: FC<CountrySnapshotProps> = ({ country }) => {
     preferredProductionSourceId,
     preferredProjectionSourceId,
     preferredReservesSourceId,
-  } = useCountrySources({country})
+  } = useCountrySources({ country })
   const { translate } = useText()
   const staticData: StaticData = useContext(DataContext)
   const { countryName, conversions, constants, prefixConversions, texts } =
     staticData
-  const { getSourceName } = useCountrySources({country})
+  const { getSourceName } = useCountrySources({ country })
   const prefix = usePrefixConversion(prefixConversions)
 
   const [gwp, _] = useState<string>(WarmingPotential.GWP100)
@@ -114,29 +121,35 @@ const CountrySnapshot: FC<CountrySnapshotProps> = ({ country }) => {
   const [gasProduction, setGasProduction] = useState<number | undefined>()
   const [coalProduction, setCoalProduction] = useState<number | undefined>()
 
-  const calculate  = useCallback((fossilFuelType: FossilFuelType): number | undefined => {
-    const unit = getUnit(fossilFuelType)(emissionsData)
-    if(!emissionsData || !unit) return    
-    const volume = getVolume(fossilFuelType)(emissionsData)
-    const p = prefix(unit, getToUnit(fossilFuelType))
-    if(!p || !volume) return
-    // eslint-disable-next-line consistent-return
-    return p * volume
-  },[emissionsData, prefix])
+  const calculate = useCallback(
+    (fossilFuelType: FossilFuelType): number | undefined => {
+      const unit = getUnit(fossilFuelType)(emissionsData)
+      if (!emissionsData || !unit) return
+      const volume = getVolume(fossilFuelType)(emissionsData)
+      const p = prefix(unit, getToUnit(fossilFuelType))
+      if (!p || !volume) return
+      // eslint-disable-next-line consistent-return
+      return p * volume
+    },
+    [emissionsData, prefix]
+  )
 
   useEffect(() => {
     setTotalEmissions(emissionsData?.totalCO2E)
-    setOilProduction(calculate("oil"))
-    setGasProduction(calculate("gas"))
-    setCoalProduction(calculate("coal"))
+    setOilProduction(calculate('oil'))
+    setGasProduction(calculate('gas'))
+    setCoalProduction(calculate('coal'))
   }, [calculate, emissionsData])
 
-  const oilYear  = useMemo(() => getYear("oil")(emissionsData), [emissionsData]) 
-  const gasYear  = useMemo(() => getYear("gas")(emissionsData), [emissionsData]) 
-  const coalYear = useMemo(() => getYear("coal")(emissionsData), [emissionsData]) 
+  const oilYear = useMemo(() => getYear('oil')(emissionsData), [emissionsData])
+  const gasYear = useMemo(() => getYear('gas')(emissionsData), [emissionsData])
+  const coalYear = useMemo(
+    () => getYear('coal')(emissionsData),
+    [emissionsData]
+  )
 
   const yearRange = useMemo(() => {
-    if(!oilYear || !gasYear || !coalYear) return ''
+    if (!oilYear || !gasYear || !coalYear) return ''
     const min = Math.min(oilYear, gasYear, coalYear).toString()
     const max = Math.max(oilYear, gasYear, coalYear).toString()
     return `(${min} - ${max})`
@@ -144,33 +157,47 @@ const CountrySnapshot: FC<CountrySnapshotProps> = ({ country }) => {
 
   return (
     <Box>
-      <Heading as="h4" mb="40px">
+      <Heading
+        as="h4"
+        color={colors.primary.richBlue}
+        fontSize="32px"
+        lineHeight="42px"
+        mb="30px"
+      >
         {countryName} Country Snapshot
       </Heading>
-      <SimpleGrid mb="40px" columns={4} gridGap="20px">
+      <SimpleGrid columns={{ sm: 1, md: 2, lg: 4 }} gridGap="20px" mb="80px">
         <InfoBox
           title="Total emissions"
+          icon={<SmokeIcon />}
           subtitle="Million tonnes CO₂e"
+          label="5th highest"
           value={totalEmissions}
           year={yearRange}
         />
         <InfoBox
           title="Oil production"
+          icon={<OilIcon fill={colors.primary.grey70} opacity="1" />}
           subtitle="Million barrels"
+          label="56th highest"
           value={oilProduction}
           year={oilYear?.toFixed() ?? ''}
           source={getSourceName(getOilSourceId(emissionsData))}
         />
         <InfoBox
           title="Gas production"
+          icon={<GasIcon fill={colors.primary.grey70} opacity="1" />}
           subtitle="Billion cubic metres"
+          label="25th highest"
           value={gasProduction}
           year={gasYear?.toFixed() ?? ''}
           source={getSourceName(getGasSourceId(emissionsData))}
         />
         <InfoBox
           title="Coal production"
+          icon={<CoalIcon stroke={colors.primary.grey70} opacity="1" />}
           subtitle="Million tonnes"
+          label="3th highest"
           value={coalProduction}
           year={coalYear?.toFixed() ?? ''}
           source={getSourceName(getCoalSourceId(emissionsData))}

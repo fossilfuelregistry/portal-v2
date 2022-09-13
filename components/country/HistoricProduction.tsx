@@ -7,6 +7,9 @@ import useCountrySources from 'lib/useCountrySources'
 import useCountryData from 'lib/useCountryData'
 import SourceSelect from 'components/filters/SourceSelect'
 import { DataContext } from 'components/DataContext'
+import HistoryProductionInfo from 'components/country/HistoryProductionInfo'
+import { CoalIcon, GasIcon, OilIcon } from 'components/Icons'
+import { colors } from '../../assets/theme'
 import groupBy from '../../utils/groupBy'
 
 type HistoricProductionProps = {
@@ -87,6 +90,35 @@ const HistoricProduction: FC<HistoricProductionProps> = ({ country }) => {
           sources={productionSources}
           value={productionSourceId}
           onChange={(option) => setProductionSourceId(option?.value as any)}
+        />
+      </SimpleGrid>
+      <SimpleGrid
+        columns={{ base: 1, md: 3 }}
+        gridGap={{ base: '60px', md: '134px' }}
+        mb="40px"
+      >
+        <HistoryProductionInfo
+          title="Oil historic production"
+          subtitle="Million tonnes CO₂e"
+          icon={<OilIcon fill={colors.primary.grey70} opacity="1" />}
+          value={102}
+          label="31st highest"
+          hasLine
+        />
+        <HistoryProductionInfo
+          title="Gas historic production"
+          subtitle="Billion cubic metres"
+          icon={<GasIcon fill={colors.primary.grey70} opacity="1" />}
+          value={850}
+          label="76st highest"
+          hasLine
+        />
+        <HistoryProductionInfo
+          title="Coal historic production"
+          subtitle="Thousand tonnes"
+          icon={<CoalIcon stroke={colors.primary.grey70} opacity="1" />}
+          value={78.5}
+          label="76st highest"
         />
       </SimpleGrid>
       {!!historicData.length && (
