@@ -184,6 +184,6 @@ const ProjectPage: React.FC<Props> = (props) => {
 // }
 
 // @ts-ignore
-export const getStaticProps = (context) => getPageStaticProps(context, `/`)
+export const getStaticProps = (context) => getPageStaticProps(context, `/project`)
 
 export default ProjectPage
