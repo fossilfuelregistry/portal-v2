@@ -47,6 +47,14 @@ export default extendTheme({
 			},
 			h2: {
 				marginBottom: '20px',
+				lineHeight: '52px'
+			},
+			h3: {
+				fontFamily: 'sommet-rounded, sans-serif',
+				fontSize: '32px',
+				marginTop: '24px',
+				marginBottom: '12px',
+				lineHeight: '46px'
 			},
 			h5: {
 				fontSize: ['20px'],
