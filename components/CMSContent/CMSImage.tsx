@@ -9,7 +9,6 @@ interface Props {
 	gradient?: boolean
 }
 
-
 const CMSImage = ( { image, height, gradient }: Props ) => (
 		<ResponsiveImage
 			// eslint-disable-next-line no-unsafe-optional-chaining

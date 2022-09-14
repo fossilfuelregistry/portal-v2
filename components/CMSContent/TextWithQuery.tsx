@@ -5,8 +5,10 @@ import useTextInjectQueryResult from "./useTextInjectQueryResult"
 import CMSBlock from "./CMSBlock"
 
 interface Block {
-	Text: string,
+	Text: string
 	Headline: string
+	RemoveTopSpacing?: boolean
+	RemoveBottomSpacing?: boolean
 }
 
 interface Props {
@@ -14,7 +16,7 @@ interface Props {
 }
 
 export default function TextWithQuery({block}: Props) {
-	const {Text, Headline} = block
+	const {Text, Headline, RemoveTopSpacing, RemoveBottomSpacing} = block
 	const injectQueryResult = useTextInjectQueryResult()
 	const [result, set_result] = useState(Text)
 
@@ -26,9 +28,12 @@ export default function TextWithQuery({block}: Props) {
 		},
 		[Text])
 
+	const topSpacing = RemoveTopSpacing ? {base: 0} : {base: '24px', md: '72px', lg: '120px'}
+	const bottomSpacing = RemoveBottomSpacing ? {base: 0} : {base: '24px', md: '72px', lg: '120px'}
+
 	return (
 		<CMSBlock>
-			<Box w="100%" maxWidth="710px" my={{base: '24px', md: '72px', lg: '120px'}}>
+			<Box w="100%" maxWidth="710px" mt={topSpacing} mb={bottomSpacing}>
 				<Heading as="h1" size="2xl" mb="32px">{Headline}</Heading>
 				<Markdown>
 					{result}

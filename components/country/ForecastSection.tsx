@@ -21,7 +21,6 @@ type ForecastSectionProps = {
 }
 
 const startYear = 2010
-const DEBUG = false
 
 const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
   const { translate } = useText()
@@ -83,6 +82,7 @@ const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
       (p: any) =>
         p.year >= startYear && p.sourceId === preferredProjectionSourceId
     )
+
     const groupedProjectionByYear = groupBy(
       filteredProjectionData,
       (d: any) => d.year
@@ -109,12 +109,12 @@ const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
       const coal = getFuel('coal', d)
 
       return {
-        oil_p: oil ? oil.co2e.scope1.co2.wa : 0,
-        oil_c: oil ? oil.co2e.scope3.co2.wa : 0,
-        gas_p: gas ? gas.co2e.scope1.co2.wa : 0,
-        gas_c: gas ? gas.co2e.scope3.co2.wa : 0,
-        coal_p: coal ? coal.co2e.scope1.co2.wa : 0,
-        coal_c: coal ? coal.co2e.scope3.co2.wa : 0,
+        oil_p: oil?.plannedProd || 0,
+        oil_c: oil?.continProd || 0,
+        gas_p: gas?.plannedProd || 0,
+        gas_c: gas?.continProd || 0,
+        coal_p: coal?.plannedProd || 0,
+        coal_c: coal?.continProd || 0,
         year: d[0].year,
       }
     })
@@ -124,7 +124,16 @@ const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
       projectionData,
       projProdData,
     }
-  }, [country, gwp, production, projection])
+  }, [preferredProductionSourceId, preferredProjectionSourceId, production, projectedProduction, projection,
+    /* This seems to fix the issue with not loading from start
+     country,
+    gwp,
+    production,
+    projection,
+    projectionSourceId,
+    projectionSources,
+    */
+  ])
 
   const translatedCsvData = useMemo(() => {
     const { productionData, projectionData, projProdData } = forecastData
@@ -173,7 +182,7 @@ const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
     return csvData.map(generateCsvTranslation)
   }, [forecastData])
 
-  DEBUG && console.log('projectionSources', projectionSources)
+  const projSources = useMemo(() => projectionSources.filter((s) => s.name !== 'name_projection_stable'), [projectionSources])
 
   return (
     <InfoSection
@@ -192,7 +201,7 @@ const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
         <SourceSelect
           label="Projection"
           translateName
-          sources={projectionSources}
+          sources={projSources}
           value={projectionSourceId}
           onChange={(option) => setProjectionSourceId(option?.value as any)}
         />

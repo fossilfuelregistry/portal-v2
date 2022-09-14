@@ -49,6 +49,9 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ country }) => {
 
   DEBUG && console.log('emissionsData', emissionsData)
 
+  const enrichWithDescription = ( data: { fossilFuelType: string; combustionType: string }[] ) =>
+    data.map((d) => ({ ...d, description: translate(`${d.fossilFuelType}_${d.combustionType}`) }))
+
   useEffect(() => {
     if (productionSources.length && !productionSourceId) {
       setProductionSourceId(productionSources[0].sourceId)
@@ -113,7 +116,8 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ country }) => {
         }}
       >
         <PieChart
-          data={volumesData.data}
+        // @ts-ignore
+          data={enrichWithDescription(volumesData.data)}
           parentWidth={320}
           parentHeight={320}
           title="Total volumes"
