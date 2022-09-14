@@ -1,8 +1,8 @@
 import React, { FC } from 'react'
-import { Box, Flex, Heading } from '@chakra-ui/react'
+import { Box, Flex } from '@chakra-ui/react'
 import { BarStackHorizontal } from '@visx/shape'
 import { Group } from '@visx/group'
-import { AxisBottom, AxisLeft } from '@visx/axis'
+import { AxisBottom } from '@visx/axis'
 import { scaleBand, scaleLinear, scaleOrdinal } from '@visx/scale'
 import { useTooltip } from '@visx/tooltip'
 import { colors } from '../../assets/theme'
@@ -104,8 +104,6 @@ const HorizontalBarStackChart: FC<BarStackProps> = ({
               {(barStacks) =>
                 barStacks.map((barStack) =>
                   barStack.bars.map((bar, index) => {
-                    console.log('bar', bar)
-
                     return (
                       <>
                         <rect
