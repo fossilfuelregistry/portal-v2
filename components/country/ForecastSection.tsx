@@ -124,13 +124,15 @@ const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
       projectionData,
       projProdData,
     }
-  }, [
-    country,
+  }, [preferredProductionSourceId, preferredProjectionSourceId, production, projectedProduction, projection,
+    /* This seems to fix the issue with not loading from start
+     country,
     gwp,
     production,
     projection,
     projectionSourceId,
     projectionSources,
+    */
   ])
 
   const translatedCsvData = useMemo(() => {
@@ -180,9 +182,7 @@ const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
     return csvData.map(generateCsvTranslation)
   }, [forecastData])
 
-  const projSources = useMemo(() => {
-    return projectionSources.filter((s) => s.name !== 'name_projection_stable')
-  }, [projectionSources])
+  const projSources = useMemo(() => projectionSources.filter((s) => s.name !== 'name_projection_stable'), [projectionSources])
 
   return (
     <InfoSection
