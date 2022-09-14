@@ -158,6 +158,17 @@ const CountryPage: React.FC<Props> = (props) => {
             <ExcessReservesSection />
             <LargestProjects country={country} />
             <Box h="1px" background={colors.primary.grey30} mb="80px" />
+            <SnapShotStatistic
+              title="Field-level snapshot"
+              value={73.161}
+              valueInfo="Number of fields in database"
+              oilValue={85}
+              oilText="Oil Projects"
+              gasValue={72}
+              gasText="Gas Projects"
+              coalValue={99}
+              coalText="Coal project"
+            />
             <Heading
               as="h3"
               fontSize="32px"

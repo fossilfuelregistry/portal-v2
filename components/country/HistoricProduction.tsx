@@ -94,7 +94,7 @@ const HistoricProduction: FC<HistoricProductionProps> = ({ country }) => {
       </SimpleGrid>
       <SimpleGrid
         columns={{ base: 1, md: 3 }}
-        gridGap={{ base: '60px', md: '134px' }}
+        gridGap={{ base: '30px', md: '60px', lg: '134px' }}
         mb="40px"
       >
         <HistoryProductionInfo

@@ -8,6 +8,7 @@ import {
   Th,
   Td,
   TableContainer,
+  Text,
 } from '@chakra-ui/react'
 import { StaticData } from 'lib/types'
 import { DataContext } from 'components/DataContext'
@@ -15,6 +16,7 @@ import useCountryProjects from 'lib/useCountryProjects'
 import useCsvDataTranslator from 'lib/useCsvDataTranslator'
 import capitalizeFirstLetter from '../../utils/capitalizeFirstLetter'
 import formatCsvNumber from '../../utils/formatCsvNumbers'
+import { colors } from '../../assets/theme'
 
 type LargestProjectsProps = {
   country: string
@@ -46,27 +48,144 @@ const LargestProjects: FC<LargestProjectsProps> = ({ country }) => {
       filename={`${countryName}_largest_projects.csv`}
       csvData={translatedCsvData}
     >
-      <TableContainer height="360px" overflowY="auto">
+      <TableContainer height="460px" overflowY="auto">
         <Table variant="simple">
           <Thead>
             <Tr>
-              <Th>№</Th>
-              <Th>Field name</Th>
-              <Th>Total emissions Million barrels</Th>
-              <Th>Fossil Fuel</Th>
-              <Th>Country</Th>
-              <Th>Latest year</Th>
+              <Th
+                color={colors.primary.richBlack}
+                fontSize="16px"
+                textTransform="none"
+                fontWeight="400"
+                lineHeight="24px"
+                p="20px 20px"
+              >
+                №
+              </Th>
+              <Th
+                color={colors.primary.richBlack}
+                fontSize="16px"
+                textTransform="none"
+                fontWeight="400"
+                lineHeight="24px"
+                p="20px 20px"
+              >
+                Field name
+              </Th>
+              <Th
+                color={colors.primary.richBlack}
+                fontSize="16px"
+                textTransform="none"
+                fontWeight="400"
+                lineHeight="24px"
+                p="20px 20px"
+              >
+                Total emissions
+                <br />
+                <Text
+                  fontSize="16px"
+                  color={colors.primary.grey70}
+                  lineHeight="24px"
+                  fontWeight="400"
+                >
+                  Million barrels
+                </Text>
+              </Th>
+              <Th
+                color={colors.primary.richBlack}
+                fontSize="16px"
+                textTransform="none"
+                fontWeight="400"
+                lineHeight="24px"
+                p="20px 20px"
+              >
+                Fossil Fuel
+              </Th>
+              <Th
+                color={colors.primary.richBlack}
+                fontSize="16px"
+                textTransform="none"
+                fontWeight="400"
+                lineHeight="24px"
+                p="20px 20px"
+              >
+                Country
+              </Th>
+              <Th
+                color={colors.primary.richBlack}
+                fontSize="16px"
+                textTransform="none"
+                fontWeight="400"
+                lineHeight="24px"
+                p="20px 20px"
+              >
+                Latest year
+              </Th>
             </Tr>
           </Thead>
-          <Tbody>
+          <Tbody border="1px solid #EBEBEB">
             {top20?.map((p: any, index) => (
               <Tr key={p.id}>
-                <Td>{index + 1}</Td>
-                <Td>{p.projectIdentifier}</Td>
-                <Td>{p.co2.toFixed(2)}</Td>
-                <Td>{p.fuels.map(capitalizeFirstLetter).join(',')}</Td>
-                <Td>{countryName}</Td>
-                <Td>{p.lastYear}</Td>
+                <Td
+                  color={colors.primary.richBlack}
+                  fontSize="16px"
+                  textTransform="none"
+                  fontWeight="700"
+                  lineHeight="24px"
+                  p="20px 20px"
+                >
+                  {index + 1}
+                </Td>
+                <Td
+                  color={colors.primary.richBlack}
+                  fontSize="16px"
+                  textTransform="none"
+                  fontWeight="400"
+                  lineHeight="24px"
+                  p="20px 20px"
+                >
+                  {p.projectIdentifier}
+                </Td>
+                <Td
+                  color={colors.primary.richBlack}
+                  fontSize="16px"
+                  textTransform="none"
+                  fontWeight="700"
+                  lineHeight="24px"
+                  p="20px 20px"
+                >
+                  {p.co2.toFixed(2)}
+                </Td>
+                <Td
+                  color={colors.primary.richBlack}
+                  fontSize="16px"
+                  textTransform="none"
+                  fontWeight="400"
+                  lineHeight="24px"
+                  p="20px 20px"
+                >
+                  {p.fuels.map(capitalizeFirstLetter).join(',')}
+                </Td>
+                <Td
+                  color={colors.primary.richBlack}
+                  fontSize="16px"
+                  textTransform="none"
+                  fontWeight="400"
+                  lineHeight="24px"
+                  p="20px 20px"
+                >
+                  {countryName}
+                </Td>
+                <Td
+                  color={colors.primary.richBlack}
+                  fontSize="16px"
+                  textTransform="none"
+                  fontWeight="700"
+                  lineHeight="24px"
+                  p="20px 20px"
+                >
+                  {p.lastYear}
+                </Td>
               </Tr>
             ))}
           </Tbody>

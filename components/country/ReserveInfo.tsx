@@ -21,6 +21,7 @@ const ReserveInfo: FC<ReserveInfoProps> = ({
 }) => (
   <Box
     w="100%"
+    borderBottom={{ base: '1px solid #BFBFBF', md: 'none' }}
     position="relative"
     p="10px 0"
     bgColor={colors.primary.grey2}
@@ -28,7 +29,7 @@ const ReserveInfo: FC<ReserveInfoProps> = ({
       content: { base: 'none', md: hasLine ? '" "' : 'none' },
       position: 'absolute',
       top: '0',
-      right: '-60px',
+      right: { md: '-30px', lg: '-40px', xl: '-60px' },
       width: '1px',
       height: '100%',
       bgColor: '#BFBFBF',

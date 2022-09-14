@@ -21,13 +21,15 @@ const HistoryProductionInfo: FC<HistoryProductionInfoProps> = ({
 }) => (
   <Box
     w="100%"
+    pb={{ base: '20px', md: '0' }}
+    borderBottom={{ base: '1px solid #BFBFBF', md: 'none' }}
     position="relative"
     bgColor={colors.primary.grey2}
     _after={{
       content: { base: 'none', md: hasLine ? '" "' : 'none' },
       position: 'absolute',
       top: '0',
-      right: '-66px',
+      right: { md: '-30px', lg: '-66px' },
       width: '1px',
       height: '100%',
       bgColor: '#BFBFBF',

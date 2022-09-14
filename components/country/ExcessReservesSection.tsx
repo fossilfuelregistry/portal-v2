@@ -17,7 +17,7 @@ const ExcessReservesSection = () => (
     </Box>
     <SimpleGrid
       columns={{ base: 1, md: 3 }}
-      gridGap={{ base: '60px', md: '120px' }}
+      gridGap={{ md: '60px', lg: '80px', xl: '120px' }}
       mb="40px"
     >
       <ReserveInfo
