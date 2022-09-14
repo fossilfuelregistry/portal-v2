@@ -43,6 +43,8 @@ export const OilIcon = ({
 }: {
   fill?: string
   opacity?: string
+  height?: string
+  width?: string
 }) => (
   // eslint-disable-next-line react/jsx-props-no-spreading
   <Icon width="40px" height="40px" viewBox="0 0 40 40" fill={fill} {...rest}>

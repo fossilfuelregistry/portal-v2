@@ -1,6 +1,5 @@
 import React, {FC} from 'react'
-import {Box, Heading, Text, Grid, Flex} from '@chakra-ui/react'
-import Container from 'components/Container'
+import {Box, Flex, Heading, Text} from '@chakra-ui/react'
 import {CoalIcon, GasIcon, OilIcon} from 'components/Icons'
 import CMSBlock from "components/CMSContent/CMSBlock";
 import {colors} from '../../assets/theme'
@@ -88,7 +87,7 @@ const CoverageSummary: FC<CoverageSummaryProps> = ({block}) => {
 					</Box>
 
 					<Percentage>
-						<OilIcon height="40px" width="40px" position="absolute" top={5}/>
+						<Box position="absolute" top={5}><OilIcon height="40px" width="40px"/></Box>
 						<Heading as="h2" pl={{base: "60px"}}>
 							{ManualData.oil}
 						</Heading>
@@ -102,7 +101,7 @@ const CoverageSummary: FC<CoverageSummaryProps> = ({block}) => {
 					</Percentage>
 
 					<Percentage>
-						<GasIcon position="absolute" top={5}/>
+						<Box position="absolute" top={5}><GasIcon/></Box>
 						<Heading as="h2" pl={{base: "60px"}}>
 							{ManualData.gas}
 						</Heading>
@@ -115,7 +114,7 @@ const CoverageSummary: FC<CoverageSummaryProps> = ({block}) => {
 					</Percentage>
 
 					<Percentage>
-						<CoalIcon position="absolute" top={5}/>
+						<Box position="absolute" top={5}><CoalIcon/></Box>
 						<Heading as="h2" pl={{base: "60px"}}>
 							{ManualData.coal}
 						</Heading>
