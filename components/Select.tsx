@@ -21,6 +21,7 @@ type SelectProps = {
   value: string | number | null
   placeholder?: string
   options: SelectOption[]
+  disabled: boolean
   onChange: (newValue: SingleValue<SelectOption>) => void
 }
 
@@ -32,6 +33,7 @@ const Select: FC<SelectProps> = ({
   options,
   onChange,
   placeholder = '',
+  disabled = false,
 }) => {
   const chakraStyles = {
     container: (provided: CSSObject, state: any) => ({
@@ -116,7 +118,11 @@ const Select: FC<SelectProps> = ({
   )
 
   return (
-    <Box w="100%">
+    <Box
+      w="100%"
+      opacity={disabled ? 0.5 : 1}
+      pointerEvents={disabled ? 'none' : 'auto'}
+    >
       {label && (
         <Flex fontSize="16px" mb="4px" color={colors.primary.richBlack}>
           {label} {tooltip && <Info text={tooltip} />}

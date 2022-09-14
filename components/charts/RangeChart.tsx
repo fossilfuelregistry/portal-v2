@@ -18,6 +18,7 @@ export type BarsProps = {
   height: number
   title: string
   data: any[]
+  label?: string
 }
 
 // accessors
@@ -29,6 +30,7 @@ const RangeChart: FC<BarsProps> = ({
   height,
   title,
   data,
+  label = 'KT',
 }: BarsProps) => {
   // bounds
   const xMax = width
@@ -85,7 +87,7 @@ const RangeChart: FC<BarsProps> = ({
         color={colors.primary.richBlack}
         mb="24px"
       >
-        KT CO₂e
+        {label} CO₂e
       </Heading>
       <Box position="relative">
         <svg width={width} height={height}>

@@ -7,7 +7,7 @@ type HistoryProductionInfoProps = {
   icon: React.ReactNode
   subtitle: string
   value: number
-  label: string
+  label?: string
   hasLine?: boolean
 }
 
@@ -68,18 +68,20 @@ const HistoryProductionInfo: FC<HistoryProductionInfoProps> = ({
     >
       {value}
     </Heading>
-    <Box
-      display="inline-block"
-      border="1px solid #1172ba"
-      borderRadius="4px"
-      p="4px 8px"
-      color={colors.primary.brandingBlue}
-      fontSize="16px"
-      lineHeight="24px"
-      fontWeight="400"
-    >
-      {label}
-    </Box>
+    {label && (
+      <Box
+        display="inline-block"
+        border="1px solid #1172ba"
+        borderRadius="4px"
+        p="4px 8px"
+        color={colors.primary.brandingBlue}
+        fontSize="16px"
+        lineHeight="24px"
+        fontWeight="400"
+      >
+        {label}
+      </Box>
+    )}
   </Box>
 )
 

@@ -37,10 +37,11 @@ const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
   } = useCountrySources({
     country,
   })
+
   const { production, projectedProduction, projection } = useCountryData({
     productionSourceId: preferredProductionSourceId,
     reservesSourceId: preferredReservesSourceId,
-    projectionSourceId,
+    projectionSourceId: preferredProjectionSourceId,
     gwp,
     country,
     conversionConstants: conversions,
@@ -79,8 +80,7 @@ const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
 
     // @ts-ignore
     const filteredProjectionData = projection.filter(
-      (p: any) =>
-        p.year >= startYear && p.sourceId === preferredProjectionSourceId
+      (p: any) => p.year >= startYear && p.sourceId === projectionSourceId
     )
 
     const groupedProjectionByYear = groupBy(
@@ -124,16 +124,7 @@ const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
       projectionData,
       projProdData,
     }
-  }, [preferredProductionSourceId, preferredProjectionSourceId, production, projectedProduction, projection,
-    /* This seems to fix the issue with not loading from start
-     country,
-    gwp,
-    production,
-    projection,
-    projectionSourceId,
-    projectionSources,
-    */
-  ])
+  }, [gwp, production, projection, projectionSourceId, projectionSources])
 
   const translatedCsvData = useMemo(() => {
     const { productionData, projectionData, projProdData } = forecastData
@@ -182,7 +173,10 @@ const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
     return csvData.map(generateCsvTranslation)
   }, [forecastData])
 
-  const projSources = useMemo(() => projectionSources.filter((s) => s.name !== 'name_projection_stable'), [projectionSources])
+  const projSources = useMemo(
+    () => projectionSources.filter((s) => s.name !== 'name_projection_stable'),
+    [projectionSources]
+  )
 
   return (
     <InfoSection

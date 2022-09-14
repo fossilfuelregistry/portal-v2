@@ -9,6 +9,7 @@ type InfoSectionProps = {
   children: React.ReactNode
   csvData?: any
   filename?: string
+  isProject?: boolean
 }
 
 const InfoSection: FC<InfoSectionProps> = ({
@@ -16,28 +17,54 @@ const InfoSection: FC<InfoSectionProps> = ({
   children,
   csvData = [],
   filename = 'file.csv',
+  isProject = false,
 }) => (
-    <Box
-      bg={colors.primary.grey2}
-      margin="0 auto"
-      marginBottom="80px"
-      padding="32px"
+  <Box
+    bg={colors.primary.grey2}
+    margin="0 auto"
+    marginBottom="80px"
+    padding="32px"
+  >
+    <Heading
+      as="h3"
+      color={colors.primary.richBlack}
+      fontFamily="Roboto"
+      fontWeight="700"
+      fontSize="20px"
+      margin="0"
+      paddingBottom="32px"
     >
-      <Heading
-        as="h3"
-        color={colors.primary.richBlack}
-        fontFamily="Roboto"
-        fontWeight="700"
-        fontSize="20px"
-        margin="0"
-        paddingBottom="32px"
-      >
-        {title}
-      </Heading>
-      {children}
-      <Flex alignItems="center" justifyContent="space-between" mt="40px">
-        <Box color={colors.primary.richBlack} fontSize="16px" fontWeight="400">
-          Source:{' '}
+      {title}
+    </Heading>
+    {children}
+    <Flex alignItems="center" justifyContent="space-between" mt="40px">
+      <Box color={colors.primary.richBlack} fontSize="16px" fontWeight="400">
+        Source:{' '}
+        {isProject ? (
+          <>
+            <Link
+              href="https://github.com/fossilfuelregistry/portal/issues/Sources.url"
+              target="_blank"
+              color={colors.primary.brandingBlue}
+              fontSize="16px"
+              fontWeight="400"
+            >
+              Website
+            </Link>
+            <Box px="8px" display="inline-block">
+              -
+            </Box>
+            <Link
+              href="https://github.com/fossilfuelregistry/portal/issues/Sources.document_url"
+              target="_blank"
+              color={colors.primary.brandingBlue}
+              fontSize="16px"
+              fontWeight="400"
+            >
+              Raw Data
+            </Link>
+          </>
+        ) : (
           <Link
             href="https://drive.google.com/drive/folders/1gjiEXR0Ar19FZodhbrkG1EG7qIgu_Uxl"
             target="_blank"
@@ -47,21 +74,22 @@ const InfoSection: FC<InfoSectionProps> = ({
           >
             Country Production and Reserves Dataset
           </Link>
-        </Box>
-        <CsvDownloader datas={csvData} filename={filename}>
-          <Button
-            bg={colors.primary.brandingBlue}
-            color={colors.common.white}
-            borderRadius="4px"
-            padding="12px 58px"
-            leftIcon={<DownloadIcon />}
-            _hover={{ opacity: '0.5' }}
-          >
-            Download
-          </Button>
-        </CsvDownloader>
-      </Flex>
-    </Box>
-  )
+        )}
+      </Box>
+      <CsvDownloader datas={csvData} filename={filename}>
+        <Button
+          bg={colors.primary.brandingBlue}
+          color={colors.common.white}
+          borderRadius="4px"
+          padding="12px 58px"
+          leftIcon={<DownloadIcon />}
+          _hover={{ opacity: '0.5' }}
+        >
+          Download
+        </Button>
+      </CsvDownloader>
+    </Flex>
+  </Box>
+)
 
 export default InfoSection

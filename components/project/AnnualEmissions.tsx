@@ -1,5 +1,5 @@
 import React, { FC, useContext, useEffect, useMemo, useState } from 'react'
-import { Box, SimpleGrid } from '@chakra-ui/react'
+import { Box, SimpleGrid, Alert, AlertIcon } from '@chakra-ui/react'
 import PieChart, { PIE_CHART_COLORS } from 'components/charts/PieChart'
 import InfoSection from 'components/InfoSection'
 import WarmingPotentialSelect, {
@@ -23,21 +23,23 @@ type AnnualEmissionsProps = {
   theProject: any
 }
 
-// Why reservesSources is empty
 const AnnualEmissions: FC<AnnualEmissionsProps> = ({ theProject }) => {
   const { id: projectId, iso3166: country } = theProject
   const { translate } = useText()
   const staticData: StaticData = useContext(DataContext)
   const { conversions, constants, prefixConversions } = staticData
 
-  const { reservesSources } = useProjectSources({ projectId, country })
+  const { reservesSources, preferredReservesSourceId } = useProjectSources({
+    projectId,
+    country,
+  })
   const [gwp, setGwp] = useState<string>(WarmingPotential.GWP100)
   const [reservesSourceId, setReservesSourceId] = useState<number>(0)
   const { generateCsvTranslation } = useCsvDataTranslator()
   DEBUG && console.log('reservesSources', reservesSources)
 
   const gg = useProjectData({
-    reservesSourceId: 21,
+    reservesSourceId: preferredReservesSourceId,
     projectId,
     gwp,
     country,
@@ -55,10 +57,18 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ theProject }) => {
     }
   }, [reservesSources])
 
+  const enrichWithDescription = (
+    data: { fossilFuelType: string; combustionType: string }[]
+  ) =>
+    data.map((d) => ({
+      ...d,
+      description: translate(`${d.fossilFuelType}_${d.combustionType}`),
+    }))
+
   const projInfo = useMemo(() => {
     if (!theProject?.id) return null
     return gg.projectCO2(theProject)
-  }, [theProject?.id])
+  }, [theProject?.id, gg, gwp])
 
   const volumesData = useMemo(() => {
     if (!projInfo) {
@@ -77,10 +87,11 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ theProject }) => {
           {
             label: `${capitalizeFirstLetter(fuel)}, combustion`,
             fossilFuelType: fuel,
+            combustionType: 'combustion',
             // @ts-ignore
             fillColor: PIE_CHART_COLORS[fuel].scope3,
             // @ts-ignore
-            quantity: fuelData?.scope3.co2.wa.toFixed(2),
+            quantity: fuelData?.scope3.co2.wa.toFixed(8),
             percentage: calculatePercentage(
               // @ts-ignore
               fuelData.scope3.total.wa as number
@@ -91,10 +102,11 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ theProject }) => {
           {
             label: `${capitalizeFirstLetter(fuel)}, pre-combustion`,
             fossilFuelType: fuel,
+            combustionType: 'precombustion',
             // @ts-ignore
             fillColor: PIE_CHART_COLORS[fuel].scope1,
             // @ts-ignore
-            quantity: fuelData?.scope1.co2.wa.toFixed(2),
+            quantity: fuelData?.scope1.co2.wa.toFixed(8),
             percentage: calculatePercentage(
               // @ts-ignore
               fuelData.scope1.total.wa as number
@@ -199,18 +211,29 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ theProject }) => {
 
   DEBUG && console.log('theProject-mm', theProject)
 
+  // @ts-ignore
   return (
     <InfoSection
-      title={`${theProject.projectIdentifier} ${translate('annual_emissions')}`}
+      isProject
+      title={`${theProject.projectIdentifier}: Annual Emissions`}
       filename={`${theProject.projectIdentifier}_year_emissions.csv`}
       csvData={translatedCsvData}
     >
+      {(theProject.projectType === 'DENSE' ||
+        theProject.projectType === 'SPARSE') && (
+        <Alert status="info" mb="24px">
+          <AlertIcon />
+          Only {theProject.projectType.toLowerCase()} data are available for
+          this project.
+        </Alert>
+      )}
       <SimpleGrid mb="40px" columns={3} gridGap="20px">
         <WarmingPotentialSelect
           value={gwp}
           onChange={(option) => setGwp(option?.value as string)}
         />
         <SourceSelect
+          disabled={!reservesSources.length}
           label="Reserves estimates source"
           sources={reservesSources}
           value={reservesSourceId}
@@ -233,7 +256,8 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ theProject }) => {
         }}
       >
         <PieChart
-          data={volumesData.data}
+          // @ts-ignore
+          data={enrichWithDescription(volumesData.data)}
           parentWidth={320}
           parentHeight={320}
           title="Total volumes"
@@ -246,6 +270,7 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ theProject }) => {
             width={538}
             data={rangeData}
             title="Range of certainty"
+            label="MT"
           />
         </Box>
       </SimpleGrid>

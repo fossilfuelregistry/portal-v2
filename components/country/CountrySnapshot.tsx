@@ -171,7 +171,6 @@ const CountrySnapshot: FC<CountrySnapshotProps> = ({ country }) => {
           title="Total emissions"
           icon={<SmokeIcon />}
           subtitle="Million tonnes CO₂e"
-          label="5th highest"
           value={totalEmissions}
           year={yearRange}
         />
@@ -179,7 +178,6 @@ const CountrySnapshot: FC<CountrySnapshotProps> = ({ country }) => {
           title="Oil production"
           icon={<OilIcon fill={colors.primary.grey70} opacity="1" />}
           subtitle="Million barrels"
-          label="56th highest"
           value={oilProduction}
           year={oilYear?.toFixed() ?? ''}
           source={getSourceName(getOilSourceId(emissionsData))}
@@ -188,7 +186,6 @@ const CountrySnapshot: FC<CountrySnapshotProps> = ({ country }) => {
           title="Gas production"
           icon={<GasIcon fill={colors.primary.grey70} opacity="1" />}
           subtitle="Billion cubic metres"
-          label="25th highest"
           value={gasProduction}
           year={gasYear?.toFixed() ?? ''}
           source={getSourceName(getGasSourceId(emissionsData))}
@@ -197,7 +194,6 @@ const CountrySnapshot: FC<CountrySnapshotProps> = ({ country }) => {
           title="Coal production"
           icon={<CoalIcon stroke={colors.primary.grey70} opacity="1" />}
           subtitle="Million tonnes"
-          label="3th highest"
           value={coalProduction}
           year={coalYear?.toFixed() ?? ''}
           source={getSourceName(getCoalSourceId(emissionsData))}

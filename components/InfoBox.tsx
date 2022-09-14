@@ -21,14 +21,14 @@ type InfoBoxProps = {
 }
 
 const InfoBox: FC<InfoBoxProps> = ({
-                                     title,
-                                     icon,
-                                     subtitle,
-                                     source = '',
-                                     label,
-                                     value,
-                                     year,
-                                   }) => (
+  title,
+  icon,
+  subtitle,
+  source = '',
+  label,
+  value,
+  year,
+}) => (
   <Box w="100%" bgColor={colors.primary.grey2} padding="24px 20px 28px">
     <Flex justifyContent="space-between" alignItems="center" mb="30px">
       <Box>
@@ -86,7 +86,8 @@ const InfoBox: FC<InfoBoxProps> = ({
       lineHeight="18px"
       fontWeight="400"
     >
-      {year}{!!source && ` (${source})`}
+      {year}
+      {!!source && ` (${source})`}
     </Box>
   </Box>
 )

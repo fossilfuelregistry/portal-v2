@@ -10,6 +10,7 @@ type ProductionSourceSelectProps = {
   label: string
   showAll?: boolean
   translateName?: boolean
+  disabled?: boolean
 }
 
 const SourceSelect: FC<ProductionSourceSelectProps> = ({
@@ -19,6 +20,7 @@ const SourceSelect: FC<ProductionSourceSelectProps> = ({
   label,
   showAll = false,
   translateName = false,
+  disabled = false,
 }) => {
   const { translate } = useText()
 
@@ -40,7 +42,13 @@ const SourceSelect: FC<ProductionSourceSelectProps> = ({
   }, [sources])
 
   return (
-    <Select label={label} value={value} options={options} onChange={onChange} />
+    <Select
+      label={label}
+      value={value}
+      options={options}
+      onChange={onChange}
+      disabled={disabled}
+    />
   )
 }
 

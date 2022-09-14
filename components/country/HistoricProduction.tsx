@@ -102,7 +102,6 @@ const HistoricProduction: FC<HistoricProductionProps> = ({ country }) => {
           subtitle="Million tonnes CO₂e"
           icon={<OilIcon fill={colors.primary.grey70} opacity="1" />}
           value={102}
-          label="31st highest"
           hasLine
         />
         <HistoryProductionInfo
@@ -110,7 +109,6 @@ const HistoricProduction: FC<HistoricProductionProps> = ({ country }) => {
           subtitle="Billion cubic metres"
           icon={<GasIcon fill={colors.primary.grey70} opacity="1" />}
           value={850}
-          label="76st highest"
           hasLine
         />
         <HistoryProductionInfo
@@ -118,7 +116,6 @@ const HistoricProduction: FC<HistoricProductionProps> = ({ country }) => {
           subtitle="Thousand tonnes"
           icon={<CoalIcon stroke={colors.primary.grey70} opacity="1" />}
           value={78.5}
-          label="76st highest"
         />
       </SimpleGrid>
       {!!historicData.length && (

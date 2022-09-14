@@ -73,3 +73,17 @@ path.history-curve {
   margin-top: 50px;
   margin-bottom: 32px;
 }
+
+path.projection {
+  stroke: #333333;
+  stroke-width: 2;
+  stroke-dasharray: 0;
+  stroke-opacity: 0.2;
+}
+
+path.projection.auth {
+  stroke: #333333;
+  stroke-width: 3;
+  stroke-dasharray: 0;
+  stroke-opacity: 0.4;
+}
