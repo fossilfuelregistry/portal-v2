@@ -106,11 +106,21 @@ const LineChart: FC<LineChartProps> = ({
             scale={yearScale}
             tickStroke="transparent"
             hideAxisLine
-            tickLabelProps={() => ({
-              fill: colors.primary.richBlack,
-              fontSize: 14,
-              textAnchor: 'middle',
-            })}
+            numTicks={10}
+            tickFormat={(x: any) => `${x?.toFixed(0)}`}
+            tickLabelProps={(label, pos, ticks) => {
+              let dx = 0
+              if (pos === 0) dx = -5
+              // eslint-disable-next-line no-unsafe-optional-chaining
+              if (pos === ticks?.length - 1) dx = -25
+              return {
+                dx,
+                dy: '0.25em',
+                fill: colors.primary.richBlack,
+                fontSize: 14,
+                textAnchor: 'middle',
+              }
+            }}
           />
           <g fill="none" strokeWidth="2">
             <path
