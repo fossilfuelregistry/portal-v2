@@ -6,6 +6,7 @@ import {
   AlertTitle,
   AlertDescription,
 } from '@chakra-ui/react'
+import FeedbackForm from "components/CMSContent/FeedbackForm";
 import TextWithQuery from './TextWithQuery'
 import StyledTextImage from './StyledTextImage'
 import CMSBlock from './CMSBlock'
@@ -39,6 +40,10 @@ const DynamicZone = ({ content }: Props) => {
 
       case 'shared.i-frame':
         rendered.push(<CMSBlock><iframe key={`AS${block.id}`} src={block.URL} height={block.Height} width="100%" title={block.id}/></CMSBlock>)
+        break
+
+      case 'shared.feedback-form':
+        rendered.push(<FeedbackForm key={`AS${block.id}`} block={block}/>)
         break
 
       default:

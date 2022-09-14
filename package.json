@@ -28,6 +28,7 @@
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@fontsource/roboto": "^4.5.7",
+    "@sendgrid/mail": "^7.7.0",
     "@sentry/nextjs": "^7.7.0",
     "@turf/bbox": "^6.5.0",
     "@visx/axis": "^2.12.2",
