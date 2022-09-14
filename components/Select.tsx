@@ -21,7 +21,7 @@ type SelectProps = {
   value: string | number | null
   placeholder?: string
   options: SelectOption[]
-  disabled: boolean
+  disabled?: boolean
   onChange: (newValue: SingleValue<SelectOption>) => void
 }
 

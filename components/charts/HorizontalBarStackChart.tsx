@@ -84,8 +84,6 @@ const HorizontalBarStackChart: FC<BarStackProps> = ({
   const yMax = height - margin.top - 30
 
   yearsScale.rangeRound([0, xMax])
-
-  console.log('xMax', xMax)
   fuelScale.range([yMax, 0])
 
   return width < 10 ? null : (

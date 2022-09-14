@@ -217,14 +217,17 @@ const useProjectData = ({
     )
 
     // Check if no data
-    // @ts-ignore
+
     if (newLimits.oil.firstYear === settings.year.end)
+      // @ts-ignore
       newLimits.oil.firstYear = 0
     // @ts-ignore
     if (newLimits.gas.firstYear === settings.year.end)
+      // @ts-ignore
       newLimits.gas.firstYear = 0
-    // @ts-ignore
+
     if (newLimits.coal.firstYear === settings.year.end)
+      // @ts-ignore
       newLimits.coal.firstYear = 0
 
     setLimits((l) => ({ ...l, production: newLimits }))
@@ -256,6 +259,7 @@ const useProjectData = ({
     } else {
       // @ts-ignore
       newLimits = projection.reduce(
+        // @ts-ignore
         (_limits, datapoint) => {
           if (datapoint.sourceId !== projectionSourceId) return _limits
           const l = _limits[datapoint.fossilFuelType]
@@ -289,14 +293,18 @@ const useProjectData = ({
     const newLimits = reserves.reduce((_limits, datapoint) => {
       // @ts-ignore
       _limits.firstYear =
+        // @ts-ignore
         _limits.firstYear === undefined || datapoint.year < _limits.firstYear
           ? datapoint.year
-          : _limits.firstYear
+          : // @ts-ignore
+            _limits.firstYear
       // @ts-ignore
       _limits.lastYear =
+        // @ts-ignore
         _limits.lastYear === undefined || datapoint.year > _limits.lastYear
           ? datapoint.year
-          : _limits.lastYear
+          : // @ts-ignore
+            _limits.lastYear
       return _limits
     }, {})
 
@@ -332,6 +340,7 @@ const useProjectData = ({
     try {
       // @ts-ignore
       return reservesProduction(
+        // @ts-ignore
         projection,
         reserves,
         projectionSourceId,
