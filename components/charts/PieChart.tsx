@@ -29,7 +29,15 @@ type PieChartProps = {
   parentHeight: number
   header: string
   total: string
-  data: any[]
+  data: {
+    label: string,
+    fossilFuelType: string,
+    fillColor: string,
+    quantity: string,
+    percentage: number,
+    year: number,
+    description?: string
+  }[]
 }
 
 const Piechart: FC<PieChartProps> = ({
@@ -200,7 +208,7 @@ const Piechart: FC<PieChartProps> = ({
               mr="8px"
             />
             {d.label}
-            <Info text="sdsdasdasdsadasassa" />
+            <Info text={d.description} />
           </Flex>
         ))}
       </Flex>

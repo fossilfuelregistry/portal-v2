@@ -21,6 +21,7 @@ const useVolumes = (emissionsData: any, productionSourceId: number) => {
         .map((p: any) => [
           {
             label: `${capitalizeFirstLetter(p.fossilFuelType)}, combustion`,
+            combustionType: "combustion",
             fossilFuelType: p.fossilFuelType,
             // @ts-ignore
             fillColor: PIE_CHART_COLORS[p.fossilFuelType].scope3,
@@ -30,6 +31,7 @@ const useVolumes = (emissionsData: any, productionSourceId: number) => {
           },
           {
             label: `${capitalizeFirstLetter(p.fossilFuelType)}, pre-combustion`,
+            combustionType: "precombustion",
             fossilFuelType: p.fossilFuelType,
             // @ts-ignore
             fillColor: PIE_CHART_COLORS[p.fossilFuelType].scope1,
