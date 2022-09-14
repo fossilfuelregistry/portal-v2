@@ -39,7 +39,7 @@ const DynamicZone = ({ content }: Props) => {
         break
 
       case 'shared.i-frame':
-        rendered.push(<CMSBlock><iframe key={`AS${block.id}`} src={block.URL} height={block.Height} width="100%" title={block.id}/></CMSBlock>)
+        rendered.push(<CMSBlock extended><iframe key={`AS${block.id}`} src={block.URL} height={block.Height} width="100%" title={block.id}/></CMSBlock>)
         break
 
       case 'shared.feedback-form':
