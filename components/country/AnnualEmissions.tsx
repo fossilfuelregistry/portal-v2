@@ -14,6 +14,7 @@ import useText from 'lib/useText'
 import { DataContext } from 'components/DataContext'
 import useCsvDataTranslator from 'lib/useCsvDataTranslator'
 import formatCsvNumber from 'utils/formatCsvNumbers'
+import { isNumber } from 'fp-ts/lib/number'
 import { colors } from '../../assets/theme'
 import useVolumes from '../../hooks/useVolumes'
 import useRangeOfCertainty from '../../hooks/useRangeOfCertainty'
@@ -46,8 +47,9 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ country }) => {
     constants,
     conversionPrefixes: prefixConversions,
   })
-
+  DEBUG && console.log('emissionsData_volumesData', {emissionsData}, {volumesData})
   DEBUG && console.log('emissionsData', emissionsData)
+  DEBUG && console.log('volumesData', volumesData)
 
   const enrichWithDescription = ( data: { fossilFuelType: string; combustionType: string }[] ) =>
     data.map((d) => ({ ...d, description: translate(`${d.fossilFuelType}_${d.combustionType}`) }))
@@ -122,7 +124,7 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ country }) => {
           parentHeight={320}
           title="Total volumes"
           header="Total Mt CO₂e"
-          total={volumesData.total}
+          total={isNumber(volumesData.total)? volumesData.total.toFixed(2) : volumesData.total}
         />
         <Box ml="40px">
           <RangeChart
