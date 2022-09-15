@@ -8,6 +8,7 @@ import { max, min } from 'd3-array'
 import { AxisBottom, AxisLeft } from '@visx/axis'
 import { GridRows } from '@visx/grid'
 import Info from 'components/Info'
+import useText from 'lib/useText'
 import { colors } from '../../assets/theme'
 
 type LineChartProps = {
@@ -34,6 +35,8 @@ const LineChart: FC<LineChartProps> = ({
 }) => {
   const { years, sources, dataset, max: yMax } = data
   const margin = { left: 64, top: 20 }
+
+  const { translate } = useText()
 
   const getYear = (d: any) => d.year
   const getY = (src: any, d: any) => d[src] ?? 0
@@ -72,8 +75,7 @@ const LineChart: FC<LineChartProps> = ({
             numTicks={5}
             stroke={colors.primary.grey10}
           />
-          {sources.map((s: any) => {
-            return (
+          {sources.map((s: any) => (
               <LinePath
                 key={s}
                 curve={curveLinear}
@@ -85,8 +87,7 @@ const LineChart: FC<LineChartProps> = ({
                 shapeRendering="geometricPrecision"
                 stroke={COLORS[s]}
               />
-            )
-          })}
+            ))}
           <AxisLeft
             top={4}
             left={-20}
@@ -149,7 +150,7 @@ const LineChart: FC<LineChartProps> = ({
                 mr="8px"
               />
               {s.name}
-              <Info />
+              <Info text={translate(s?.name?.toLowerCase())} />
             </Flex>
           ))}
       </Flex>
