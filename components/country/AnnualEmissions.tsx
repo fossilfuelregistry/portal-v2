@@ -9,7 +9,7 @@ import RangeChart from 'components/charts/RangeChart'
 import SourceSelect from 'components/filters/SourceSelect'
 import useCountrySources from 'lib/useCountrySources'
 import useCountryData from 'lib/useCountryData'
-import { StaticData } from 'lib/types'
+import { EmissionsData, StaticData } from 'lib/types'
 import useText from 'lib/useText'
 import { DataContext } from 'components/DataContext'
 import useCsvDataTranslator from 'lib/useCsvDataTranslator'
@@ -35,7 +35,7 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ country }) => {
   })
   const [gwp, setGwp] = useState<string>(WarmingPotential.GWP100)
   const [productionSourceId, setProductionSourceId] = useState<number>(0)
-  const [emissionsData, setEmissionsData] = useState<any[]>([])
+  const [emissionsData, setEmissionsData] = useState<EmissionsData>([])
   const { volumesData } = useVolumes(emissionsData, productionSourceId)
   const { rangeData } = useRangeOfCertainty(emissionsData, productionSourceId)
   const { generateCsvTranslation } = useCsvDataTranslator()

@@ -1,21 +1,7 @@
 import { useMemo } from 'react'
 import { PIE_CHART_COLORS } from 'components/charts/PieChart'
-import { CO2EEmissions, VintageScopes } from 'lib/calculations/types';
+import { EmissionsData } from 'lib/types';
 import capitalizeFirstLetter from '../utils/capitalizeFirstLetter'
-
-type EmissionsData = {
-  sourceId: number;
-  production: {
-      co2: VintageScopes;
-      co2e: CO2EEmissions | null;
-      fossilFuelType: "oil" | "coal" | "gas";
-      sourceId: number;
-      volume: number;
-      unit: string;
-      year: number;
-  }[];
-  totalCO2E: number;
-}[] | null | undefined
 
 const useVolumes = (emissionsData: EmissionsData, productionSourceId: number) => {
   const volumesData = useMemo(() => {

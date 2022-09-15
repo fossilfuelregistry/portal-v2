@@ -1,6 +1,7 @@
 import {Country} from 'components/Map/types'
 import {DatabaseRecord} from 'lib/calculations/calculation-constants/types'
 import {PrefixRecord} from 'lib/calculations/prefix-conversion'
+import { CO2EEmissions, VintageScopes } from './calculations/types'
 
 export type FossilFuelType = 'oil' | 'gas' | 'coal'
 export type FuelSubType =
@@ -98,3 +99,17 @@ export interface StaticData {
 	constants: DatabaseRecord[]
 	prefixConversions: PrefixRecord[]
 }
+
+export type EmissionsData = {
+	sourceId: number;
+	production: {
+		co2: VintageScopes;
+		co2e: CO2EEmissions | null;
+		fossilFuelType: "oil" | "coal" | "gas";
+		sourceId: number;
+		volume: number;
+		unit: string;
+		year: number;
+	}[];
+	totalCO2E: number;
+  }[] | null | undefined
