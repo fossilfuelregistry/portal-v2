@@ -242,7 +242,7 @@ const RangeChart: FC<BarsProps> = ({
         >
           <LineIcon mr="8px" />
           Weighted average
-          <Info />
+          <Info text={translate('WA')} />
         </Flex>
       </Flex>
     </Box>
