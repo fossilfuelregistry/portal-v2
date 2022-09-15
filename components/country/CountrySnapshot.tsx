@@ -17,6 +17,7 @@ import InfoBox from 'components/InfoBox'
 import { CO2EEmissions } from 'lib/calculations/types'
 import useText from 'lib/useText'
 import { FossilFuelType, StaticData } from 'lib/types'
+import { isNumber } from 'fp-ts/number'
 import { colors } from '../../assets/theme'
 
 type EmissionsDataType =
@@ -148,10 +149,11 @@ const CountrySnapshot: FC<CountrySnapshotProps> = ({ country }) => {
     [emissionsData]
   )
 
+  const py = (year?: number) => (isNumber(year) ? year : +Infinity)
+  const ny = (year?: number) => (isNumber(year) ? year : -Infinity)
   const yearRange = useMemo(() => {
-    if (!oilYear || !gasYear || !coalYear) return ''
-    const min = Math.min(oilYear, gasYear, coalYear).toString()
-    const max = Math.max(oilYear, gasYear, coalYear).toString()
+    const min = Math.min(py(oilYear), py(gasYear), py(coalYear)).toString()
+    const max = Math.max(ny(oilYear), ny(gasYear), ny(coalYear)).toString()
     return `(${min} - ${max})`
   }, [oilYear, gasYear, coalYear])
 
