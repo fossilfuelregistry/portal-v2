@@ -91,7 +91,7 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ theProject }) => {
             // @ts-ignore
             fillColor: PIE_CHART_COLORS[fuel].scope3,
             // @ts-ignore
-            quantity: fuelData?.scope3.co2.wa.toFixed(8),
+            quantity: fuelData?.scope3.total.wa.toFixed(8),
             percentage: calculatePercentage(
               // @ts-ignore
               fuelData.scope3.total.wa as number
@@ -106,7 +106,7 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ theProject }) => {
             // @ts-ignore
             fillColor: PIE_CHART_COLORS[fuel].scope1,
             // @ts-ignore
-            quantity: fuelData?.scope1.co2.wa.toFixed(8),
+            quantity: fuelData?.scope1.total.wa.toFixed(8),
             percentage: calculatePercentage(
               // @ts-ignore
               fuelData.scope1.total.wa as number
@@ -164,17 +164,17 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ theProject }) => {
         return [
           {
             value: [
-              p5S1 + prev[1].value[0],
-              waS1 + prev[1].value[1],
-              p95S1 + prev[1].value[2],
+              p5S1 + prev[0].value[0],
+              waS1 + prev[0].value[1],
+              p95S1 + prev[0].value[2],
             ],
             label: 'Pre-combustion',
           },
           {
             value: [
-              p5S3 + prev[0].value[0],
-              waS3 + prev[0].value[1],
-              p95S3 + prev[0].value[2],
+              p5S3 + prev[1].value[0],
+              waS3 + prev[1].value[1],
+              p95S3 + prev[1].value[2],
             ],
             label: 'Combustion',
           },
