@@ -142,7 +142,7 @@ const CountryPage: React.FC<Props> = (props) => {
           <Container>
             <CountrySnapshot country={country} />
             <AnnualEmissions country={country} />
-            <EmissionsIntensity country={country} />
+            {/*<EmissionsIntensity country={country} />*/}
             <HistoricProduction country={country} />
             <Box h="1px" background={colors.primary.grey30} mb="80px" />
             <Heading
@@ -162,11 +162,11 @@ const CountryPage: React.FC<Props> = (props) => {
               title="Field-level snapshot"
               value={73.161}
               valueInfo="Number of fields in database"
-              oilValue={85}
+              oilValue={46}
               oilText="Oil Projects"
-              gasValue={72}
+              gasValue={87}
               gasText="Gas Projects"
-              coalValue={99}
+              coalValue={93}
               coalText="Coal project"
             />
             <Heading

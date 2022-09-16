@@ -10,6 +10,8 @@ type InfoSectionProps = {
   csvData?: any
   filename?: string
   isProject?: boolean
+  // @ts-ignore
+  sourceInfo?: any
 }
 
 const InfoSection: FC<InfoSectionProps> = ({
@@ -18,6 +20,7 @@ const InfoSection: FC<InfoSectionProps> = ({
   csvData = [],
   filename = 'file.csv',
   isProject = false,
+  sourceInfo,
 }) => (
   <Box
     bg={colors.primary.grey2}
@@ -42,26 +45,45 @@ const InfoSection: FC<InfoSectionProps> = ({
         Source:{' '}
         {isProject ? (
           <>
+            <>
+              {sourceInfo && (
+                <>
+                  <strong>{sourceInfo.name}:</strong>
+                  <Link
+                    href={sourceInfo.url}
+                    target="_blank"
+                    color={colors.primary.brandingBlue}
+                    fontSize="16px"
+                    fontWeight="400"
+                  >
+                    Website
+                  </Link>
+                  <Box px="8px" display="inline-block">
+                    :
+                  </Box>
+                  <Link
+                    href={sourceInfo.documentUrl}
+                    target="_blank"
+                    color={colors.primary.brandingBlue}
+                    fontSize="16px"
+                    fontWeight="400"
+                  >
+                    Raw Data
+                  </Link>
+                  <Box px="8px" display="inline-block">
+                    :
+                  </Box>
+                </>
+              )}
+            </>
             <Link
-              href="https://github.com/fossilfuelregistry/portal/issues/Sources.url"
+              href="https://fossilfuelregistry-v2-kb3l6.ondigitalocean.app/datasets"
               target="_blank"
               color={colors.primary.brandingBlue}
               fontSize="16px"
               fontWeight="400"
             >
-              Website
-            </Link>
-            <Box px="8px" display="inline-block">
-              -
-            </Box>
-            <Link
-              href="https://github.com/fossilfuelregistry/portal/issues/Sources.document_url"
-              target="_blank"
-              color={colors.primary.brandingBlue}
-              fontSize="16px"
-              fontWeight="400"
-            >
-              Raw Data
+              Data Sets
             </Link>
           </>
         ) : (

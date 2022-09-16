@@ -1,19 +1,23 @@
 /* eslint-disable no-continue */
 /* eslint-disable no-plusplus */
 
-import {getFullFuelType, getPreferredGrades, sumOfCO2} from 'lib/calculate'
-import {useApolloClient} from '@apollo/client'
-import {GQL_countryCurrentProduction} from 'queries/country'
+import { getFullFuelType, getPreferredGrades, sumOfCO2 } from 'lib/calculate'
+import { useApolloClient } from '@apollo/client'
+import { GQL_countryCurrentProduction } from 'queries/country'
 import settings from 'settings'
 
-import {GQL_countryCurrentProductionRecord} from 'queries/country-types'
+import { GQL_countryCurrentProductionRecord } from 'queries/country-types'
 
 import useCalculate from 'lib/calculations/use-calculate'
-import {useCalculationConstants} from 'lib/calculations/calculation-constants/use-calculation-constants'
+import { useCalculationConstants } from 'lib/calculations/calculation-constants/use-calculation-constants'
 
 import * as O from 'fp-ts/Option'
-import {generateZeroCO2EEmissions, toMillionCO2ETon, toVintageCO2ERepresentation,} from 'lib/calculations/utils'
-import {pipe} from 'fp-ts/lib/function'
+import {
+  generateZeroCO2EEmissions,
+  toMillionCO2ETon,
+  toVintageCO2ERepresentation,
+} from 'lib/calculations/utils'
+import { pipe } from 'fp-ts/lib/function'
 import {
   LastReservesType,
   Limits,
@@ -23,10 +27,10 @@ import {
   Source,
   StableProduction,
 } from './types-legacy'
-import {DatabaseRecord} from './calculations/calculation-constants/types'
-import {PrefixRecord} from './calculations/prefix-conversion'
-import {CO2EEmissions} from './calculations/types'
-import {ConversionFactorInStore, FossilFuelType} from './types'
+import { DatabaseRecord } from './calculations/calculation-constants/types'
+import { PrefixRecord } from './calculations/prefix-conversion'
+import { CO2EEmissions } from './calculations/types'
+import { ConversionFactorInStore, FossilFuelType } from './types'
 
 const DEBUG = false
 
@@ -41,14 +45,8 @@ type Props = {
 }
 
 export const useConversionHooks = (props: Props) => {
-  const {
-    allSources,
-    gwp,
-    country,
-    stableProduction,
-    constants,
-    prefixes,
-  } = props
+  const { allSources, gwp, country, stableProduction, constants, prefixes } =
+    props
   const apolloClient = useApolloClient()
 
   const calculate = useCalculate(prefixes)
@@ -139,7 +137,7 @@ export const useConversionHooks = (props: Props) => {
 
     // Find most recent preferred reserve
 
-    const useGrades = getPreferredGrades(reserves, reservesSourceId)    
+    const useGrades = getPreferredGrades(reserves, reservesSourceId)
 
     const _lastReserves: { [s: string]: Object } = {}
     settings.supportedFuels.forEach(
@@ -185,7 +183,7 @@ export const useConversionHooks = (props: Props) => {
       limits.projection.gas.firstYear,
       limits.projection.coal.firstYear,
       gapStart
-    ) 
+    )
 
     DEBUG &&
       console.info('reservesProductionWithStartAndEnd', {
@@ -290,7 +288,13 @@ export const useConversionHooks = (props: Props) => {
       prod.push(_dp)
     })
 
-    DEBUG && console.info("ReservesProductionFinalStep",{ gapStart, gapEnd, prod, lastReserves })
+    DEBUG &&
+      console.info('ReservesProductionFinalStep', {
+        gapStart,
+        gapEnd,
+        prod,
+        lastReserves,
+      })
 
     return prod
   }

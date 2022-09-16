@@ -6,7 +6,6 @@ import WarmingPotentialSelect, {
   WarmingPotential,
 } from 'components/filters/WarmingPotentialSelect'
 import RangeChart from 'components/charts/RangeChart'
-import SourceSelect from 'components/filters/SourceSelect'
 import { StaticData } from 'lib/types'
 import useText from 'lib/useText'
 import { DataContext } from 'components/DataContext'
@@ -16,14 +15,19 @@ import useCsvDataTranslator from 'lib/useCsvDataTranslator'
 import { colors } from '../../assets/theme'
 import capitalizeFirstLetter from '../../utils/capitalizeFirstLetter'
 import formatCsvNumber from '../../utils/formatCsvNumbers'
+import { usePrefixConversion } from 'lib/calculations/prefix-conversion'
 
 const DEBUG = false
 
 type AnnualEmissionsProps = {
   theProject: any
+  countryName: string
 }
 
-const AnnualEmissions: FC<AnnualEmissionsProps> = ({ theProject }) => {
+const AnnualEmissions: FC<AnnualEmissionsProps> = ({
+  theProject,
+  countryName,
+}) => {
   const { id: projectId, iso3166: country } = theProject
   const { translate } = useText()
   const staticData: StaticData = useContext(DataContext)
@@ -36,6 +40,7 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ theProject }) => {
   const [gwp, setGwp] = useState<string>(WarmingPotential.GWP100)
   const [reservesSourceId, setReservesSourceId] = useState<number>(0)
   const { generateCsvTranslation } = useCsvDataTranslator()
+  const conversion = usePrefixConversion(prefixConversions)
   DEBUG && console.log('reservesSources', reservesSources)
 
   const gg = useProjectData({
@@ -207,15 +212,68 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ theProject }) => {
     return csvData.map(generateCsvTranslation)
   }, [rangeData])
 
-  DEBUG && console.log('rangeData', rangeData)
+  const projectDetails = useMemo(() => {
+    const getValue = (fossilFuelType: string, volume: number, unit: string) => {
+      if (fossilFuelType === 'gas')
+        // @ts-ignore
+        return conversion(unit, 'e9m3') * volume
+      if (fossilFuelType === 'oil')
+        // @ts-ignore
+        return conversion(unit, 'e6bbl') * volume
+      if (fossilFuelType === 'coal') {
+        // @ts-ignore
+        return conversion(unit, 'e6ton') * volume
+      }
+    }
+    const fuelMap = {
+      oil: 'bbls',
+      gas: 'm3',
+      coal: 'ton',
+    }
 
-  DEBUG && console.log('theProject-mm', theProject)
+    // @ts-ignore
+    return projInfo?.fuels
+      .map((f) => {
+        const curr = projInfo[f]
+
+        // @ts-ignore
+        return `${capitalizeFirstLetter(f)} ${getValue(
+          f,
+          // @ts-ignore
+          curr.volume,
+          // @ts-ignore
+          curr.volumeUnit
+        ).toFixed(1)} mln ${fuelMap[f]} ${
+          // @ts-ignore
+          curr.lastYear ? `(${curr.lastYear})` : `(data year ${curr.dataYear})`
+        }`
+      })
+      .join(': ')
+  }, [projInfo])
+
+  const sourceInfo = useMemo(() => {
+    // @ts-ignore
+    const f = projInfo?.fuels[0]
+    // @ts-ignore
+    const s = projInfo && f && projInfo[f]?.sources[0]
+    if (!s) return null
+
+    return {
+      // @ts-ignore
+      name: s.name,
+      // @ts-ignore
+      url: s.url,
+      // @ts-ignore
+      documentUrl: s.documentUrl,
+    }
+  }, [projInfo])
 
   // @ts-ignore
   return (
     <InfoSection
       isProject
-      title={`${theProject.projectIdentifier}: Annual Emissions`}
+      sourceInfo={sourceInfo}
+      title={`${countryName}: ${theProject.projectIdentifier}: ${projectDetails}`}
       filename={`${theProject.projectIdentifier}_year_emissions.csv`}
       csvData={translatedCsvData}
     >
@@ -231,13 +289,6 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ theProject }) => {
         <WarmingPotentialSelect
           value={gwp}
           onChange={(option) => setGwp(option?.value as string)}
-        />
-        <SourceSelect
-          disabled={!reservesSources.length}
-          label="Reserves estimates source"
-          sources={reservesSources}
-          value={reservesSourceId}
-          onChange={(option) => setReservesSourceId(option?.value as any)}
         />
       </SimpleGrid>
       <SimpleGrid
@@ -260,7 +311,7 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ theProject }) => {
           data={enrichWithDescription(volumesData.data)}
           parentWidth={320}
           parentHeight={320}
-          title="Total volumes"
+          title={`${theProject?.projectIdentifier} Total CO2e Emissions (latest year)`}
           header="Total Mt CO₂e"
           total={volumesData.total as string}
         />
@@ -269,7 +320,7 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ theProject }) => {
             height={364}
             width={538}
             data={rangeData}
-            title="Range of certainty"
+            title={`${theProject?.projectIdentifier} Range of Emissions Uncertainty`}
             label="MT"
           />
         </Box>

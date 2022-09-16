@@ -132,6 +132,10 @@ const HistoricalFuel: FC<HistoricalFuelProps> = ({
     return csvData
   }, [production, reserves, fuel, sourceId, country])
 
+  if (!sourceData.dataset.length) {
+    return null
+  }
+
   return (
     <InfoSection
       title={`${countryName} ${title}`}

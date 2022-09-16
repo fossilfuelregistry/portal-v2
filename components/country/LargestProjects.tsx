@@ -88,7 +88,7 @@ const LargestProjects: FC<LargestProjectsProps> = ({ country }) => {
                   lineHeight="24px"
                   fontWeight="400"
                 >
-                  Million barrels
+                  Co2e
                 </Text>
               </Th>
               <Th
@@ -184,7 +184,7 @@ const LargestProjects: FC<LargestProjectsProps> = ({ country }) => {
                   lineHeight="24px"
                   p="20px 20px"
                 >
-                  {p.lastYear}
+                  {p.lastYear ? p.lastYear : `${p.dataYear} (data year)`}
                 </Td>
               </Tr>
             ))}

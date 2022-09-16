@@ -3,7 +3,8 @@
 /* eslint-disable camelcase */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unused-prop-types */
-import React, { useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
+import Head from 'next/head'
 import { GetStaticPaths } from 'next'
 import { useRouter } from 'next/router'
 import Navbar from 'components/navigation/Navbar'
@@ -64,8 +65,6 @@ const ProjectPage: React.FC<Props> = (props) => {
   const router = useRouter()
   const projectId = router.query.projectId as string
 
-  console.log('projectId', projectId)
-
   const {
     data: projectData,
     loading,
@@ -77,23 +76,39 @@ const ProjectPage: React.FC<Props> = (props) => {
 
   const theProject = projectData?.project ?? {}
 
-  console.log('projectData', projectData)
+  const countryName = useMemo(
+    () => countries.find((c) => c.iso3166 === theProject.iso3166)?.en || '',
+    [theProject]
+  )
 
+  const Title = `Global Fossil fuel Registry: ${countryName}: ${theProject?.projectIdentifier}`
+
+  // @ts-ignore
   return (
-    <DataContextProvider
-      data={{ countries, constants, texts, conversions, prefixConversions }}
-    >
-      <div id="page_main">
-        <Navbar menu={menu} />
-        <PageHead page={page} />
-        {theProject && (
-          <Container>
-            <AnnualEmissions theProject={theProject} />
-          </Container>
-        )}
-        <Footer footer={footer} />
-      </div>
-    </DataContextProvider>
+    <>
+      <DataContextProvider
+        data={{ countries, constants, texts, conversions, prefixConversions }}
+      >
+        <div id="page_main">
+          <Navbar menu={menu} />
+          <PageHead
+            page={{
+              ...page,
+              Title,
+            }}
+          />
+          {theProject && (
+            <Container>
+              <AnnualEmissions
+                theProject={theProject}
+                countryName={countryName}
+              />
+            </Container>
+          )}
+          <Footer footer={footer} />
+        </div>
+      </DataContextProvider>
+    </>
   )
 }
 
