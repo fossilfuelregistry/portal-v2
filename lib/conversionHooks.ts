@@ -434,6 +434,11 @@ export const useConversionHooks = (props: Props) => {
       // @ts-ignore
       co2.dataYear = lastYearProd.dataYear
 
+      // @ts-ignore
+      co2.volume = lastYearProd.volume
+      // @ts-ignore
+      co2.volumeUnit = lastYearProd.unit
+
       const sources = fuelData.reduce((s, p) => {
         // @ts-ignore
         if (!s.includes(p.sourceId)) s.push(p.sourceId)

@@ -101,6 +101,7 @@ export const GQL_projectSources = gql`
         sourceId
         records
         url
+        documentUrl
         quality
         grade
       }
