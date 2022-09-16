@@ -12,10 +12,10 @@ import { DataContext } from 'components/DataContext'
 import useProjectData from 'lib/useProjectData'
 import useProjectSources from 'lib/useProjectSources'
 import useCsvDataTranslator from 'lib/useCsvDataTranslator'
+import { usePrefixConversion } from 'lib/calculations/prefix-conversion'
 import { colors } from '../../assets/theme'
 import capitalizeFirstLetter from '../../utils/capitalizeFirstLetter'
 import formatCsvNumber from '../../utils/formatCsvNumbers'
-import { usePrefixConversion } from 'lib/calculations/prefix-conversion'
 
 const DEBUG = false
 
@@ -33,34 +33,23 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({
   const staticData: StaticData = useContext(DataContext)
   const { conversions, constants, prefixConversions } = staticData
 
-  const { reservesSources, preferredReservesSourceId } = useProjectSources({
-    projectId,
-    country,
-  })
+  const {  productionSources } = useProjectSources( { projectId, country } );
   const [gwp, setGwp] = useState<string>(WarmingPotential.GWP100)
-  const [reservesSourceId, setReservesSourceId] = useState<number>(0)
   const { generateCsvTranslation } = useCsvDataTranslator()
   const conversion = usePrefixConversion(prefixConversions)
-  DEBUG && console.log('reservesSources', reservesSources)
+  DEBUG && console.log('productionSources', productionSources )
 
-  const gg = useProjectData({
-    reservesSourceId: preferredReservesSourceId,
+  const { projectCO2 } = useProjectData({
     projectId,
     gwp,
     country,
     conversionConstants: conversions,
     constants,
-    allSources: reservesSources,
+    allSources: productionSources,
     // @ts-ignore
     stableProduction: {},
     prefixes: prefixConversions,
   })
-
-  useEffect(() => {
-    if (reservesSources.length && !reservesSourceId) {
-      setReservesSourceId(reservesSources[0].sourceId)
-    }
-  }, [reservesSources])
 
   const enrichWithDescription = (
     data: { fossilFuelType: string; combustionType: string }[]
@@ -72,8 +61,8 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({
 
   const projInfo = useMemo(() => {
     if (!theProject?.id) return null
-    return gg.projectCO2(theProject)
-  }, [theProject?.id, gg, gwp])
+    return projectCO2(theProject)
+  }, [theProject?.id, projectCO2, gwp])
 
   const volumesData = useMemo(() => {
     if (!projInfo) {
@@ -224,6 +213,8 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({
         // @ts-ignore
         return conversion(unit, 'e6ton') * volume
       }
+      throw new Error("Invalid fossil fuel");
+      
     }
     const fuelMap = {
       oil: 'bbls',

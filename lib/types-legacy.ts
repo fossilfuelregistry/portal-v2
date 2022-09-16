@@ -205,7 +205,7 @@ export type ProjectDataPointRecord = {
   dataType: 'PRODUCTION' | 'RESERVE'
   fossilFuelType: FossilFuelType
   quality: string | null
-  sourceId: 15
+  sourceId: number
   subtype: string | null
   unit: string | null
   volume: number | null

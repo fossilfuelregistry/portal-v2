@@ -21,6 +21,7 @@ import { pipe } from 'fp-ts/lib/function'
 import {
   LastReservesType,
   Limits,
+  ProjectDataPointRecord,
   ProjectDataRecord,
   ProjectionData,
   ReservesData,
@@ -405,11 +406,11 @@ export const useConversionHooks = (props: Props) => {
         (p) => p.fossilFuelType === fuel && p.dataType === 'PRODUCTION'
       )
       const lastYearProd = fuelData.reduce(
-        // @ts-ignore
-        (last, point) => {
-          if (point.year && point.year > last.year) return point
+        (last:ProjectDataPointRecord, point) => {
+          if (point.year && last.year && point.year > last.year) return point
           return last.year === 0 ? point : last // for projects with year: null data.
         },
+        // @ts-ignore
         { year: 0 }
       )
       DEBUG && console.log({ points, fuel, fuelData, lastYearProd })
@@ -443,11 +444,12 @@ export const useConversionHooks = (props: Props) => {
       // @ts-ignore
       co2.volumeUnit = lastYearProd.unit
 
-      const sources = fuelData.reduce((s, p) => {
-        // @ts-ignore
-        if (!s.includes(p.sourceId)) s.push(p.sourceId)
-        return s
-      }, [])
+      const sources = fuelData.reduce((s, p) => 
+         !s.includes(p.sourceId)? [...s, p.sourceId] : s
+      , [] as number[])
+
+      console.log({sources},{fuelData},{allSources});
+      
 
       // @ts-ignore
       co2.sources = sources?.map((id) =>
