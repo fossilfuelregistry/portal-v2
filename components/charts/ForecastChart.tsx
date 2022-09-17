@@ -94,6 +94,8 @@ const ForecastChart = ({
     domain: [0, maxCO2],
   })
 
+  console.log('prod', projProdData)
+
   // @ts-ignore
   return (
     <Box>

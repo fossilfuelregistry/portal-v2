@@ -22,8 +22,18 @@ type LargestProjectsProps = {
   country: string
 }
 
+const useNumberFormatter = () => {
+  const format = (number: number, decimals = 0) =>
+    new Intl.NumberFormat('us', {
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals,
+    }).format(number)
+  return format
+}
+
 const LargestProjects: FC<LargestProjectsProps> = ({ country }) => {
   const staticData: StaticData = useContext(DataContext)
+  const format = useNumberFormatter()
   const { countryName } = staticData
   const { projects } = useCountryProjects({
     country,
@@ -41,6 +51,8 @@ const LargestProjects: FC<LargestProjectsProps> = ({ country }) => {
     }))
     return csvData.map(generateCsvTranslation)
   }, [top20])
+
+  console.log('top20', top20)
 
   return (
     <InfoSection
@@ -88,7 +100,7 @@ const LargestProjects: FC<LargestProjectsProps> = ({ country }) => {
                   lineHeight="24px"
                   fontWeight="400"
                 >
-                  Co2e
+                  MT CO2e
                 </Text>
               </Th>
               <Th
@@ -154,7 +166,7 @@ const LargestProjects: FC<LargestProjectsProps> = ({ country }) => {
                   lineHeight="24px"
                   p="20px 20px"
                 >
-                  {p.co2.toFixed(2)}
+                  {format(p.co2 / 1e7, 2)}
                 </Td>
                 <Td
                   color={colors.primary.richBlack}

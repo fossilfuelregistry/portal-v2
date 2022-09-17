@@ -41,7 +41,7 @@ const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
   const { production, projectedProduction, projection } = useCountryData({
     productionSourceId: preferredProductionSourceId,
     reservesSourceId: preferredReservesSourceId,
-    projectionSourceId: preferredProjectionSourceId,
+    projectionSourceId: projectionSourceId || preferredProjectionSourceId,
     gwp,
     country,
     conversionConstants: conversions,
