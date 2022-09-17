@@ -18,6 +18,8 @@ import capitalizeFirstLetter from '../../utils/capitalizeFirstLetter'
 import formatCsvNumber from '../../utils/formatCsvNumbers'
 import { colors } from '../../assets/theme'
 
+const DEBUG = false
+
 type LargestProjectsProps = {
   country: string
 }
@@ -52,7 +54,7 @@ const LargestProjects: FC<LargestProjectsProps> = ({ country }) => {
     return csvData.map(generateCsvTranslation)
   }, [top20])
 
-  console.log('top20', top20)
+  DEBUG && console.log('top20', top20)
 
   return (
     <InfoSection

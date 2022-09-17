@@ -10,7 +10,7 @@ import { Heading, Box, Flex } from '@chakra-ui/react'
 import { colors } from '../../assets/theme'
 import formatCsvNumber from '../../utils/numberFormatter'
 
-const DEBUG = true
+const DEBUG = false
 
 const COLORS = {
   oil: {
@@ -94,7 +94,7 @@ const ForecastChart = ({
     domain: [0, maxCO2],
   })
 
-  console.log('prod', projProdData)
+  DEBUG && console.log('prod', projProdData)
 
   // @ts-ignore
   return (
