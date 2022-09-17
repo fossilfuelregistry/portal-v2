@@ -10,14 +10,15 @@ import {
 	useReactTable
 } from "@tanstack/react-table";
 
+const DEBUG = false
+
 const stringSorter = (a: any, b: any, c: any) => a[c].localeCompare(b[c])
 const numberSorter = (a: any, b: any, c: any) => Math.sign(a[c] - b[c])
 
 interface Block {
 	Columns: any
 	query: string
-	iso3166: string
-	iso3166_2: string
+	graphQLFilter: string
 }
 
 interface Props {
@@ -25,10 +26,14 @@ interface Props {
 }
 
 export default function Query({block}: Props) {
-	const cols = Object.keys(block.Columns) ?? []
+	const cols = block.Columns.filter((c: any) => !c.hidden)
+	const colNames = cols.map((c: any) => c.data)
 	const [sorting, setSorting] = React.useState<SortingState>([]);
 
-	const q = `query ${block.query} { ${block.query} { nodes { ${cols.join(' ')} } } }`
+	const condition = block.graphQLFilter?.length > 0 ? `(condition: ${block.graphQLFilter})` : ''
+
+	const q = `query { ${block.query}${condition} { nodes { ${colNames.join(' ')} } } }`
+	DEBUG && console.log('GRAPHQL', q)
 	const query = gql`${q}`
 
 	const {data} = useQuery(query)
@@ -40,23 +45,11 @@ export default function Query({block}: Props) {
 
 	const columnHelper = createColumnHelper()
 
-	const columns = cols.map(c => {
-		let title = block.Columns[c]
-		let type = 'string'
-		if (title.includes(':')) {
-			const s = title.split(':')
-			// eslint-disable-next-line prefer-destructuring
-			title = s[0];
-			// eslint-disable-next-line prefer-destructuring
-			type = s[1]
-		}
-		// @ts-ignore
-		return columnHelper.accessor(c, {
-			id: c,
-			cell: info => info.getValue(),
-			header: c,
-		})
-	})
+	const columns = cols.map((c: any) => columnHelper.accessor(c.data, {
+		id: c.id,
+		cell: info => info.getValue(),
+		header: c.name,
+	}))
 
 	const table = useReactTable({
 		columns,
@@ -67,7 +60,7 @@ export default function Query({block}: Props) {
 		state: {sorting}
 	})
 
-	// console.log(columns)
+	console.log(columns)
 
 	if (!data) return null
 
