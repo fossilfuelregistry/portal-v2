@@ -152,6 +152,12 @@ export const GQL_sources = gql`
   }
 `
 
+export const GQL_projectsCount = gql`
+  query projects {
+    totalCount
+  }
+`
+
 export const SQL_co2costs = gql`
   query co2Costs {
     co2Costs(filter: { currency: { equalTo: "USD" } }) {

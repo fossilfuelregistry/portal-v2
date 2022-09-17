@@ -160,7 +160,7 @@ const CountryPage: React.FC<Props> = (props) => {
             <Box h="1px" background={colors.primary.grey30} mb="80px" />
             <SnapShotStatistic
               title="Field-level snapshot"
-              value={73.161}
+              value={72361}
               valueInfo="Number of fields in database"
               oilValue={46}
               oilText="Oil Projects"

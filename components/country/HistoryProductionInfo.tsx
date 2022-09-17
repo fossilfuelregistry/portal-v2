@@ -6,7 +6,7 @@ type HistoryProductionInfoProps = {
   title: string
   icon: React.ReactNode
   subtitle: string
-  value: number
+  value: string
   label?: string
   hasLine?: boolean
 }

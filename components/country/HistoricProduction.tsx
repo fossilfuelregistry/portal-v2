@@ -63,8 +63,57 @@ const HistoricProduction: FC<HistoricProductionProps> = ({ country }) => {
       Oil: calculateTotal(d.oil),
       Gas: calculateTotal(d.gas),
       Coal: calculateTotal(d.coal),
-      date: d?.oil[0].year || d?.gas[0].year || d?.coal[0].year,
+      date:
+        (d?.oil?.length && d?.oil[0]?.year) ||
+        (d?.gas?.length && d?.gas[0]?.year) ||
+        (d?.coal?.length && d?.coal[0]?.year),
     }))
+
+    return result
+  }, [production])
+
+  const historicTotalData = useMemo(() => {
+    const calculate = (data: any, fuelType: string) => {
+      return data[fuelType] && data[fuelType]?.length
+        ? data[fuelType][0].volume
+        : 0
+    }
+
+    const filteredData = production.filter(
+      (p) => p.sourceId === productionSourceId
+    )
+    const groupedByYear = groupBy(filteredData, (d) => d.year)
+    const groupedByFuel = Object.values(groupedByYear).map((d) =>
+      groupBy(d, (i) => i.fossilFuelType)
+    )
+
+    // TODO Refactor the calculation
+    const result = groupedByFuel.reduce((prev, curr) => {
+      // @ts-ignore
+      if (prev.oil) {
+        // @ts-ignore
+        // eslint-disable-next-line no-param-reassign
+        prev.oil += calculate(curr, 'oil')
+        // @ts-ignore
+        // eslint-disable-next-line no-param-reassign
+        prev.gas += calculate(curr, 'gas')
+        // @ts-ignore
+        // eslint-disable-next-line no-param-reassign
+        prev.coal += calculate(curr, 'coal')
+      } else {
+        // @ts-ignore
+        // eslint-disable-next-line no-param-reassign,no-unsafe-optional-chaining
+        prev.oil = curr?.oil?.length ? curr?.oil[0]?.volume : 0
+        // @ts-ignore
+        // eslint-disable-next-line no-param-reassign,no-unsafe-optional-chaining
+        prev.gas = curr?.gas?.length ? curr?.gas[0]?.volume : 0
+        // @ts-ignore
+        // eslint-disable-next-line no-param-reassign,no-unsafe-optional-chaining
+        prev.coal = curr?.coal?.length ? curr?.coal[0]?.volume : 0
+      }
+
+      return prev
+    }, {})
 
     return result
   }, [production])
@@ -101,21 +150,24 @@ const HistoricProduction: FC<HistoricProductionProps> = ({ country }) => {
           title="Oil historic production"
           subtitle="Million tonnes CO₂e"
           icon={<OilIcon fill={colors.primary.grey70} opacity="1" />}
-          value={102}
+          // @ts-ignore
+          value={historicTotalData.oil?.toFixed(2)}
           hasLine
         />
         <HistoryProductionInfo
           title="Gas historic production"
           subtitle="Billion cubic metres"
           icon={<GasIcon fill={colors.primary.grey70} opacity="1" />}
-          value={850}
+          // @ts-ignore
+          value={historicTotalData.gas?.toFixed(2)}
           hasLine
         />
         <HistoryProductionInfo
           title="Coal historic production"
           subtitle="Thousand tonnes"
           icon={<CoalIcon stroke={colors.primary.grey70} opacity="1" />}
-          value={78.5}
+          // @ts-ignore
+          value={historicTotalData.coal?.toFixed(2)}
         />
       </SimpleGrid>
       {!!historicData.length && (

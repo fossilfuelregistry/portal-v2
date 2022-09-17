@@ -75,7 +75,10 @@ const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
       oil: calculateTotal(d.oil),
       gas: calculateTotal(d.gas),
       coal: calculateTotal(d.coal),
-      year: d.oil[0]?.year || d.gas[0]?.year || d.coal[0].year,
+      year:
+        (d?.oil?.length && d?.oil[0]?.year) ||
+        (d?.gas?.length && d?.gas[0]?.year) ||
+        (d?.coal?.length && d?.coal[0]?.year),
     }))
 
     // @ts-ignore
@@ -96,7 +99,10 @@ const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
       co2:
         calculateTotal(d.oil) + calculateTotal(d.gas) + calculateTotal(d.coal),
       // @ts-ignore
-      year: d.oil[0]?.year || d.gas[0]?.year || d.coal[0].year,
+      year:
+        (d?.oil?.length && d?.oil[0]?.year) ||
+        (d?.gas?.length && d?.gas[0]?.year) ||
+        (d?.coal?.length && d?.coal[0]?.year),
     }))
 
     const getFuel = (fuel: string, data: any[]) =>
