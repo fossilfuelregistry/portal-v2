@@ -65,7 +65,10 @@ const RenderLinkOrSubmenu = ({item, marginInlineStart, marginInlineEnd, mb, colo
 						hr = `/${i.Page.data.attributes?.slug}`
 					if (i.Article?.data)
 						hr = `/article/${i.Article.data.attributes?.slug}`
-					return <Link key={i.id} href={hr} prefetch={false}><MenuItem>{i.Text}</MenuItem></Link>
+					return (
+						<Link key={i.id} href={hr} prefetch={false}>
+							<a><MenuItem color="common.black">{i.Text}</MenuItem></a>
+						</Link>)
 				})}
 			</MenuList>
 		</Menu>

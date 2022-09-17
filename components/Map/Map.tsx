@@ -230,7 +230,6 @@ const Map: FC<MapProps> = ({ country, type, onChangeCountry }) => {
           w="100%"
           h="100%"
           position="absolute"
-          zIndex="1"
         />
         <MapFilter filters={filters} onChange={setFilters} />
         <ZoomControls onChangeZoom={handleChangeZoom} />
