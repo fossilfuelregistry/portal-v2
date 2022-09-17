@@ -77,8 +77,6 @@ const Map: FC<MapProps> = ({ country, type, onChangeCountry }) => {
     }
   }, [countries])
 
-  console.log('countriesCollection', countriesCollection)
-
   const emissionsData = useMemo(
     () =>
       countries
@@ -124,7 +122,6 @@ const Map: FC<MapProps> = ({ country, type, onChangeCountry }) => {
         const { en: name, productionCo2E } = e.features[0].properties
         const co2E = JSON.parse(productionCo2E)
 
-        console.log('co2E', co2E)
         const total = (calculateTotalEmission(co2E) / 10e9).toFixed(1)
         const oil = calculateFuelEmission(co2E, 'oil')
         const gas = calculateFuelEmission(co2E, 'gas')

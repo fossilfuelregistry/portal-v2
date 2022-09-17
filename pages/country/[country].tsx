@@ -154,8 +154,8 @@ const CountryPage: React.FC<Props> = (props) => {
               {texts.future_emissions}
             </Heading>
             <ForecastSection country={country} />
-            <ReservesLifeSection />
-            <ExcessReservesSection />
+            {/*<ReservesLifeSection />*/}
+            {/*<ExcessReservesSection />*/}
             <LargestProjects country={country} />
             <Box h="1px" background={colors.primary.grey30} mb="80px" />
             <SnapShotStatistic
