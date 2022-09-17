@@ -6,6 +6,7 @@ import {
   AlertTitle,
   AlertDescription,
 } from '@chakra-ui/react'
+import Query from "components/CMSContent/Query";
 import FeedbackForm from "components/CMSContent/FeedbackForm";
 import TextWithQuery from './TextWithQuery'
 import StyledTextImage from './StyledTextImage'
@@ -38,8 +39,12 @@ const DynamicZone = ({ content }: Props) => {
         rendered.push(<ArticleSelector key={`AS${block.id}`} block={block} />)
         break
 
+      case 'shared.query':
+        rendered.push(<CMSBlock key={`QU${block.id}`}><Query block={block}/></CMSBlock>)
+        break
+
       case 'shared.i-frame':
-        rendered.push(<CMSBlock><iframe key={`AS${block.id}`} src={block.URL} height={block.Height} width="100%" title={block.id}/></CMSBlock>)
+        rendered.push(<CMSBlock key={`AS${block.id}`}><iframe src={block.URL} height={block.Height} width="100%" title={block.id}/></CMSBlock>)
         break
 
       case 'shared.feedback-form':
