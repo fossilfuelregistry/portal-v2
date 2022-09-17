@@ -1,11 +1,8 @@
-// @ts-nocheck
 import { pipe } from 'fp-ts/function'
 import Graph from 'graph-data-structure'
 import { useCallback, useMemo } from 'react'
 import * as E from 'fp-ts/Either'
-import * as B from 'fp-ts/boolean'
 import * as O from 'fp-ts/Option'
-// import notificationError from '../notification-error';
 
 export type PrefixRecord = {
   fromPrefix: string
@@ -26,12 +23,16 @@ const prefixGraph = (rows: PrefixRecord[]) => {
   return g
 }
 
+const shortestPathBoolean = (graph: ReturnType<typeof Graph>) =>
+(from: string, to: string) =>
+ E.tryCatch(()=>graph.shortestPath(from, to),()=>false)
+
 const getFactor =
   (graph: ReturnType<typeof Graph>) =>
   (from: string, to: string): number =>
     pipe(
-      Boolean(graph.shortestPath(from, to)),
-      B.match(
+      shortestPathBoolean(graph)(from, to),
+      E.match(
         () =>
           E.left(
             new Error(`Could not find prefix factor from ${from} to ${to}`)

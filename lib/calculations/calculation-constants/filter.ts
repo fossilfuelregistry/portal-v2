@@ -40,7 +40,7 @@ const applyFilter =
             value,
             O.fromNullable,
             O.fold(
-                ( ) => records,
+                () => records,
                 (c) => pipe(filterFunction, ap(c), ap(records))
             )
         )
