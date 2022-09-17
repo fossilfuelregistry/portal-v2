@@ -2,6 +2,7 @@ import React, {ChangeEvent, MouseEvent, useState} from 'react'
 import {Box, Button, FormControl, FormLabel, Input, Textarea} from '@chakra-ui/react';
 import CMSBlock from "components/CMSContent/CMSBlock";
 import useText from "lib/useText";
+import {useRouter} from "next/router";
 
 interface Block {
 	Recipient: string
@@ -20,6 +21,7 @@ const FeedbackForm = ({block}: Props) => {
 	const [values, set_values] = useState({})
 	const {Fields} = block
 	const {translate} = useText()
+	const router = useRouter()
 
 	const handleChange = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>, fieldName: string) => {
 		set_values(v => Object.assign(v, {[fieldName]: event.target.value}))
@@ -27,11 +29,12 @@ const FeedbackForm = ({block}: Props) => {
 
 	const handleSubmit = async (event: MouseEvent<HTMLButtonElement>) => {
 		set_state('submitting')
+		const text = JSON.stringify({...values, url: router.asPath})
 		const api = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/mail`, {
 			method: 'POST',
 			headers: {'Content-type': 'application/json'},
 			body: JSON.stringify({
-				text: JSON.stringify(values),
+				text,
 				formId: block.id
 			})
 		})
@@ -41,73 +44,73 @@ const FeedbackForm = ({block}: Props) => {
 			set_state(`Error: ${api.status} ${api.statusText} ${(await api.text())}`)
 	}
 
-	return (
-		<CMSBlock>
+		return (
+			<CMSBlock>
 
-			{(state === 'filling' || state === 'submitting') &&
-				<div>
-					{Fields.map((field: any) => {
-						let control
-						switch (field.Type) {
-							case 'Email':
-								control = (
-									<Input type="email" placeholder={field.Name}
-										   onChange={e => handleChange(e, field.Name)}
-									/>
-								)
-								break;
-							case 'Single line':
-								control = (
-									<Input placeholder={field.Name}
-										   onChange={e => handleChange(e, field.Name)}
-									/>)
-								break;
-							case 'Multiple lines':
-								control = (
-									<Textarea placeholder={field.Name} resize='vertical'
-											  onChange={e => handleChange(e, field.Name)}
-									/>)
-								break;
-							case 'Number':
-								control = (
-									<Input type="number" placeholder={field.Name}
-										   onChange={e => handleChange(e, field.Name)}
-									/>)
-								break;
-							default:
+				{(state === 'filling' || state === 'submitting') &&
+					<div>
+						{Fields.map((field: any) => {
+							let control
+							switch (field.Type) {
+								case 'Email':
+									control = (
+										<Input type="email" placeholder={field.Name}
+											   onChange={e => handleChange(e, field.Name)}
+										/>
+									)
+									break;
+								case 'Single line':
+									control = (
+										<Input placeholder={field.Name}
+											   onChange={e => handleChange(e, field.Name)}
+										/>)
+									break;
+								case 'Multiple lines':
+									control = (
+										<Textarea placeholder={field.Name} resize='vertical'
+												  onChange={e => handleChange(e, field.Name)}
+										/>)
+									break;
+								case 'Number':
+									control = (
+										<Input type="number" placeholder={field.Name}
+											   onChange={e => handleChange(e, field.Name)}
+										/>)
+									break;
+								default:
+							}
+							return (
+								<FormControl key={field.id} data-id={`FF${field.id}`} mb={6}>
+									<FormLabel>{field.Name}</FormLabel>
+									{control}
+								</FormControl>)
+						})
 						}
-						return (
-							<FormControl key={field.id} data-id={`FF${field.id}`} mb={6}>
-								<FormLabel>{field.Name}</FormLabel>
-								{control}
-							</FormControl>)
-					})
-					}
-					<Button
-						mt={4}
-						colorScheme='teal'
-						isLoading={state === 'submitting'}
-						type='submit'
-						onClick={handleSubmit}
-					>
-						{translate('submit')}
-					</Button>
-				</div>
-			}
+						<Button
+							mt={4}
+							colorScheme='teal'
+							isLoading={state === 'submitting'}
+							type='submit'
+							onClick={handleSubmit}
+						>
+							{translate('submit')}
+						</Button>
+					</div>
+				}
 
-			{state === 'submitted' &&
-				<Box my={10}>
-					{block.SubmittedMessage}
-				</Box>
-			}
+				{state === 'submitted' &&
+					<Box my={10}>
+						{block.SubmittedMessage}
+					</Box>
+				}
 
-			{state.startsWith('Error') &&
-				<Box my={10}>
-					{state}
-				</Box>
-			}
-		</CMSBlock>
-	)
-}
+				{state.startsWith('Error') &&
+					<Box my={10}>
+						{state}
+					</Box>
+				}
+			</CMSBlock>
+		)
+	}
 
-export default FeedbackForm
+	export default FeedbackForm
