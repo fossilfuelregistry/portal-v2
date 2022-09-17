@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useCallback} from 'react'
 import {gql, useQuery} from "@apollo/client"
 import {Table, Tbody, Td, Th, Thead, Tr} from "@chakra-ui/react";
 import {
@@ -9,6 +9,7 @@ import {
 	SortingState,
 	useReactTable
 } from "@tanstack/react-table";
+import {AttachmentIcon, LinkIcon} from '@chakra-ui/icons'
 
 const DEBUG = false
 
@@ -45,9 +46,24 @@ export default function Query({block}: Props) {
 
 	const columnHelper = createColumnHelper()
 
+	const cRenderer = useCallback((info: any, c: any) => {
+			if (c.icon) {
+				switch (c.icon) {
+					case 'AttachmentIcon':
+						return <a href={info.getValue()}><AttachmentIcon aria-label="Attachment"/></a>
+					case 'LinkIcon':
+						return <a href={info.getValue()}><LinkIcon aria-label="Link"/></a>
+					default:
+						return <span>?Unsupported Icon {c.icon}?</span>
+				}
+			} else
+				return info.getValue()
+		}, []
+	)
+
 	const columns = cols.map((c: any) => columnHelper.accessor(c.data, {
 		id: c.id,
-		cell: info => info.getValue(),
+		cell: i => cRenderer(i, c),
 		header: c.name,
 	}))
 
@@ -60,7 +76,7 @@ export default function Query({block}: Props) {
 		state: {sorting}
 	})
 
-	console.log(columns)
+	DEBUG && console.log({columns, cols})
 
 	if (!data) return null
 
