@@ -67,6 +67,7 @@ const RenderLinkOrSubmenu = ({item, marginInlineStart, marginInlineEnd, mb, colo
 						hr = `/article/${i.Article.data.attributes?.slug}`
 					return (
 						<Link key={i.id} href={hr} prefetch={false}>
+							{/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
 							<a><MenuItem color="common.black">{i.Text}</MenuItem></a>
 						</Link>)
 				})}
@@ -95,10 +96,15 @@ export default function Navbar({menu}: NavbarProps) {
 						onClick={isOpen ? onClose : onOpen}
 					/>
 					<Flex alignItems="center" justifyContent="space-between" w="100%">
-						<Flex alignItems="center">
-							<Box mr="12px"><img src="/logo2.svg" height="40px" width="40px" alt=""/></Box>
-							<Box>{translate('grff')}</Box>
-						</Flex>
+						<Link href="/" passHref prefetch={false}>
+							{/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+							<a>
+								<Flex alignItems="center">
+									<Box mr="12px"><img src="/logo2.svg" height="40px" width="40px" alt=""/></Box>
+									<Box color="common.black">{translate('grff')}</Box>
+								</Flex>
+							</a>
+						</Link>
 						<Flex
 							as="nav" alignItems="center"
 							display={{base: 'none', md: 'flex'}}>

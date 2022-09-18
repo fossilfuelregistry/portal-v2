@@ -1,6 +1,6 @@
 import React, {useCallback} from 'react'
 import {gql, useQuery} from "@apollo/client"
-import {Table, Tbody, Td, Th, Thead, Tr} from "@chakra-ui/react";
+import {Spinner, Table, Tbody, Td, Th, Thead, Tr} from "@chakra-ui/react";
 import {
 	createColumnHelper,
 	flexRender,
@@ -9,7 +9,7 @@ import {
 	SortingState,
 	useReactTable
 } from "@tanstack/react-table";
-import {AttachmentIcon, LinkIcon} from '@chakra-ui/icons'
+import {AttachmentIcon, LinkIcon, TriangleDownIcon, TriangleUpIcon} from '@chakra-ui/icons'
 
 const DEBUG = false
 
@@ -78,7 +78,7 @@ export default function Query({block}: Props) {
 
 	DEBUG && console.log({columns, cols})
 
-	if (!data) return null
+	if (!data) return <Spinner/>
 
 	return (
 		<div className="query">
@@ -91,10 +91,26 @@ export default function Query({block}: Props) {
 								<Th key={header.id}>
 									{header.isPlaceholder
 										? null
-										: flexRender(
-											header.column.columnDef.header,
-											header.getContext()
-										)}
+										: (
+											// eslint-disable-next-line jsx-a11y/click-events-have-key-events
+											<div
+												{...{
+													className: header.column.getCanSort()
+														? 'cursor-pointer select-none'
+														: '',
+													onClick: header.column.getToggleSortingHandler(),
+												}}
+											>{flexRender(
+												header.column.columnDef.header,
+												header.getContext()
+											)}
+											{{
+												asc: <TriangleUpIcon/>,
+												desc: <TriangleDownIcon/>,
+											}[header.column.getIsSorted() as string] ?? null}
+											</div>
+										)
+									}
 								</Th>
 							))}
 						</Tr>
