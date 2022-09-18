@@ -1,3 +1,5 @@
+import { ProductionSnapshot } from 'lib/types'
+
 type Geojson = {
   geojson: {
     coordinates: any[]
@@ -25,4 +27,5 @@ export type Country = {
   iso31662: string
   sv: string
   productionCo2E: ProductionCo2E
+  productionSnapshotData: ProductionSnapshot
 }

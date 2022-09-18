@@ -5,7 +5,7 @@ import { COMBUSTION_OPTIONS, FUEL_OPTIONS } from 'components/Map/constants'
 
 export type Filter = {
   combustion: string
-  fuel: string
+  fuel: 'oil' | 'coal' | 'gas' | string
 }
 
 type MapFilterProps = {

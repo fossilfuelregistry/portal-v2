@@ -20,7 +20,7 @@ import {
   calculateTotalEmission,
 } from 'components/Map/utils'
 import { StaticData } from 'lib/types'
-import {useRouter} from "next/router";
+import { useRouter } from 'next/router'
 import mapStyle from './style.json'
 import { colors } from '../../assets/theme'
 import updatePathname from '../../utils/updatePathname'
@@ -38,7 +38,12 @@ type MapProps = {
   disableGlobalOption?: boolean
 }
 
-const Map: FC<MapProps> = ({ country, type, onChangeCountry, disableGlobalOption }) => {
+const Map: FC<MapProps> = ({
+  country,
+  type,
+  onChangeCountry,
+  disableGlobalOption,
+}) => {
   const staticData: StaticData = useContext(DataContext)
   const { countries } = staticData
   const router = useRouter()
@@ -83,7 +88,10 @@ const Map: FC<MapProps> = ({ country, type, onChangeCountry, disableGlobalOption
   const emissionsData = useMemo(
     () =>
       countries
-        .map((c) => [c.iso3166, calculateEmission(filters, c.productionCo2E)])
+        .map((c) => [
+          c.iso3166,
+          calculateEmission(filters, c.productionSnapshotData),
+        ])
         .flat(),
     [countries, filters]
   )
@@ -122,34 +130,26 @@ const Map: FC<MapProps> = ({ country, type, onChangeCountry, disableGlobalOption
 
       map.current.on('click', 'emissions-circles', (e: any) => {
         const coordinates = e.features[0].geometry.coordinates.slice()
-        const { en: name, productionCo2E } = e.features[0].properties
-        const co2E = JSON.parse(productionCo2E)
+        const {
+          en: name,
+          country,
+          productionSnapshotData,
+        } = e.features[0].properties
+        const co2E = JSON.parse(productionSnapshotData)
 
-        const total = (calculateTotalEmission(co2E) / 10e9).toFixed(1)
-        const oil = calculateFuelEmission(co2E, 'oil')
-        const gas = calculateFuelEmission(co2E, 'gas')
-        const coal = calculateFuelEmission(co2E, 'coal')
+        // const total = calculateTotalEmission(co2E).toFixed(1)
+        // const oil = calculateFuelEmission(co2E, 'oil')
+        // const gas = calculateFuelEmission(co2E, 'gas')
+        // const coal = calculateFuelEmission(co2E, 'coal')
+        const link = `/country/${country}`
 
         new maplibregl.Popup()
           .setLngLat(coordinates)
           .setHTML(
-            ` <h2 class="maplibregl-popup-title">${name}</h2>
-              <div class="maplibregl-popup-info">
-                Annual emissions
-                <strong>${total} Million tonnes CO²</strong>
-              </div>
-              <div class="maplibregl-popup-info">
-                Oil
-                <strong>${oil} Million barrels</strong>
-              </div>
-              <div class="maplibregl-popup-info">
-                Gas
-                <strong>${gas} Billion cubic meters</strong>
-              </div>
-              <div class="maplibregl-popup-info">
-                Coal
-                <strong>${coal} Thousand tonnes</strong>
-              </div>`
+            ` <h2 class="maplibregl-popup-title">
+                <a class="maplibregl-popup-link" href='${link}'>${name}</a>
+              </h2>
+              `
           )
           .addTo(map.current)
       })
@@ -228,12 +228,7 @@ const Map: FC<MapProps> = ({ country, type, onChangeCountry, disableGlobalOption
   return (
     <>
       <Box w="100%" h="640px" position="relative" bg="#0A2244">
-        <Box
-          ref={mapContainer}
-          w="100%"
-          h="100%"
-          position="absolute"
-        />
+        <Box ref={mapContainer} w="100%" h="100%" position="absolute" />
         <MapFilter filters={filters} onChange={setFilters} />
         <ZoomControls onChangeZoom={handleChangeZoom} />
       </Box>

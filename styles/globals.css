@@ -15,7 +15,7 @@
 .mapboxgl-popup-content, .maplibregl-popup-content {
   background: rgba(30, 33, 39, 0.9) !important;
   border-radius: 4px;
-  padding: 24px 16px 20px !important;
+  padding: 10px 16px 10px !important;
   width: 320px;
   max-width: 320px !important;
   z-index: 999999999999999;
@@ -76,7 +76,7 @@
   font-size: 32px;
   color: #fff;
   right: 16px !important;
-  top: 20px !important;
+  top: 10px !important;
 }
 
 path.history-curve {
