@@ -57,8 +57,10 @@ export default function Query({block}: Props) {
 					default:
 						return <span>?Unsupported Icon {c.icon}?</span>
 				}
-			} else
-				return info.getValue()
+			}
+		// eslint-disable-next-line no-restricted-globals
+			if (isNaN(info.getValue())) return info.getValue()
+			return <div style={{textAlign: "right"}}>{info.getValue()}</div>
 		}, []
 	)
 
