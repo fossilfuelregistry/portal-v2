@@ -21,6 +21,16 @@
   z-index: 999999999999999;
 }
 
+.maplibregl-popup-link {
+  color: #fff;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.maplibregl-popup-link {
+  text-decoration: none;
+}
+
 .maplibregl-popup-tip, .mapboxgl-popup-tip {
   border-top-color: rgba(30, 33, 39, 0.9) !important;
 }
@@ -43,7 +53,13 @@
   color: #fff;
   font-size: 16px;
   font-weight: 700;
-  margin-bottom: 24px;
+  margin-bottom: 0;
+  text-decoration: underline;
+  display: inline-block;
+}
+
+.maplibregl-popup-title:hover {
+  text-decoration: none;
 }
 
 .maplibregl-popup-info {

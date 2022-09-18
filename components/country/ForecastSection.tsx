@@ -1,7 +1,7 @@
 import React, { FC, useContext, useEffect, useMemo, useState } from 'react'
 import InfoSection from 'components/InfoSection'
 import ForecastChart from 'components/charts/ForecastChart'
-import { Box, SimpleGrid } from '@chakra-ui/react'
+import { Box, Link, SimpleGrid } from '@chakra-ui/react'
 import { StaticData } from 'lib/types'
 import WarmingPotentialSelect, {
   WarmingPotential,
@@ -192,6 +192,15 @@ const ForecastSection: FC<ForecastSectionProps> = ({ country }) => {
     >
       <Box as="p" fontSize="16" mb="24px" color={colors.primary.richBlack}>
         {translate('explanation_emissions')}
+        <Link
+          href="https://docs.google.com/presentation/u/1/d/1erAbZqkvqHLoMzXacxCUoxwWtzpkxstv/edit?usp=sharing&ouid=102481225432032206423&rtpof=true&sd=true"
+          target="_blank"
+          color={colors.primary.brandingBlue}
+          fontSize="16px"
+          fontWeight="400"
+        >
+          More detail is described here.
+        </Link>
       </Box>
       <SimpleGrid mb="40px" columns={3} gridGap="20px">
         <WarmingPotentialSelect

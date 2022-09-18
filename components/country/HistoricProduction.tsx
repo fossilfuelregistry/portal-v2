@@ -135,41 +135,41 @@ const HistoricProduction: FC<HistoricProductionProps> = ({ country }) => {
     >
       <SimpleGrid mb="40px" columns={3} gridGap="20px">
         <SourceSelect
-          label="Production estimates source"
+          label="Production source"
           sources={productionSources}
           value={productionSourceId}
           onChange={(option) => setProductionSourceId(option?.value as any)}
         />
       </SimpleGrid>
-      <SimpleGrid
-        columns={{ base: 1, md: 3 }}
-        gridGap={{ base: '30px', md: '60px', lg: '134px' }}
-        mb="40px"
-      >
-        <HistoryProductionInfo
-          title="Oil historic production"
-          subtitle="Million tonnes CO₂e"
-          icon={<OilIcon fill={colors.primary.grey70} opacity="1" />}
-          // @ts-ignore
-          value={historicTotalData.oil?.toFixed(2)}
-          hasLine
-        />
-        <HistoryProductionInfo
-          title="Gas historic production"
-          subtitle="Billion cubic metres"
-          icon={<GasIcon fill={colors.primary.grey70} opacity="1" />}
-          // @ts-ignore
-          value={historicTotalData.gas?.toFixed(2)}
-          hasLine
-        />
-        <HistoryProductionInfo
-          title="Coal historic production"
-          subtitle="Thousand tonnes"
-          icon={<CoalIcon stroke={colors.primary.grey70} opacity="1" />}
-          // @ts-ignore
-          value={historicTotalData.coal?.toFixed(2)}
-        />
-      </SimpleGrid>
+      {/*<SimpleGrid*/}
+      {/*  columns={{ base: 1, md: 3 }}*/}
+      {/*  gridGap={{ base: '30px', md: '60px', lg: '134px' }}*/}
+      {/*  mb="40px"*/}
+      {/*>*/}
+      {/*  <HistoryProductionInfo*/}
+      {/*    title="Oil historic production"*/}
+      {/*    subtitle="Million tonnes CO₂e"*/}
+      {/*    icon={<OilIcon fill={colors.primary.grey70} opacity="1" />}*/}
+      {/*    // @ts-ignore*/}
+      {/*    value={historicTotalData.oil?.toFixed(2)}*/}
+      {/*    hasLine*/}
+      {/*  />*/}
+      {/*  <HistoryProductionInfo*/}
+      {/*    title="Gas historic production"*/}
+      {/*    subtitle="Billion cubic metres"*/}
+      {/*    icon={<GasIcon fill={colors.primary.grey70} opacity="1" />}*/}
+      {/*    // @ts-ignore*/}
+      {/*    value={historicTotalData.gas?.toFixed(2)}*/}
+      {/*    hasLine*/}
+      {/*  />*/}
+      {/*  <HistoryProductionInfo*/}
+      {/*    title="Coal historic production"*/}
+      {/*    subtitle="Thousand tonnes"*/}
+      {/*    icon={<CoalIcon stroke={colors.primary.grey70} opacity="1" />}*/}
+      {/*    // @ts-ignore*/}
+      {/*    value={historicTotalData.coal?.toFixed(2)}*/}
+      {/*  />*/}
+      {/*</SimpleGrid>*/}
       {!!historicData.length && (
         <Box mb="40px" position="relative">
           <GroupBarChart data={historicData} width={1176} height={400} />
