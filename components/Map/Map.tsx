@@ -20,6 +20,7 @@ import {
   calculateTotalEmission,
 } from 'components/Map/utils'
 import { StaticData } from 'lib/types'
+import {useRouter} from "next/router";
 import mapStyle from './style.json'
 import { colors } from '../../assets/theme'
 import updatePathname from '../../utils/updatePathname'
@@ -40,6 +41,7 @@ type MapProps = {
 const Map: FC<MapProps> = ({ country, type, onChangeCountry, disableGlobalOption }) => {
   const staticData: StaticData = useContext(DataContext)
   const { countries } = staticData
+  const router = useRouter()
 
   const [selectedCountry, setSelectedCountry] = useState<any>(() => {
     const currentCountry = countries.find((c) => c.iso3166 === country)
@@ -219,7 +221,7 @@ const Map: FC<MapProps> = ({ country, type, onChangeCountry, disableGlobalOption
     setSelectedCountry(countryOption)
     onChangeCountry(countryCode)
     if (type === 'country') {
-      updatePathname(`/${type}/${countryCode}`)
+      router.push(`/${type}/${countryCode}`)
     }
   }
 
