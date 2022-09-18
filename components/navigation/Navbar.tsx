@@ -85,7 +85,7 @@ export default function Navbar({menu}: NavbarProps) {
 	const {translate} = useText()
 
 	return (
-		<Flex justifyContent="space-around">
+		<Flex justifyContent="space-around" position="sticky" top={0} zIndex={10} bg="common.white" w="100%">
 			<Box px={{base: '24px', md: '100px'}} w="100%">
 				<Flex h={16} alignItems="center" justifyContent="space-between">
 					<IconButton
