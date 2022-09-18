@@ -1,7 +1,7 @@
 import {Country} from 'components/Map/types'
 import {DatabaseRecord} from 'lib/calculations/calculation-constants/types'
 import {PrefixRecord} from 'lib/calculations/prefix-conversion'
-import { CO2EEmissions, VintageScopes } from './calculations/types'
+import { CO2EEmissions, Scenarios, VintageScopes } from './calculations/types'
 
 export type FossilFuelType = 'oil' | 'gas' | 'coal'
 export type FuelSubType =
@@ -113,3 +113,23 @@ export type EmissionsData = {
 	}[];
 	totalCO2E: number;
   }[] | null | undefined
+
+
+// Used for map  
+  type ProductionCO2EFuelSpecific = {
+	[x in FossilFuelType]?: Partial<{
+	  scope1: Scenarios;
+	  scope3: Scenarios;
+	  total: Scenarios;
+	  volume: number;
+	  unit: string;
+	  year: number;
+	  sourceId: number;
+	}>;
+  };
+  type ProductionCO2ETotal = Partial<{
+	total: number;
+	scope1: number;
+	scope3: number;
+  }>;
+  export type ProductionSnapshot = ProductionCO2EFuelSpecific & ProductionCO2ETotal;
