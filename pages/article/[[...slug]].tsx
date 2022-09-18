@@ -34,7 +34,7 @@ interface Props {
 const Article: NextPage<Props> = (props) => {
 	const {page, menu, texts, footer} = props
 	const router = useRouter()
-	const {translate} = useText()
+	const {translate} = useText(props)
 
 	if (!page) return null
 	const article = page
@@ -62,7 +62,7 @@ const Article: NextPage<Props> = (props) => {
 								</Flex>
 								<Heading as="h1" textStyle="inverse">{article.Headline}</Heading>
 								<Box textStyle="inverse">
-									{translate('last_update')}{' '}
+									{translate('last_updated')}{' '}
 									{(new Date(article.updatedAt)).toLocaleDateString(router.locale)}
 								</Box>
 							</Flex>
