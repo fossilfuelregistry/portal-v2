@@ -70,7 +70,7 @@ const StyledTextImage = ({block}: Props) => {
 
 		case 'Hero 4col':
 			return (
-				<Box w={{base: '100%'}} position="relative">
+				<Box w={{base: '100%'}} position="relative" bgColor="primary.richBlue">
 					<CMSImage image={block.Image}
 							  height={{base: '180px', sm: '200px', md: '280px', lg: '320px'}}/>
 					<Box position="absolute" top={0} left={0} h="100%" w="100%">
