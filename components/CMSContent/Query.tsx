@@ -1,6 +1,6 @@
 import React, {useCallback} from 'react'
 import {gql, useQuery} from "@apollo/client"
-import {Heading, Spinner, Table, Tbody, Td, Th, Thead, Tr} from "@chakra-ui/react";
+import {Box, Heading, Spinner, Table, Tbody, Td, Th, Thead, Tr} from "@chakra-ui/react";
 import {
 	createColumnHelper,
 	flexRender,
@@ -80,15 +80,15 @@ export default function Query({block}: Props) {
 	DEBUG && console.log({columns, cols})
 
 	if (!data) return (
-		<div className="query">
-			<Heading as="h2" size="lg" mb="12px">{block.Headline}</Heading>
+		<Box bg="primary.grey5" className="query">
+			<Heading as="h2" size="lg" mb="12px" p={5}>{block.Headline}</Heading>
 			<Spinner/>
-		</div>
+		</Box>
 	)
 
 	return (
-		<div className="query">
-			<Heading as="h2" size="lg" mb="12px">{block.Headline}</Heading>
+		<Box bg="primary.grey5" className="query">
+			<Heading as="h2" size="lg" mb="12px" p={5}>{block.Headline}</Heading>
 			<Table>
 
 				<Thead>
@@ -141,6 +141,6 @@ export default function Query({block}: Props) {
 				</Tbody>
 			</Table>
 
-		</div>
+		</Box>
 	)
 }
