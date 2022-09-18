@@ -1,6 +1,6 @@
 import React, {useCallback} from 'react'
 import {gql, useQuery} from "@apollo/client"
-import {Spinner, Table, Tbody, Td, Th, Thead, Tr} from "@chakra-ui/react";
+import {Heading, Spinner, Table, Tbody, Td, Th, Thead, Tr} from "@chakra-ui/react";
 import {
 	createColumnHelper,
 	flexRender,
@@ -17,6 +17,7 @@ const stringSorter = (a: any, b: any, c: any) => a[c].localeCompare(b[c])
 const numberSorter = (a: any, b: any, c: any) => Math.sign(a[c] - b[c])
 
 interface Block {
+	Headline: string
 	Columns: any
 	query: string
 	graphQLFilter: string
@@ -78,10 +79,16 @@ export default function Query({block}: Props) {
 
 	DEBUG && console.log({columns, cols})
 
-	if (!data) return <Spinner/>
+	if (!data) return (
+		<div className="query">
+			<Heading as="h2" size="lg" mb="12px">{block.Headline}</Heading>
+			<Spinner/>
+		</div>
+	)
 
 	return (
 		<div className="query">
+			<Heading as="h2" size="lg" mb="12px">{block.Headline}</Heading>
 			<Table>
 
 				<Thead>
@@ -104,10 +111,10 @@ export default function Query({block}: Props) {
 												header.column.columnDef.header,
 												header.getContext()
 											)}
-											{{
-												asc: <TriangleUpIcon/>,
-												desc: <TriangleDownIcon/>,
-											}[header.column.getIsSorted() as string] ?? null}
+												{{
+													asc: <TriangleUpIcon/>,
+													desc: <TriangleDownIcon/>,
+												}[header.column.getIsSorted() as string] ?? null}
 											</div>
 										)
 									}
