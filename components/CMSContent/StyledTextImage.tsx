@@ -36,7 +36,7 @@ const StyledTextImage = ({block}: Props) => {
 							>
 								<Heading as="h1" textStyle="inverse">{block.Headline}</Heading>
 								{block.Buttons?.map((b: any) => (
-									<Link href={b.URL} prefetch={false}>
+									<Link href={b.URL} prefetch={false} key={b.url}>
 										{/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
 										<a>
 											<Button variant="inverse">{b.Text}</Button>
@@ -66,7 +66,7 @@ const StyledTextImage = ({block}: Props) => {
 								>
 									<Heading as="h1" textStyle="inverse" textAlign="center" mb="36px">{block.Headline}</Heading>
 									{block.Buttons?.map((b: any) => (
-										<Link href={b.URL} prefetch={false}>
+										<Link href={b.URL} prefetch={false} key={b.url}>
 											{/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
 											<a>
 												<Button variant="inverse">{b.Text}</Button>

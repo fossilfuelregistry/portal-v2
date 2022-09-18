@@ -9,7 +9,8 @@ const nextConfig = {
     domains: ['cms.fossilfuelregistry.org'],
   },
   i18n: {
-    locales: ["en", "fr", "es"],
+    // locales: ["en", "fr", "es"],
+    locales: ["en"],
     defaultLocale: "en",
   },
   eslint: {
