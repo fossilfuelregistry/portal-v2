@@ -12,6 +12,8 @@ import CMSImage from "components/CMSContent/CMSImage"
 import ArticleTag from "components/CMSContent/ArticleTag"
 import Navbar from "components/navigation/Navbar"
 import Footer from "components/navigation/Footer"
+import {useRouter} from "next/router";
+import useText from "lib/useText";
 
 const headers = {
 	Authorization: `Bearer ${process.env.NEXT_PUBLIC_CMS_TOKEN}`
@@ -31,6 +33,8 @@ interface Props {
 
 const Article: NextPage<Props> = (props) => {
 	const {page, menu, texts, footer} = props
+	const router = useRouter()
+	const {translate} = useText()
 
 	if (!page) return null
 	const article = page
@@ -53,10 +57,14 @@ const Article: NextPage<Props> = (props) => {
 								maxWidth="750px"
 								direction="column"
 							>
-								<Flex direction="row" justifyContent="center">
+								<Flex direction="row" justifyContent="flex-start">
 									{categories.map((cat: ArticleCategory) => (<ArticleTag key={cat.id} category={cat}/>))}
 								</Flex>
 								<Heading as="h1" textStyle="inverse">{article.Headline}</Heading>
+								<Box textStyle="inverse">
+									{translate('last_update')}{' '}
+									{(new Date(article.updatedAt)).toLocaleDateString(router.locale)}
+								</Box>
 							</Flex>
 						</Box>
 					</Box>
