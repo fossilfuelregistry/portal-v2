@@ -190,9 +190,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const countries = await getProducingCountries()
   countries.push({ iso3166: '-' })
   const countriesPaths = countries.flatMap((c: any) => [
-    { params: { country: c.iso3166 } },
-    { params: { country: c.iso3166 }, locale: 'fr' },
-    { params: { country: c.iso3166 }, locale: 'es' },
+    { params: { country: c.iso3166 } }
   ])
 
   return {
