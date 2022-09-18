@@ -8,6 +8,7 @@ import {
 } from '@chakra-ui/react'
 import Query from "components/CMSContent/Query";
 import FeedbackForm from "components/CMSContent/FeedbackForm";
+import WorldMap from "components/CMSContent/WorldMap";
 import TextWithQuery from './TextWithQuery'
 import StyledTextImage from './StyledTextImage'
 import CMSBlock from './CMSBlock'
@@ -49,6 +50,10 @@ const DynamicZone = ({ content }: Props) => {
 
       case 'shared.feedback-form':
         rendered.push(<FeedbackForm key={`AS${block.id}`} block={block}/>)
+        break
+
+      case 'shared.world-map':
+        rendered.push(<WorldMap key={`WM${block.id}`} block={block}/>)
         break
 
       default:

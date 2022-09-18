@@ -34,9 +34,10 @@ type MapProps = {
   country: string
   type: 'country' | 'project'
   onChangeCountry: (countryCode: string) => void
+  disableGlobalOption?: boolean
 }
 
-const Map: FC<MapProps> = ({ country, type, onChangeCountry }) => {
+const Map: FC<MapProps> = ({ country, type, onChangeCountry, disableGlobalOption }) => {
   const staticData: StaticData = useContext(DataContext)
   const { countries } = staticData
 
@@ -245,6 +246,7 @@ const Map: FC<MapProps> = ({ country, type, onChangeCountry }) => {
           selectedCountry={selectedCountry}
           countriesData={countries}
           onChange={handleChangeSelectedCountry}
+          disableGlobalOption={disableGlobalOption}
         />
       </Flex>
     </>
