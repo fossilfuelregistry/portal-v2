@@ -48,7 +48,7 @@ const InfoSection: FC<InfoSectionProps> = ({
             <>
               {sourceInfo && (
                 <>
-                  <strong>{sourceInfo.name}:</strong>
+                  <strong>{sourceInfo.name}: </strong>
                   <Link
                     href={sourceInfo.url}
                     target="_blank"
@@ -77,7 +77,7 @@ const InfoSection: FC<InfoSectionProps> = ({
               )}
             </>
             <Link
-              href="https://fossilfuelregistry-v2-kb3l6.ondigitalocean.app/datasets"
+              href="/data-documentation"
               target="_blank"
               color={colors.primary.brandingBlue}
               fontSize="16px"
