@@ -1,5 +1,5 @@
 import React, {ChangeEvent, MouseEvent, useState} from 'react'
-import {Box, Button, FormControl, FormLabel, Input, Textarea} from '@chakra-ui/react';
+import {Box, Button, Checkbox, Flex, FormControl, FormLabel, Input, Select, Textarea} from '@chakra-ui/react';
 import CMSBlock from "components/CMSContent/CMSBlock";
 import useText from "lib/useText";
 import {useRouter} from "next/router";
@@ -23,8 +23,20 @@ const FeedbackForm = ({block}: Props) => {
 	const {translate} = useText()
 	const router = useRouter()
 
-	const handleChange = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>, fieldName: string) => {
-		set_values(v => Object.assign(v, {[fieldName]: event.target.value}))
+	const handleChange = (event:
+							  ChangeEvent<HTMLInputElement> |
+							  ChangeEvent<HTMLSelectElement> |
+							  ChangeEvent<HTMLTextAreaElement>,
+						  fieldName: string, option?: string) => {
+		if(option) {
+			// @ts-ignore
+			const options = {...values[fieldName]}
+			// @ts-ignore
+			options[option] = event.target.checked
+			set_values(v => Object.assign(v, {[fieldName]: options}))
+		} else {
+			set_values(v => Object.assign(v, {[fieldName]: event.target.value}))
+		}
 	}
 
 	const handleSubmit = async (event: MouseEvent<HTMLButtonElement>) => {
@@ -76,6 +88,22 @@ const FeedbackForm = ({block}: Props) => {
 										<Input type="number" placeholder={field.Name}
 											   onChange={e => handleChange(e, field.Name)}
 										/>)
+									break;
+								case 'Dropdown':
+									control = (
+										<Select
+											placeholder={field.Name}
+											onChange={e => handleChange(e, field.Name)}
+										>
+											{field.Alternatives?.split('\n')?.map((opt: any) => <option key={opt}>{opt}</option>)}
+										</Select>)
+									break;
+								case 'Checkboxes':
+									control = (
+										<Flex direction="column">
+											{field.Alternatives?.split('\n')?.map((opt: any) =>
+												<Checkbox key={opt} onChange={e => handleChange(e, field.Name, opt)}>{opt}</Checkbox>)}
+										</Flex>)
 									break;
 								default:
 							}

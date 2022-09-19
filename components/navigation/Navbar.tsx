@@ -55,7 +55,11 @@ const RenderLinkOrSubmenu = ({item, marginInlineStart, marginInlineEnd, mb, colo
 
 	return (
 		<Menu key={item.id}>
-			<MenuButton as={Button} rightIcon={<ChevronDownIcon/>}>
+			<MenuButton as={Button}
+						size="md"
+						rightIcon={<ChevronDownIcon/>}
+						background="none"
+			>
 				{item.Text}
 			</MenuButton>
 			<MenuList>
