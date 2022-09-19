@@ -1,5 +1,6 @@
 import React from 'react'
 import {Html, Head, Main, NextScript} from "next/document";
+import Script from 'next/script'
 
 const MyDocument = () => (
 	<Html>
@@ -11,6 +12,18 @@ const MyDocument = () => (
 			rel="stylesheet"
 		/>
 		<link href="/fonts/style.css" rel="stylesheet"/>
+		<Script
+			src="https://www.googletagmanager.com/gtag/js?id=G-GPBMEJZGPH"
+			strategy="afterInteractive"
+		/>
+		<Script id="google-analytics" strategy="afterInteractive">
+			{`
+				window.dataLayer = window.dataLayer || [];
+				function gtag() { window.dataLayer.push(arguments); }
+				gtag('js', new Date());
+				gtag('config', 'G-GPBMEJZGPH');
+			`}
+		</Script>
 	</Head>
 	<body>
 	<Main/>
