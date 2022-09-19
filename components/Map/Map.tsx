@@ -227,7 +227,7 @@ const Map: FC<MapProps> = ({
 
   return (
     <>
-      <Box w="100%" h="640px" position="relative" bg="#0A2244">
+      <Box w="100%" h="500px" position="relative" bg="#0A2244">
         <Box ref={mapContainer} w="100%" h="100%" position="absolute" />
         <MapFilter filters={filters} onChange={setFilters} />
         <ZoomControls onChangeZoom={handleChangeZoom} />
