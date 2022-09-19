@@ -1,5 +1,5 @@
 import React from 'react';
-import {Box, chakra, Flex} from "@chakra-ui/react"
+import {Box, chakra, Flex, Heading} from "@chakra-ui/react"
 import {FooterProps, MenuItem} from "lib/types";
 import CMSBlock from "components/CMSContent/CMSBlock";
 import {useRouter} from "next/router";
@@ -25,8 +25,8 @@ export default function Footer({footer}: FooterCompProps) {
 
 					<Box w={{base: '100%', lg: '40%'}}>
 						<Flex alignItems="center">
-							<Box mr="12px"><img src="/logo2.svg" height="40px" width="40px" alt=""/></Box>
-							<Box>{translate('grff')}</Box>
+							<Box mr="12px"><img src="/logo2white.svg" height="40px" width="40px" alt=""/></Box>
+							<Heading size="sm" m={0} color="common.white">{translate('grff')}</Heading>
 						</Flex>
 					</Box>
 

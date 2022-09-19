@@ -12,7 +12,7 @@ import {
 	ColorProps,
 	Stack,
 	Text,
-	useDisclosure,
+	useDisclosure, Heading,
 } from '@chakra-ui/react';
 import {ChevronDownIcon, CloseIcon, HamburgerIcon} from '@chakra-ui/icons';
 import {MenuItem as MenuItemType} from "lib/types";
@@ -101,7 +101,7 @@ export default function Navbar({menu}: NavbarProps) {
 							<a>
 								<Flex alignItems="center">
 									<Box mr="12px"><img src="/logo2.svg" height="40px" width="40px" alt=""/></Box>
-									<Box color="common.black">{translate('grff')}</Box>
+									<Heading size="sm" m={0} color="common.black">{translate('grff')}</Heading>
 								</Flex>
 							</a>
 						</Link>
