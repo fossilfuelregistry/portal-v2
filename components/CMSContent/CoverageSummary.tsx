@@ -35,7 +35,6 @@ type CoverageSummaryProps = {
 
 const CoverageSummary: FC<CoverageSummaryProps> = ({block}) => {
 	const {Headline, Intro, Countries, Projects, Oil, Gas, Coal, ManualData} = block
-	console.log(block)
 
 	return (
 		<Box bg={colors.primary.richBlue} py={{base: '40px', md: '78px'}}>

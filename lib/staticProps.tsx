@@ -298,6 +298,7 @@ export const getPageStaticProps: GetPageStaticProps = async (
 	}
 
 	const common = await getCommonStaticProps(context)
+	if(!common?.props) common.props = {} // Should not happen, but did??
 	if(page) common.props.page = page.attributes
 	common.props.menu = menu
 	common.props.footer = footer
