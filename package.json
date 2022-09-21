@@ -41,6 +41,7 @@
     "@visx/tooltip": "^2.10.0",
     "@visx/visx": "^2.12.2",
     "chakra-react-select": "^4.1.4",
+    "cookies-next": "^2.1.1",
     "d3-array": "^3.2.0",
     "deepmerge": "^4.2.2",
     "fp-ts": "^2.12.2",

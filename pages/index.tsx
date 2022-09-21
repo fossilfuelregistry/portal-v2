@@ -7,6 +7,7 @@ import {DatabaseRecord} from "lib/calculations/calculation-constants/types";
 import {Country} from "components/Map/types";
 import {PrefixRecord} from "lib/calculations/prefix-conversion";
 import Footer from 'components/navigation/Footer'
+import CookieConsent from "components/navigation/CookieConsent";
 import PageHead from '../components/CMSContent/PageHead'
 import DynamicZone from '../components/CMSContent/DynamicZone'
 import Navbar from '../components/navigation/Navbar'
@@ -33,6 +34,7 @@ const Home: NextPage<Props> = (props) => {
 				<DynamicZone content={page.Content}/>
 				<Footer footer={footer}/>
 			</div>
+			<CookieConsent/>
 		</DataContextProvider>
 	)
 }

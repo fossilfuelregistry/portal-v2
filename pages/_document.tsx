@@ -18,10 +18,14 @@ const MyDocument = () => (
 		/>
 		<Script id="google-analytics" strategy="afterInteractive">
 			{`
-				window.dataLayer = window.dataLayer || [];
-				function gtag() { window.dataLayer.push(arguments); }
-				gtag('js', new Date());
-				gtag('config', 'G-GPBMEJZGPH');
+				window.dataLayer = window.dataLayer || []
+				function gtag() { window.dataLayer.push(arguments) }
+				gtag('consent', 'default', {
+             		'ad_storage': 'denied',
+             		'analytics_storage': 'denied'
+            	})
+				gtag('js', new Date())
+				gtag('config', 'G-GPBMEJZGPH')
 			`}
 		</Script>
 	</Head>

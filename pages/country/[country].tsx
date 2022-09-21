@@ -31,6 +31,7 @@ import Info from 'components/Info'
 import CountrySnapshot from 'components/country/CountrySnapshot'
 import SnapShotStatistic from 'components/SnapShotStatistic'
 import LargestProjects from 'components/country/LargestProjects'
+import CookieConsent from "components/navigation/CookieConsent";
 import { colors } from '../../assets/theme'
 
 export type Props = {
@@ -182,6 +183,7 @@ const CountryPage: React.FC<Props> = (props) => {
         )}
         <Footer footer={footer} />
       </div>
+      <CookieConsent/>
     </DataContextProvider>
   )
 }

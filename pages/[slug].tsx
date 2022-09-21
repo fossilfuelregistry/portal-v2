@@ -7,6 +7,7 @@ import {getPageStaticProps, headers} from 'lib/staticProps'
 import {ConversionFactorInStore, FooterProps, Page} from "lib/types";
 import {DataContextProvider} from "components/DataContext";
 import Footer from "components/navigation/Footer";
+import CookieConsent from "components/navigation/CookieConsent";
 import PageHead from '../components/CMSContent/PageHead'
 import DynamicZone from '../components/CMSContent/DynamicZone'
 import Navbar from '../components/navigation/Navbar'
@@ -34,6 +35,7 @@ const Home: NextPage<Props> = (props) => {
 				<DynamicZone content={page.Content}/>
 				<Footer footer={footer}/>
 			</div>
+			<CookieConsent/>
 		</DataContextProvider>
 	)
 }
