@@ -76,7 +76,7 @@ const StyledTextImage = ({block}: Props) => {
 					<Box position="absolute" top={0} left={0} h="100%" w="100%">
 						<Flex direction="column" justifyContent="center" h="100%">
 							<Box maxWidth="1440px" m="0 auto" w="100%">
-								<Heading as="h1" textStyle="inverse" mb="24px">{block.Headline}</Heading>
+								<Heading as="h1" textStyle="inverse" mb="24px" pl="100px">{block.Headline}</Heading>
 								<SimpleGrid
 									columns={4}
 									spacing={6}
@@ -117,7 +117,7 @@ const StyledTextImage = ({block}: Props) => {
 								<Heading as="h1" textStyle="inverse" textAlign="center"
 										 mb="36px">{block.Headline}</Heading>
 								{block.Buttons?.map((b: any) => (
-									<Link href={b.URL} prefetch={false} key={b.id} passHref>
+									<Link href={b.URL} prefetch={false} key={b.url} passHref>
 										{/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
 										<a>
 											<Button variant="inverse">{b.Text}</Button>
