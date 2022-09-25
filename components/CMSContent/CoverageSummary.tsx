@@ -21,10 +21,14 @@ interface PercentageProps {
 
 const Percentage = ({children}: PercentageProps) => (
 	<Box
-		w={{base: '100%', md: '33%', xl: '18%'}}
+		w={{base: '100%', md: '28%', xl: '18%'}}
 		position="relative"
-		mb={{base: "42px", md: "24px"}}
-		maxW="250px" mx="auto">
+		mb={{base: "24px", md: "0px"}}
+		mr={{base: "0px", md: "24px"}}
+		maxW="250px" mx="auto"
+		background={{base: 'rgba(255,255,255,0.1)', xl: 'none'}}
+		p={{base: '12px', xl: 0}}
+	>
 		{children}
 	</Box>
 )
@@ -65,20 +69,31 @@ const CoverageSummary: FC<CoverageSummaryProps> = ({block}) => {
 					alignItems="center"
 				>
 
-					<Box w={{base: '100%', xl: '17%'}} mb="24px" maxW="250px" mx="auto">
+					<Box
+						w={{base: '100%', sm: '45%', xl: '17%'}} mb="24px"
+						mx="auto"
+						background={{base: 'rgba(255,255,255,0.1)', xl: 'none'}}
+						p={{base: '12px', xl: 0}}
+					>
 						<Text as="h2">{ManualData.countries}</Text>
-						<Text fontSize={{base: '16px', md: '18px'}} opacity="0.8">
+						<Text fontSize={{base: '14px', lg: '18px'}} opacity="0.8">
 							{Countries}
-							<br/><br/>
+							<br/>
 						</Text>
 					</Box>
 
-					<Box w={{base: '100%', xl: '17%'}} mb="24px" maxW="250px" ml="auto" mr={{base: 'auto', xl: '50px'}}
-						 borderRight={{xl: '1px solid'}}>
+					<Box
+						w={{base: '100%', sm: '45%', xl: '17%'}} mb="24px"
+						ml="auto"
+						mr={{base: '0', md: '24px', xl: '50px'}}
+						 borderRight={{xl: '1px solid'}}
+						background={{base: 'rgba(255,255,255,0.1)', xl: 'none'}}
+						p={{base: '12px', xl: 0}}
+					>
 						<Text as="h2">{ManualData.projects}</Text>
 						<Text
 							maxW={{base: '100%', xl: '133px'}}
-							fontSize={{base: '16px', md: '18px'}}
+							fontSize={{base: '14px', lg: '18px'}}
 							opacity="0.8"
 						>
 							{Projects}
@@ -92,7 +107,7 @@ const CoverageSummary: FC<CoverageSummaryProps> = ({block}) => {
 						</Text>
 						<Text
 							width="100%"
-							fontSize={{base: '16px', md: '18px'}}
+							fontSize={{base: '14px', lg: '18px'}}
 							opacity="0.8" pl={{base: "60px"}}
 						>
 							{Oil}
@@ -105,7 +120,7 @@ const CoverageSummary: FC<CoverageSummaryProps> = ({block}) => {
 							{ManualData.gas}
 						</Text>
 						<Text
-							fontSize={{base: '16px', md: '18px'}}
+							fontSize={{base: '14px', lg: '18px'}}
 							opacity="0.8" pl={{base: "60px"}}
 						>
 							{Gas}
@@ -118,7 +133,7 @@ const CoverageSummary: FC<CoverageSummaryProps> = ({block}) => {
 							{ManualData.coal}
 						</Text>
 						<Text
-							fontSize={{base: '16px', md: '18px'}}
+							fontSize={{base: '14px', lg: '18px'}}
 							opacity="0.8" pl={{base: "60px"}}
 						>
 							{Coal}
