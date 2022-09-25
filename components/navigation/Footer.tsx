@@ -19,11 +19,11 @@ export default function Footer({footer}: FooterCompProps) {
 	const { pathname, query } = router
 
 	return (
-		<Box w="100%" bg="primary.darkBlue" py={{base: '80px'}} mt="24px">
+		<Box w="100%" bg="primary.darkBlue" py={{base: '24px', lg: '80px'}} mt="24px">
 			<CMSBlock>
 				<Flex textStyle="inverse" direction="row" wrap="wrap">
 
-					<Box w={{base: '100%', lg: '40%'}}>
+					<Box w={{base: '100%', lg: '40%'}} mb={{base: '24px', sm: '36px', lg: '0'}}>
 						<Flex alignItems="center">
 							<Box mr="12px"><img src="/logo2white.svg" height="40px" width="40px" alt=""/></Box>
 							<Heading size="sm" m={0} color="common.white">{translate('grff')}</Heading>

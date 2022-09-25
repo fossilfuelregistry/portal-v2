@@ -39,7 +39,7 @@ const CoverageSummary: FC<CoverageSummaryProps> = ({block}) => {
 	return (
 		<Box bg={colors.primary.richBlue} py={{base: '40px', md: '78px'}}>
 			<CMSBlock>
-				<Heading
+				<Text
 					as="h2"
 					fontSize={{base: '28px', md: '44px'}}
 					color={colors.common.white}
@@ -47,7 +47,7 @@ const CoverageSummary: FC<CoverageSummaryProps> = ({block}) => {
 					mb="26px"
 				>
 					{Headline}
-				</Heading>
+				</Text>
 				<Text
 					maxW={{base: '100%', md: '600px'}}
 					fontSize="18px"
@@ -66,7 +66,7 @@ const CoverageSummary: FC<CoverageSummaryProps> = ({block}) => {
 				>
 
 					<Box w={{base: '100%', xl: '17%'}} mb="24px" maxW="250px" mx="auto">
-						<Heading as="h2">{ManualData.countries}</Heading>
+						<Text as="h2">{ManualData.countries}</Text>
 						<Text fontSize={{base: '16px', md: '18px'}} opacity="0.8">
 							{Countries}
 							<br/><br/>
@@ -75,7 +75,7 @@ const CoverageSummary: FC<CoverageSummaryProps> = ({block}) => {
 
 					<Box w={{base: '100%', xl: '17%'}} mb="24px" maxW="250px" ml="auto" mr={{base: 'auto', xl: '50px'}}
 						 borderRight={{xl: '1px solid'}}>
-						<Heading as="h2">{ManualData.projects}</Heading>
+						<Text as="h2">{ManualData.projects}</Text>
 						<Text
 							maxW={{base: '100%', xl: '133px'}}
 							fontSize={{base: '16px', md: '18px'}}
@@ -87,9 +87,9 @@ const CoverageSummary: FC<CoverageSummaryProps> = ({block}) => {
 
 					<Percentage>
 						<Box position="absolute" top={5}><OilIcon height="40px" width="40px"/></Box>
-						<Heading as="h2" pl={{base: "60px"}}>
+						<Text as="h2" pl={{base: "60px"}}>
 							{ManualData.oil}
-						</Heading>
+						</Text>
 						<Text
 							width="100%"
 							fontSize={{base: '16px', md: '18px'}}
@@ -101,9 +101,9 @@ const CoverageSummary: FC<CoverageSummaryProps> = ({block}) => {
 
 					<Percentage>
 						<Box position="absolute" top={5}><GasIcon/></Box>
-						<Heading as="h2" pl={{base: "60px"}}>
+						<Text as="h2" pl={{base: "60px"}}>
 							{ManualData.gas}
-						</Heading>
+						</Text>
 						<Text
 							fontSize={{base: '16px', md: '18px'}}
 							opacity="0.8" pl={{base: "60px"}}
@@ -114,9 +114,9 @@ const CoverageSummary: FC<CoverageSummaryProps> = ({block}) => {
 
 					<Percentage>
 						<Box position="absolute" top={5}><CoalIcon/></Box>
-						<Heading as="h2" pl={{base: "60px"}}>
+						<Text as="h2" pl={{base: "60px"}}>
 							{ManualData.coal}
-						</Heading>
+						</Text>
 						<Text
 							fontSize={{base: '16px', md: '18px'}}
 							opacity="0.8" pl={{base: "60px"}}

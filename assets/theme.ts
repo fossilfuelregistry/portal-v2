@@ -45,16 +45,23 @@ export default extendTheme({
 					marginBottom: '20px',
 				},
 			},
+			h1: {
+				fontFamily: 'sommet-rounded, sans-serif',
+				fontSize: {base: '32px', md: '40px', lg: '50px', xl: '60px'},
+				lineHeight: 1.2
+			},
 			h2: {
-				marginBottom: '20px',
-				lineHeight: '52px'
+				fontFamily: 'sommet-rounded, sans-serif',
+				fontSize: {base: '28px', md: '32px', lg: '36px', xl: '44px'},
+				marginBottom: {base: '8px', lg: '20px'},
+				lineHeight: 1.2
 			},
 			h3: {
 				fontFamily: 'sommet-rounded, sans-serif',
 				fontSize: '32px',
 				marginTop: '24px',
 				marginBottom: '12px',
-				lineHeight: '46px'
+				lineHeight: 1.2
 			},
 			h5: {
 				fontSize: ['20px'],
@@ -80,7 +87,7 @@ export default extendTheme({
 
 	fontSizes: {
 		'3xl': '40px',
-		'4xl': '60px',
+		'4xl': {base: '32px', md: '4px', lg: '52px', xl: '60px'},
 		'5xl': '44px',
 	},
 

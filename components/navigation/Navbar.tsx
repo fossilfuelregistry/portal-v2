@@ -94,9 +94,12 @@ export default function Navbar({menu}: NavbarProps) {
 				<Flex h={16} alignItems="center" justifyContent="space-between">
 					<IconButton
 						size="md"
-						icon={isOpen ? <CloseIcon/> : <HamburgerIcon/>}
+						background="none"
+						_hover={{background: 'transparent'}}
+						icon={isOpen ? <CloseIcon/> : <HamburgerIcon boxSize={8}/>}
 						aria-label="Open Menu"
 						display={{md: 'none'}}
+						pr="16px"
 						onClick={isOpen ? onClose : onOpen}
 					/>
 					<Flex alignItems="center" justifyContent="space-between" w="100%">
@@ -104,7 +107,7 @@ export default function Navbar({menu}: NavbarProps) {
 							{/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
 							<a>
 								<Flex alignItems="center">
-									<Box mr="12px"><img src="/logo2.svg" height="40px" width="40px" alt=""/></Box>
+									<Box mr="12px" minW="40px"><img src="/logo2.svg" height="40px" width="40px" alt=""/></Box>
 									<Heading size="sm" m={0} color="common.black">{translate('grff')}</Heading>
 								</Flex>
 							</a>

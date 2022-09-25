@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {Box, Heading} from "@chakra-ui/react"
+import {Box, Text as ChakraText} from "@chakra-ui/react"
 import Markdown from "components/CMSContent/Markdown";
 import useTextInjectQueryResult from "./useTextInjectQueryResult"
 import CMSBlock from "./CMSBlock"
@@ -34,7 +34,7 @@ export default function TextWithQuery({block}: Props) {
 	return (
 		<CMSBlock>
 			<Box w="100%" maxWidth="710px" mt={topSpacing} mb={bottomSpacing}>
-				<Heading as="h1" size="2xl" mb="32px">{Headline}</Heading>
+				<ChakraText as="h1" mb="32px">{Headline}</ChakraText>
 				<Markdown>
 					{result}
 				</Markdown>

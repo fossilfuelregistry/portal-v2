@@ -29,7 +29,7 @@ interface Props {
 	block: Block
 }
 
-let dimensions
+let dimensions; let pl
 
 const StyledTextImage = ({block}: Props) => {
 	switch (block.Template) {
@@ -37,8 +37,11 @@ const StyledTextImage = ({block}: Props) => {
 		case 'Hero':
 		case 'Hero Slim':
 			dimensions = {base: '250px', sm: '350px', md: '450px', lg: '680px'}
-			if(block.Template === 'Hero Slim')
+			pl = {base: '24px', md: '0'}
+			if(block.Template === 'Hero Slim') {
 				dimensions = {base: '180px', sm: '200px', md: '280px', lg: '320px'}
+				pl = {base: '24px', md: '100px'}
+			}
 
 			return (
 				<Box w={{base: '100%'}} position="relative">
@@ -53,7 +56,13 @@ const StyledTextImage = ({block}: Props) => {
 								pl={{base: '24px', md: '100px'}} py={{base: '24px', md: '160px'}}
 								maxWidth="750px"
 							>
-								<Heading as="h1" textStyle="inverse">{block.Headline}</Heading>
+								<Text as="h1"
+									  textStyle="inverse"
+									  mb="24px"
+									  pl={pl}
+								>
+									{block.Headline}
+								</Text>
 								{block.Buttons?.map((b: any) => (
 									<Link href={b.URL} prefetch={false} key={b.id} passHref>
 										{/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
@@ -76,7 +85,13 @@ const StyledTextImage = ({block}: Props) => {
 					<Box position="absolute" top={0} left={0} h="100%" w="100%">
 						<Flex direction="column" justifyContent="center" h="100%">
 							<Box maxWidth="1440px" m="0 auto" w="100%">
-								<Heading as="h1" textStyle="inverse" mb="24px" pl="100px">{block.Headline}</Heading>
+								<Text as="h1"
+									  textStyle="inverse"
+									  mb="24px"
+									  pl={{base: '24px', md: '100px'}}
+								>
+									{block.Headline}
+								</Text>
 								<SimpleGrid
 									columns={4}
 									spacing={6}
@@ -114,8 +129,14 @@ const StyledTextImage = ({block}: Props) => {
 								maxWidth="750px"
 								alignItems="center"
 							>
-								<Heading as="h1" textStyle="inverse" textAlign="center"
-										 mb="36px">{block.Headline}</Heading>
+								<Text as="h1"
+									  textStyle="inverse"
+									  mb="24px"
+									  pl={{base: '24px', md: '100px'}}
+									  textAlign="center"
+								>
+									{block.Headline}
+								</Text>
 								{block.Buttons?.map((b: any) => (
 									<Link href={b.URL} prefetch={false} key={b.url} passHref>
 										{/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
