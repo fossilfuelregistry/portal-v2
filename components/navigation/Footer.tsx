@@ -49,7 +49,7 @@ export default function Footer({footer}: FooterCompProps) {
 							<Box mr="20px">
 								<img src="/cc.svg" width="107px" alt="Creative Commons CC-BY-SA"/>
 							</Box>
-							<Box maxWidth="450px" color="rgba(255,255,255,0.4)">
+							<Box maxWidth="450px" color="rgba(255,255,255,0.4)" fontSize={{base: '10px', md: '12px', lg: '16px'}}>
 								<Markdown>{footer.Copyright}</Markdown>
 							</Box>
 						</Flex>

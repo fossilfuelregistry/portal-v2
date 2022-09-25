@@ -7,7 +7,7 @@ interface Props {
 }
 
 const Markdown = ({children}: Props) => (
-	<chakra.div lineHeight={{base: '28px'}}>
+	<chakra.div lineHeight={1.5}>
 		<ReactMarkdown
 			skipHtml
 			linkTarget={(href, children, title) => {

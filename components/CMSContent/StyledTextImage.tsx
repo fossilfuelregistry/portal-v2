@@ -37,7 +37,7 @@ const StyledTextImage = ({block}: Props) => {
 		case 'Hero':
 		case 'Hero Slim':
 			dimensions = {base: '250px', sm: '350px', md: '450px', lg: '680px'}
-			pl = {base: '24px', md: '0'}
+			pl = {base: '0', md: '0'}
 			if(block.Template === 'Hero Slim') {
 				dimensions = {base: '180px', sm: '200px', md: '280px', lg: '320px'}
 				pl = {base: '24px', md: '100px'}

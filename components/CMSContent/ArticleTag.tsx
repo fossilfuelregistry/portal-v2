@@ -10,10 +10,12 @@ const ArticleTag = ({category}: Props) => (
 	<Box
 		display="inline-flex"
 		background={category.attributes.Color ?? '#777777'}
-		px="24px" mb="20px"
-		height="40px"
+		px={{base: '8px', md: '16px', lg: '24px'}}
+		fontSize={{base: '12px', md: '16px', lg: '16px'}}
+		mb="20px"
+		height={{base: '28px', md: '32px', lg: '40px'}}
 		alignItems="center"
-		mr="20px"
+		mr={{base: '8px', md: '16px', lg: '20px'}}
 	>
 		<chakra.div
 			color="common.white"
