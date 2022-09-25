@@ -233,8 +233,6 @@ export const getPageStaticProps: GetPageStaticProps = async (
 
 			pages = (await api.json()).data
 			backendCache.set(`${endpoint}-${locale}`, pages, cacheTTL)
-		} else {
-			console.log('getPageStaticProps', 'CACHED')
 		}
 
 		const p = pages?.find((pg) => pg.attributes?.slug === slug)
