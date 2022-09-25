@@ -29,7 +29,8 @@ interface Props {
 	block: Block
 }
 
-let dimensions; let pl
+let dimensions;
+let pl
 
 const StyledTextImage = ({block}: Props) => {
 	switch (block.Template) {
@@ -38,7 +39,7 @@ const StyledTextImage = ({block}: Props) => {
 		case 'Hero Slim':
 			dimensions = {base: '250px', sm: '350px', md: '450px', lg: '680px'}
 			pl = {base: '0', md: '0'}
-			if(block.Template === 'Hero Slim') {
+			if (block.Template === 'Hero Slim') {
 				dimensions = {base: '180px', sm: '200px', md: '280px', lg: '320px'}
 				pl = {base: '24px', md: '100px'}
 			}
@@ -80,9 +81,13 @@ const StyledTextImage = ({block}: Props) => {
 		case 'Hero 4col':
 			return (
 				<Box w={{base: '100%'}} position="relative" bgColor="primary.richBlue">
-					<CMSImage image={block.Image}
-							  height={{base: '180px', sm: '200px', md: '280px', lg: '320px'}}/>
-					<Box position="absolute" top={0} left={0} h="100%" w="100%">
+					<Box position="absolute">
+						<CMSImage
+							image={block.Image}
+							height={{base: '180px', sm: '200px', md: '280px', lg: '320px'}}
+						/>
+					</Box>
+					<Box w="100%" pb={{base: '24px'}}>
 						<Flex direction="column" justifyContent="center" h="100%">
 							<Box maxWidth="1440px" m="0 auto" w="100%">
 								<Text as="h1"
@@ -93,18 +98,30 @@ const StyledTextImage = ({block}: Props) => {
 									{block.Headline}
 								</Text>
 								<SimpleGrid
-									columns={4}
+									columns={{base: 1, md: 2, lg: 4}}
 									spacing={6}
+									mx={{base: '24px', lg: 0}}
 								>
 									{block.Buttons?.map((b: any) => (
-										<Box background="rgba(127,127,127,0.7)" borderRadius="8px" p="40px">
+										<Box
+											background="rgba(127,127,127,0.7)"
+											borderRadius="8px"
+											p={{base: '12px', md: '24px', lg: '40px'}}
+										>
 											<Link href={b.URL} prefetch={false} key={b.id} passHref>
 												{/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
 												<a>
-													<Button variant="inverse">{b.Text}</Button>
+													<Button variant="inverse" size={{base: 'sm', md: 'md', lg: 'lg'}}>
+														{b.Text}
+													</Button>
 												</a>
 											</Link>
-											<Box color="common.white" mt={4}>{b.Description}</Box>
+											<Box
+												color="common.white" mt={4}
+												fontSize={{base: '12px', md: '14px', lg: '16px'}}
+											>
+												{b.Description}
+											</Box>
 										</Box>
 									))}
 								</SimpleGrid>
