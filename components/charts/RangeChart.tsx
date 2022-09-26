@@ -8,13 +8,13 @@ import { GridRows } from '@visx/grid'
 import { LineIcon } from 'components/Icons'
 import Info from 'components/Info'
 import { Tooltip, useTooltip } from '@visx/tooltip'
+import { withParentSize } from '@visx/responsive'
 import useText from 'lib/useText'
 import { colors } from '../../assets/theme'
 
 const verticalMargin = 60
 
 export type BarsProps = {
-  width: number
   height: number
   title: string
   data: any[]
@@ -25,9 +25,10 @@ export type BarsProps = {
 const getLabel = (d: any) => d.label
 const getValue = (d: any) => Number(d.value[2])
 
-const RangeChart: FC<BarsProps> = ({
-  width,
-  height,
+const RangeChartInternal: FC<BarsProps> = ({
+  // @ts-ignore
+  parentWidth: width,
+  height = 364,
   title,
   data,
   label = 'KT',
@@ -249,4 +250,6 @@ const RangeChart: FC<BarsProps> = ({
   )
 }
 
-export default RangeChart
+// @ts-ignore
+const RangeChar = withParentSize<BarsProps>(RangeChartInternal)
+export default RangeChar

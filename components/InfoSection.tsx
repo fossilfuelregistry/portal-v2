@@ -26,7 +26,7 @@ const InfoSection: FC<InfoSectionProps> = ({
     bg={colors.primary.grey2}
     margin="0 auto"
     marginBottom="80px"
-    padding="32px"
+    padding={{ base: '16px', md: '32px' }}
   >
     <Heading
       as="h3"
@@ -40,7 +40,12 @@ const InfoSection: FC<InfoSectionProps> = ({
       {title}
     </Heading>
     {children}
-    <Flex alignItems="center" justifyContent="space-between" mt="40px">
+    <Flex
+      alignItems="center"
+      justifyContent="space-between"
+      mt="40px"
+      flexDirection={{ base: 'column', md: 'row' }}
+    >
       <Box color={colors.primary.richBlack} fontSize="16px" fontWeight="400">
         Source:{' '}
         {isProject ? (
@@ -105,6 +110,7 @@ const InfoSection: FC<InfoSectionProps> = ({
           borderRadius="4px"
           padding="12px 58px"
           leftIcon={<DownloadIcon />}
+          mt={{ base: '20px', md: 0 }}
           _hover={{ opacity: '0.5' }}
         >
           Download

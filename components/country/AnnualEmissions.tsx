@@ -1,5 +1,5 @@
 import React, { FC, useContext, useEffect, useMemo, useState } from 'react'
-import { Box, SimpleGrid } from '@chakra-ui/react'
+import { Box, SimpleGrid, useMediaQuery } from '@chakra-ui/react'
 import PieChart from 'components/charts/PieChart'
 import InfoSection from 'components/InfoSection'
 import WarmingPotentialSelect, {
@@ -47,12 +47,19 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ country }) => {
     constants,
     conversionPrefixes: prefixConversions,
   })
-  DEBUG && console.log('emissionsData_volumesData', {emissionsData}, {volumesData})
+  const [isLargerThan1024] = useMediaQuery('(min-width: 1024px)')
+  DEBUG &&
+    console.log('emissionsData_volumesData', { emissionsData }, { volumesData })
   DEBUG && console.log('emissionsData', emissionsData)
   DEBUG && console.log('volumesData', volumesData)
 
-  const enrichWithDescription = ( data: { fossilFuelType: string; combustionType: string }[] ) =>
-    data.map((d) => ({ ...d, description: translate(`${d.fossilFuelType}_${d.combustionType}`) }))
+  const enrichWithDescription = (
+    data: { fossilFuelType: string; combustionType: string }[]
+  ) =>
+    data.map((d) => ({
+      ...d,
+      description: translate(`${d.fossilFuelType}_${d.combustionType}`),
+    }))
 
   useEffect(() => {
     if (productionSources.length && !productionSourceId) {
@@ -90,7 +97,7 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ country }) => {
       filename={`${country}_year_emissions.csv`}
       csvData={translatedCsvData}
     >
-      <SimpleGrid mb="40px" columns={3} gridGap="20px">
+      <SimpleGrid mb="40px" columns={{ base: 1, md: 3 }} gridGap="20px">
         <WarmingPotentialSelect
           value={gwp}
           onChange={(option) => setGwp(option?.value as string)}
@@ -104,11 +111,11 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ country }) => {
       </SimpleGrid>
       <SimpleGrid
         mb="40px"
-        columns={2}
+        columns={{ base: 1, md: 2 }}
         gridGap="20px"
         position="relative"
         _after={{
-          content: `""`,
+          content: { base: 'none', md: `""` },
           width: '1px',
           height: '100%',
           background: colors.primary.grey25,
@@ -118,18 +125,21 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ country }) => {
         }}
       >
         <PieChart
-        // @ts-ignore
+          // @ts-ignore
           data={enrichWithDescription(volumesData.data)}
-          parentWidth={320}
-          parentHeight={320}
+          parentWidth={isLargerThan1024 ? 320 : 240}
+          parentHeight={isLargerThan1024 ? 320 : 240}
           title="Total volumes"
           header="Total Mt CO₂e"
-          total={isNumber(volumesData.total)? volumesData.total.toFixed(2) : volumesData.total}
+          total={
+            isNumber(volumesData.total)
+              ? volumesData.total.toFixed(2)
+              : volumesData.total
+          }
         />
-        <Box ml="40px">
+        <Box ml={{ base: 0, md: '40px' }}>
           <RangeChart
             height={364}
-            width={538}
             data={rangeData}
             title="Range of certainty"
           />
