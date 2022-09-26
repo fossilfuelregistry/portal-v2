@@ -33,11 +33,11 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({
   const staticData: StaticData = useContext(DataContext)
   const { conversions, constants, prefixConversions } = staticData
 
-  const {  productionSources } = useProjectSources( { projectId, country } );
+  const { productionSources } = useProjectSources({ projectId, country })
   const [gwp, setGwp] = useState<string>(WarmingPotential.GWP100)
   const { generateCsvTranslation } = useCsvDataTranslator()
   const conversion = usePrefixConversion(prefixConversions)
-  DEBUG && console.log('productionSources', productionSources )
+  DEBUG && console.log('productionSources', productionSources)
 
   const { projectCO2 } = useProjectData({
     projectId,
@@ -213,8 +213,7 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({
         // @ts-ignore
         return conversion(unit, 'e6ton') * volume
       }
-      throw new Error("Invalid fossil fuel");
-      
+      throw new Error('Invalid fossil fuel')
     }
     const fuelMap = {
       oil: 'bbls',
@@ -309,7 +308,6 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({
         <Box ml="40px">
           <RangeChart
             height={364}
-            width={538}
             data={rangeData}
             title={`${theProject?.projectIdentifier} Range of Emissions Uncertainty`}
             label="MT"
