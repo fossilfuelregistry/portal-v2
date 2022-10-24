@@ -1,0 +1,17 @@
+query ProjectProduction($id: Int!) {
+  projectDataPoints(
+    orderBy: YEAR_ASC
+    condition: { projectId: $id, dataType: PRODUCTION }
+  ) {
+    nodes {
+      fossilFuelType
+      volume
+      year
+      unit
+      subtype
+      sourceId
+      quality
+      projectId
+    }
+  }
+}

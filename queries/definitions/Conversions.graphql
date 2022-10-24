@@ -1,0 +1,18 @@
+query Conversions {
+  conversionConstants {
+    nodes {
+      id
+      authority
+      description
+      fossilFuelType
+      fromUnit
+      toUnit
+      high
+      factor
+      low
+      country
+      modifier
+      subtype
+    }
+  }
+}

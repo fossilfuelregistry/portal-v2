@@ -1,0 +1,20 @@
+query ProducingCountries {
+  getProducingIso3166 {
+    nodes {
+      borders {
+        geojson
+      }
+      centroid {
+        geojson
+      }
+      iso3166
+      iso31662
+      fr
+      es
+      en
+      sv
+      productionCo2E
+      productionSnapshotData
+    }
+  }
+}

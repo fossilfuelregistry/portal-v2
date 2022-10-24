@@ -1,0 +1,18 @@
+query ProjectSources($id: Int!) {
+  getProjectSources(forId: $id) {
+    nodes {
+      dataPoints
+      dataType
+      description
+      latestCurationAt
+      name
+      namePretty
+      sourceId
+      records
+      url
+      documentUrl
+      quality
+      grade
+    }
+  }
+}

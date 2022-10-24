@@ -1,0 +1,10 @@
+query CO2Costs {
+  co2Costs(filter: { currency: { equalTo: "USD" } }) {
+    nodes {
+      costPerTon
+      currency
+      source
+      year
+    }
+  }
+}

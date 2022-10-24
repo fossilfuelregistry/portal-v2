@@ -1,0 +1,9 @@
+query PrefixConversions {
+  prefixConversions {
+    nodes {
+      factor
+      fromPrefix
+      toPrefix
+    }
+  }
+}

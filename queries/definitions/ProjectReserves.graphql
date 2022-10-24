@@ -1,0 +1,17 @@
+query ProjectReserves($id: Int!) {
+  projectDataPoints(
+    orderBy: YEAR_ASC
+    condition: { projectId: $id, dataType: RESERVE }
+  ) {
+    nodes {
+      fossilFuelType
+      volume
+      year
+      unit
+      subtype
+      sourceId
+      quality
+      grade
+    }
+  }
+}

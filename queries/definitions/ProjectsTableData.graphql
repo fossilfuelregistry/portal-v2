@@ -1,0 +1,33 @@
+query ProjectsTableData($iso3166: String!, $offset: Int!, $limit: Int!) {
+  projects(
+    orderBy: PRODUCTION_CO2E_DESC
+    condition: { iso3166: $iso3166 }
+    filter: { not: { productionCo2E: { equalTo: 0 } } }
+    offset: $offset
+    first: $limit
+  ) {
+    nodes {
+      id
+      projectIdentifier
+      productionCo2E
+      fuels
+      dataYear
+      firstYear
+      lastYear
+      projectDataPoints {
+        nodes {
+          dataYear
+          fossilFuelType
+          volume
+          year
+          unit
+        }
+      }
+    }
+    totalCount
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+    }
+  }
+}

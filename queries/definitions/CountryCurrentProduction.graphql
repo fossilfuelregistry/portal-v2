@@ -1,0 +1,13 @@
+query CountryCurrentProduction($iso3166: String!) {
+  getCountryCurrentProduction(iso3166_: $iso3166) {
+    nodes {
+      id
+      fossilFuelType
+      sourceId
+      unit
+      volume
+      year
+      subtype
+    }
+  }
+}

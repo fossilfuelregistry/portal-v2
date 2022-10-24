@@ -1,0 +1,13 @@
+query ProjectGeo($projectIdentifier: String!, $iso3166: String!) {
+  projects(
+    condition: { projectIdentifier: $projectIdentifier, iso3166: $iso3166 }
+  ) {
+    nodes {
+      projectIdentifier
+      geoPosition {
+        geojson
+        srid
+      }
+    }
+  }
+}

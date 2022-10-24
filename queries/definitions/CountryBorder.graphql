@@ -1,0 +1,20 @@
+query CountryBorder($isoA2: String!, $iso3166: String!) {
+  neCountries(condition: { isoA2: $isoA2 }) {
+    nodes {
+      geometry {
+        geojson
+        srid
+      }
+      isoA2
+    }
+  }
+  projects(condition: { iso3166: $iso3166 }) {
+    nodes {
+      geoPosition {
+        geojson
+        srid
+      }
+      projectIdentifier
+    }
+  }
+}

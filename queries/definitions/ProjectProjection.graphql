@@ -1,0 +1,16 @@
+query ProjectProjection($id: Int!) {
+  projectDataPoints(
+    orderBy: YEAR_ASC
+    condition: { projectId: $id, dataType: PROJECTION }
+  ) {
+    nodes {
+      fossilFuelType
+      volume
+      year
+      unit
+      subtype
+      sourceId
+      quality
+    }
+  }
+}

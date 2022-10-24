@@ -1,0 +1,14 @@
+overwrite: true
+schema: 'https://api.fossilfuelregistry.org/graphql'
+documents: 'queries/**/*.graphql'
+generates:
+  queries/generated-queries.ts:
+    plugins:
+      - 'typescript'
+      - 'typescript-operations'
+      - 'typescript-react-apollo'
+      - 'fragment-matcher'
+      - '@graphql-codegen/typed-document-node'
+  ./queries/graphql.schema.json:
+    plugins:
+      - 'introspection'

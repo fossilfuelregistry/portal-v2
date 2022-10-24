@@ -1,0 +1,41 @@
+query Project($id: Int!) {
+  project(id: $id) {
+    id
+    dataYear
+    lastYear
+    description
+    geoPosition {
+      geojson
+      srid
+    }
+    iso3166
+    iso31662
+    linkUrl
+    locationName
+    methaneM3Ton
+    ocOperatorId
+    operatorName
+    productionCo2E
+    productionMethod
+    productionType
+    projectIdentifier
+    projectType
+    region
+    sourceProjectId
+    sourceProjectName
+    projectDataPoints {
+      nodes {
+        dataType
+        fossilFuelType
+        quality
+        sourceId
+        subtype
+        unit
+        volume
+        year
+        grade
+        dataYear
+      }
+    }
+  }
+}

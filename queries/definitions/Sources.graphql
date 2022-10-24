@@ -1,0 +1,13 @@
+query Sources {
+  sources {
+    nodes {
+      description
+      name
+      namePretty
+      sourceId
+      url
+      documentUrl
+      latestCurationAt
+    }
+  }
+}

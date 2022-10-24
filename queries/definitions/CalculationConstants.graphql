@@ -1,0 +1,22 @@
+query CalculationConstants {
+  calculationConstants {
+    nodes {
+      country
+      constantType
+      authority
+      description
+      factor
+      fossilFuelType
+      high
+      id
+      low
+      modifier
+      nodeId
+      projectId
+      quality
+      reference
+      subtype
+      unit
+    }
+  }
+}

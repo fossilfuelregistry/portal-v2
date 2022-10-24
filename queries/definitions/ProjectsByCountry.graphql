@@ -1,0 +1,18 @@
+query ProjectsByCountry($iso3166_: String!, $iso31662_: String = "") {
+  getProjects(iso3166_: $iso3166_, iso31662_: $iso31662_) {
+    nodes {
+      id
+      projectIdentifier
+      firstYear
+      lastYear
+      dataYear
+      co2
+      projectType
+      geoPosition {
+        geojson
+        srid
+      }
+      fuels
+    }
+  }
+}
