@@ -90,6 +90,7 @@ export const GQL_productionCountries = gql`
         sv
         productionCo2E
         productionSnapshotData
+        tempCo2E
       }
     }
   }

@@ -130,17 +130,7 @@ const Map: FC<MapProps> = ({
 
       map.current.on('click', 'emissions-circles', (e: any) => {
         const coordinates = e.features[0].geometry.coordinates.slice()
-        const {
-          en: name,
-          country,
-          productionSnapshotData,
-        } = e.features[0].properties
-        const co2E = JSON.parse(productionSnapshotData)
-
-        // const total = calculateTotalEmission(co2E).toFixed(1)
-        // const oil = calculateFuelEmission(co2E, 'oil')
-        // const gas = calculateFuelEmission(co2E, 'gas')
-        // const coal = calculateFuelEmission(co2E, 'coal')
+        const { en: name, country, tempCo2E } = e.features[0].properties
         const link = `/country/${country}`
 
         new maplibregl.Popup()
@@ -149,6 +139,9 @@ const Map: FC<MapProps> = ({
             ` <h2 class="maplibregl-popup-title">
                 <a class="maplibregl-popup-link" href='${link}'>${name}</a>
               </h2>
+               <div class="maplibregl-popup-info">
+                Annual emissions <strong>${tempCo2E} Million tonnes CO²</strong>
+                </div>
               `
           )
           .addTo(map.current)
