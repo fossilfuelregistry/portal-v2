@@ -140,7 +140,9 @@ const Map: FC<MapProps> = ({
                 <a class="maplibregl-popup-link" href='${link}'>${name}</a>
               </h2>
                <div class="maplibregl-popup-info">
-                Annual emissions <strong>${tempCo2E} Million tonnes CO²</strong>
+                Annual emissions <strong>${
+                  tempCo2E || 0
+                } Million tonnes CO²</strong>
                 </div>
               `
           )
