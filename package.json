@@ -1,12 +1,12 @@
 {
-  "name": "frontend",
-  "version": "1.0.0",
+  "name": "fossilfuelregistry.org",
+  "version": "2.0.0",
   "main": "index.js",
-  "author": "Niklas Johansson <niklas@sluh.se>",
+  "author": "CarbonTracker UK",
   "license": "MIT",
   "private": true,
   "engines": {
-    "node": ">=16.0.0",
+    "node": "16.x",
     "npm": "please-use-yarn",
     "yarn": ">=1.22.0"
   },
