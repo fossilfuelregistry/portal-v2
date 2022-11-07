@@ -216,9 +216,9 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({
       throw new Error('Invalid fossil fuel')
     }
     const fuelMap = {
-      oil: 'bbls',
-      gas: 'm3',
-      coal: 'ton',
+      oil: 'mln bbls',
+      gas: 'bln m3',
+      coal: 'bln ton',
     }
 
     // @ts-ignore
@@ -233,7 +233,7 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({
           curr.volume,
           // @ts-ignore
           curr.volumeUnit
-        ).toFixed(1)} mln ${fuelMap[f]} ${
+        ).toFixed(1)} ${fuelMap[f]} ${
           // @ts-ignore
           curr.lastYear ? `(${curr.lastYear})` : `(data year ${curr.dataYear})`
         }`
