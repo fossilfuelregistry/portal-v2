@@ -12,6 +12,7 @@ type InfoSectionProps = {
   isProject?: boolean
   // @ts-ignore
   sourceInfo?: any
+  noCsvHeader?: boolean
 }
 
 const InfoSection: FC<InfoSectionProps> = ({
@@ -20,6 +21,7 @@ const InfoSection: FC<InfoSectionProps> = ({
   csvData = [],
   filename = 'file.csv',
   isProject = false,
+  noCsvHeader = false,
   sourceInfo,
 }) => (
   <Box
@@ -103,7 +105,7 @@ const InfoSection: FC<InfoSectionProps> = ({
           </Link>
         )}
       </Box>
-      <CsvDownloader datas={csvData} filename={filename}>
+      <CsvDownloader datas={csvData} filename={filename} noHeader={noCsvHeader}>
         <Button
           bg={colors.primary.brandingBlue}
           color={colors.common.white}

@@ -20,7 +20,7 @@ import { FossilFuelType, StaticData } from 'lib/types'
 import { isNumber } from 'fp-ts/number'
 import { colors } from '../../assets/theme'
 
-type EmissionsDataType =
+export type EmissionsDataType =
   | {
       sourceId: number
       production: {
@@ -40,9 +40,9 @@ type CountrySnapshotProps = {
   country: string
 }
 
-const getFuelData =
+export const getFuelData =
   (fossilFuelType: FossilFuelType) => (emissionsData: EmissionsDataType) =>
-    emissionsData?.production.find((a) => a.fossilFuelType === fossilFuelType)
+    emissionsData?.production?.find((a) => a.fossilFuelType === fossilFuelType)
 
 const getYear =
   (fossilFuelType: FossilFuelType) => (emissionsData: EmissionsDataType) =>
@@ -51,11 +51,11 @@ const getOilYear = getYear('oil')
 const getGasYear = getYear('gas')
 const getCoalYear = getYear('coal')
 
-const getVolume =
+export const getVolume =
   (fossilFuelType: FossilFuelType) => (emissionsData: EmissionsDataType) =>
     getFuelData(fossilFuelType)(emissionsData)?.volume
 
-const getUnit =
+export const getUnit =
   (fossilFuelType: FossilFuelType) => (emissionsData: EmissionsDataType) =>
     getFuelData(fossilFuelType)(emissionsData)?.unit
 
@@ -67,7 +67,7 @@ const getOilSourceId = getSourceId('oil')
 const getGasSourceId = getSourceId('gas')
 const getCoalSourceId = getSourceId('coal')
 
-const getToUnit = (fossilFuelType: FossilFuelType) => {
+export const getToUnit = (fossilFuelType: FossilFuelType) => {
   switch (fossilFuelType) {
     case 'oil':
       return 'e6bbl'

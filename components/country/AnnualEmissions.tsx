@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect, useMemo, useState } from 'react'
+import React, { FC, useContext, useEffect, useState } from 'react'
 import { Box, SimpleGrid, useMediaQuery } from '@chakra-ui/react'
 import PieChart from 'components/charts/PieChart'
 import InfoSection from 'components/InfoSection'
@@ -12,12 +12,11 @@ import useCountryData from 'lib/useCountryData'
 import { EmissionsData, StaticData } from 'lib/types'
 import useText from 'lib/useText'
 import { DataContext } from 'components/DataContext'
-import useCsvDataTranslator from 'lib/useCsvDataTranslator'
-import formatCsvNumber from 'utils/formatCsvNumbers'
 import { isNumber } from 'fp-ts/lib/number'
 import { colors } from '../../assets/theme'
 import useVolumes from '../../hooks/useVolumes'
 import useRangeOfCertainty from '../../hooks/useRangeOfCertainty'
+import useCountryAnnualEmissionsCSVData from '../../hooks/useCountryAnnualEmissionsCSVData'
 
 const DEBUG = false
 
@@ -30,7 +29,7 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ country }) => {
   const staticData: StaticData = useContext(DataContext)
   const { countryName, conversions, constants, prefixConversions } = staticData
 
-  const { productionSources } = useCountrySources({
+  const { productionSources, preferredProductionSourceId } = useCountrySources({
     country,
   })
   const [gwp, setGwp] = useState<string>(WarmingPotential.GWP100)
@@ -38,7 +37,6 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ country }) => {
   const [emissionsData, setEmissionsData] = useState<EmissionsData>([])
   const { volumesData } = useVolumes(emissionsData, productionSourceId)
   const { rangeData } = useRangeOfCertainty(emissionsData, productionSourceId)
-  const { generateCsvTranslation } = useCsvDataTranslator()
   const { getCurrentCO2E } = useCountryData({
     gwp,
     productionSourceId,
@@ -46,6 +44,15 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ country }) => {
     conversionConstants: conversions,
     constants,
     conversionPrefixes: prefixConversions,
+  })
+  const { translatedCsvData } = useCountryAnnualEmissionsCSVData({
+    emissionsData: emissionsData?.find(
+      (d) => d?.sourceId === preferredProductionSourceId
+    ),
+    rangeData,
+    countryName,
+    country,
+    prefixConversions,
   })
   const [isLargerThan1024] = useMediaQuery('(min-width: 1024px)')
   DEBUG &&
@@ -77,25 +84,12 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({ country }) => {
     calculateData()
   }, [gwp, productionSourceId, country])
 
-  const translatedCsvData = useMemo(() => {
-    const csvData = [
-      {
-        scope1_low: formatCsvNumber(rangeData[0]?.value[0]),
-        scope1_mid: formatCsvNumber(rangeData[0]?.value[1]),
-        scope1_high: formatCsvNumber(rangeData[0]?.value[2]),
-        scope3_low: formatCsvNumber(rangeData[1]?.value[0]),
-        scope3_mid: formatCsvNumber(rangeData[1]?.value[1]),
-        scope3_high: formatCsvNumber(rangeData[1]?.value[2]),
-      },
-    ]
-    return csvData.map(generateCsvTranslation)
-  }, [rangeData])
-
   return (
     <InfoSection
       title={`${countryName} ${translate('annual_emissions')}`}
       filename={`${country}_year_emissions.csv`}
       csvData={translatedCsvData}
+      noCsvHeader
     >
       <SimpleGrid mb="40px" columns={{ base: 1, md: 3 }} gridGap="20px">
         <WarmingPotentialSelect
