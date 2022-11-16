@@ -11,6 +11,7 @@ import HistoryProductionInfo from 'components/country/HistoryProductionInfo'
 import { CoalIcon, GasIcon, OilIcon } from 'components/Icons'
 import { colors } from '../../assets/theme'
 import groupBy from '../../utils/groupBy'
+import useHistoricProductionCSVData from '../../hooks/useHistoricProductionCSVData'
 
 type HistoricProductionProps = {
   country: string
@@ -72,6 +73,14 @@ const HistoricProduction: FC<HistoricProductionProps> = ({ country }) => {
     return result
   }, [production])
 
+  const { translatedCsvData } = useHistoricProductionCSVData({
+    historicData,
+    country,
+    countryName,
+    source: productionSources.find((s) => s.sourceId === productionSourceId)
+      ?.name as string,
+  })
+
   const historicTotalData = useMemo(() => {
     const calculate = (data: any, fuelType: string) => {
       return data[fuelType] && data[fuelType]?.length
@@ -118,17 +127,9 @@ const HistoricProduction: FC<HistoricProductionProps> = ({ country }) => {
     return result
   }, [production])
 
-  const translatedCsvData = useMemo(() => {
-    return historicData.map((d) => ({
-      Year: d.date,
-      Oil: d.Oil,
-      Gas: d.Gas,
-      Coal: d.Coal,
-    }))
-  }, [historicData])
-
   return (
     <InfoSection
+      noCsvHeader
       title={`${countryName} Historic Emissions`}
       csvData={translatedCsvData}
       filename={`${country}_production_estimates.csv`}
