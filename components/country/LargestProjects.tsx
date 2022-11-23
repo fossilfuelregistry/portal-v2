@@ -168,7 +168,7 @@ const LargestProjects: FC<LargestProjectsProps> = ({ country }) => {
                   lineHeight="24px"
                   p="20px 20px"
                 >
-                  {format(p.co2 / 1e7, 2)}
+                  {format(p.co2 / 1e9, 2)}
                 </Td>
                 <Td
                   color={colors.primary.richBlack}
