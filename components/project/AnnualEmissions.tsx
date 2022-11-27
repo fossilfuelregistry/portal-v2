@@ -1,4 +1,4 @@
-import React, { FC, useContext, useEffect, useMemo, useState } from 'react'
+import React, { FC, useContext, useMemo, useState } from 'react'
 import { Box, SimpleGrid, Alert, AlertIcon } from '@chakra-ui/react'
 import PieChart, { PIE_CHART_COLORS } from 'components/charts/PieChart'
 import InfoSection from 'components/InfoSection'
@@ -11,11 +11,10 @@ import useText from 'lib/useText'
 import { DataContext } from 'components/DataContext'
 import useProjectData from 'lib/useProjectData'
 import useProjectSources from 'lib/useProjectSources'
-import useCsvDataTranslator from 'lib/useCsvDataTranslator'
 import { usePrefixConversion } from 'lib/calculations/prefix-conversion'
 import { colors } from '../../assets/theme'
 import capitalizeFirstLetter from '../../utils/capitalizeFirstLetter'
-import formatCsvNumber from '../../utils/formatCsvNumbers'
+import useProjectAnnualEmissionsCSVData from '../../hooks/useProjectAnnualEmissionsCSVData'
 
 const DEBUG = false
 
@@ -35,7 +34,6 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({
 
   const { productionSources } = useProjectSources({ projectId, country })
   const [gwp, setGwp] = useState<string>(WarmingPotential.GWP100)
-  const { generateCsvTranslation } = useCsvDataTranslator()
   const conversion = usePrefixConversion(prefixConversions)
   DEBUG && console.log('productionSources', productionSources)
 
@@ -187,19 +185,13 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({
     }, [])
   }, [projInfo])
 
-  const translatedCsvData = useMemo(() => {
-    const csvData = [
-      {
-        scope1_low: formatCsvNumber(rangeData[0]?.value[0]),
-        scope1_mid: formatCsvNumber(rangeData[0]?.value[1]),
-        scope1_high: formatCsvNumber(rangeData[0]?.value[2]),
-        scope3_low: formatCsvNumber(rangeData[1]?.value[0]),
-        scope3_mid: formatCsvNumber(rangeData[1]?.value[1]),
-        scope3_high: formatCsvNumber(rangeData[1]?.value[2]),
-      },
-    ]
-    return csvData.map(generateCsvTranslation)
-  }, [rangeData])
+  const { translatedCsvData } = useProjectAnnualEmissionsCSVData({
+    rangeData,
+    countryName,
+    projectName: theProject.projectIdentifier,
+    projectId,
+    gwp,
+  })
 
   const projectDetails = useMemo(() => {
     const getValue = (fossilFuelType: string, volume: number, unit: string) => {
@@ -266,6 +258,7 @@ const AnnualEmissions: FC<AnnualEmissionsProps> = ({
       title={`${countryName}: ${theProject.projectIdentifier}: ${projectDetails}`}
       filename={`${theProject.projectIdentifier}_year_emissions.csv`}
       csvData={translatedCsvData}
+      noCsvHeader
     >
       {(theProject.projectType === 'DENSE' ||
         theProject.projectType === 'SPARSE') && (

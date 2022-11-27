@@ -8,8 +8,7 @@ import SourceSelect from 'components/filters/SourceSelect'
 import { SimpleGrid } from '@chakra-ui/react'
 import { DataContext } from 'components/DataContext'
 import useCsvDataTranslator from 'lib/useCsvDataTranslator'
-import { sumOfCO2 } from 'lib/calculate'
-import formatCsvNumber from '../../utils/formatCsvNumbers'
+import useHistoryProductionCSVData from '../../hooks/useHistoryProductionCSVData'
 
 const DEBUG = false
 
@@ -102,35 +101,17 @@ const HistoricalFuel: FC<HistoricalFuelProps> = ({
     }
   }, [production, reserves, fuel, sourceId, country])
 
-  DEBUG && console.log('sourceData', sourceData)
-
-  const translatedCsvData = useMemo(() => {
-    const data = sourceType === 'production' ? production : reserves
-    const datas = data
-      .filter((d: any) => d.fossilFuelType === fuel)
-      .map((d: any) => {
-        // @ts-ignore
-        const _d = { ...d }
-        delete _d.id
-        delete _d.__typename
-        delete _d.sourceId
-        _d.source = sources.find((s: any) => s.sourceId === d.sourceId)?.name
-        if (d.co2?.scope1 || d.co2?.scope3) {
-          _d.co2 = sumOfCO2(d.co2, 1)
-        }
-        return _d
-      })
-
-    const csvData = datas
-      // @ts-ignore
-      .map((d) => ({
-        ...d,
-        co2: formatCsvNumber(d.co2),
-        volume: formatCsvNumber(d.volume),
-      }))
-      .map(generateCsvTranslation)
-    return csvData
-  }, [production, reserves, fuel, sourceId, country])
+  const { translatedCsvData } = useHistoryProductionCSVData({
+    production,
+    countryName,
+    reserves,
+    fuel,
+    sourceId,
+    country,
+    sourceType,
+    sources,
+    prefixConversions,
+  })
 
   if (!sourceData.dataset.length) {
     return null
@@ -141,6 +122,7 @@ const HistoricalFuel: FC<HistoricalFuelProps> = ({
       title={`${countryName} ${title}`}
       csvData={translatedCsvData}
       filename={`${countryName}_${title}.csv`}
+      noCsvHeader
     >
       <SimpleGrid mb="40px" columns={3} gridGap="20px">
         <SourceSelect
