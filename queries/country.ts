@@ -151,7 +151,7 @@ export const GQL_countryBorder = gql`
         isoA2
       }
     }
-    projects(condition: { iso3166: $iso3166 }) {
+    projects(condition: { iso3166: $iso3166, visible: true }) {
       nodes {
         geoPosition {
           geojson
@@ -286,7 +286,7 @@ export const GQL_largestProjects = gql`
   query largestProjects($iso3166: String!) {
     projects(
       orderBy: PRODUCTION_CO2E_DESC
-      condition: { iso3166: $iso3166 }
+      condition: { iso3166: $iso3166, visible: true }
       first: 30
     ) {
       nodes {
@@ -309,7 +309,7 @@ export const GQL_largestProjects = gql`
 export const GQL_projectGeo = gql`
   query projectGeo($projectIdentifier: String!, $iso3166: String!) {
     projects(
-      condition: { projectIdentifier: $projectIdentifier, iso3166: $iso3166 }
+      condition: { projectIdentifier: $projectIdentifier, iso3166: $iso3166, visible: true }
     ) {
       nodes {
         projectIdentifier

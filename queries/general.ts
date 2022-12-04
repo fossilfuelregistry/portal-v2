@@ -154,11 +154,6 @@ export const GQL_sources = gql`
   }
 `
 
-export const GQL_projectsCount = gql`
-  query projects {
-    totalCount
-  }
-`
 
 export const SQL_co2costs = gql`
   query co2Costs {
@@ -177,7 +172,7 @@ export const GQL_projectsTableData = gql`
   query projectsTableData($iso3166: String!, $offset: Int!, $limit: Int!) {
     projects(
       orderBy: PRODUCTION_CO2E_DESC
-      condition: { iso3166: $iso3166 }
+      condition: { iso3166: $iso3166, visible: true}
       filter: { not: { productionCo2E: { equalTo: 0 } } }
       offset: $offset
       first: $limit
