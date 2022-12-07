@@ -31,8 +31,9 @@ import Info from 'components/Info'
 import CountrySnapshot from 'components/country/CountrySnapshot'
 import SnapShotStatistic from 'components/SnapShotStatistic'
 import LargestProjects from 'components/country/LargestProjects'
-import CookieConsent from "components/navigation/CookieConsent";
+import CookieConsent from 'components/navigation/CookieConsent'
 import { colors } from '../../assets/theme'
+import AnalysisAndVisualisations from 'components/country/AnalysisAndVisualisations'
 
 export type Props = {
   sources: any
@@ -142,6 +143,7 @@ const CountryPage: React.FC<Props> = (props) => {
         {country !== 'global' && (
           <Container>
             <CountrySnapshot country={country} />
+            <AnalysisAndVisualisations country={country} />
             <AnnualEmissions country={country} />
             {/* <EmissionsIntensity country={country} /> */}
             <HistoricProduction country={country} />
@@ -183,7 +185,7 @@ const CountryPage: React.FC<Props> = (props) => {
         )}
         <Footer footer={footer} />
       </div>
-      <CookieConsent/>
+      <CookieConsent />
     </DataContextProvider>
   )
 }

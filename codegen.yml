@@ -1,5 +1,5 @@
 overwrite: true
-schema: 'https://api.fossilfuelregistry.org/graphql'
+schema: 'https://dev-api.fossilfuelregistry.org/graphql'
 documents: 'queries/**/*.graphql'
 generates:
   queries/generated-queries.ts:

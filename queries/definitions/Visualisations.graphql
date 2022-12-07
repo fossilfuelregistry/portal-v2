@@ -1,0 +1,15 @@
+query visualisations($entity:String!, $entityType: String!) {
+  visualisations(condition: {entity: $entity, entityType: $entityType}) {
+    nodes {
+      id
+      description
+      entity
+      entityType
+      name
+      newWindow
+      sourceData
+      sourceDescription
+      url
+    }
+  }
+}
