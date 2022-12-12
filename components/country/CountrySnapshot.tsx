@@ -7,8 +7,11 @@ import React, {
   useMemo,
 } from 'react'
 import { SimpleGrid, Box, Heading } from '@chakra-ui/react'
-import { WarmingPotential } from 'components/filters/WarmingPotentialSelect'
+import WarmingPotentialSelect, {
+  WarmingPotential,
+} from 'components/filters/WarmingPotentialSelect'
 import useCountrySources from 'lib/useCountrySources'
+import SourceSelect from 'components/filters/SourceSelect'
 import useCountryData from 'lib/useCountryData'
 import { DataContext } from 'components/DataContext'
 import { SmokeIcon, OilIcon, GasIcon, CoalIcon } from 'components/Icons'
@@ -82,6 +85,7 @@ export const getToUnit = (fossilFuelType: FossilFuelType) => {
 
 const CountrySnapshot: FC<CountrySnapshotProps> = ({ country }) => {
   const {
+    productionSources,
     preferredProductionSourceId,
     preferredProjectionSourceId,
     preferredReservesSourceId,
@@ -92,12 +96,14 @@ const CountrySnapshot: FC<CountrySnapshotProps> = ({ country }) => {
     staticData
   const { getSourceName } = useCountrySources({ country })
   const prefix = usePrefixConversion(prefixConversions)
-
+  const [productionSourceId, setProductionSourceId] = useState<number>(
+    preferredProductionSourceId
+  )
   const [gwp, _] = useState<string>(WarmingPotential.GWP100)
   const [emissionsData, setEmissionsData] = useState<EmissionsDataType>(null)
   const { getCurrentCO2E } = useCountryData({
     gwp,
-    productionSourceId: preferredProductionSourceId,
+    productionSourceId,
     projectionSourceId: preferredProjectionSourceId,
     reservesSourceId: preferredReservesSourceId,
     country,
@@ -110,12 +116,12 @@ const CountrySnapshot: FC<CountrySnapshotProps> = ({ country }) => {
     const calculateData = async () => {
       setEmissionsData(
         (await getCurrentCO2E())?.find(
-          (d) => d?.sourceId === preferredProductionSourceId
+          (d) => d?.sourceId === productionSourceId
         )
       )
     }
     calculateData()
-  }, [gwp, preferredProductionSourceId, country])
+  }, [gwp, productionSourceId, country])
 
   const [totalEmissions, setTotalEmissions] = useState<number | undefined>()
   const [oilProduction, setOilProduction] = useState<number | undefined>()
@@ -168,6 +174,14 @@ const CountrySnapshot: FC<CountrySnapshotProps> = ({ country }) => {
       >
         {countryName} Country Snapshot
       </Heading>
+      <SimpleGrid mb="40px" columns={{ base: 1, md: 3 }} gridGap="20px">
+        <SourceSelect
+          label="Production source"
+          sources={productionSources}
+          value={productionSourceId}
+          onChange={(option) => setProductionSourceId(option?.value as any)}
+        />
+      </SimpleGrid>
       <SimpleGrid columns={{ sm: 1, md: 2, lg: 4 }} gridGap="20px" mb="80px">
         <InfoBox
           title="Total emissions"
