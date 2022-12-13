@@ -113,6 +113,10 @@ const CountrySnapshot: FC<CountrySnapshotProps> = ({ country }) => {
   })
 
   useEffect(() => {
+    setProductionSourceId(preferredProductionSourceId)
+  }, [preferredProductionSourceId])
+
+  useEffect(() => {
     const calculateData = async () => {
       setEmissionsData(
         (await getCurrentCO2E())?.find(
