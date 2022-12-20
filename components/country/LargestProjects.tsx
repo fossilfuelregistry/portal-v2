@@ -94,7 +94,7 @@ const LargestProjects: FC<LargestProjectsProps> = ({ country }) => {
                 lineHeight="24px"
                 p="20px 20px"
               >
-                Total emissions
+                Total emissions (GWP100)
                 <br />
                 <Text
                   fontSize="16px"
